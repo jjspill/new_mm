@@ -1,0 +1,16 @@
+{
+  "navigation": [
+    {
+      "name": "Home",
+      "href": "/"
+    },
+    {
+      "name": "Friends",
+      "href": "/friends"
+    },
+    {
+      "name": "Family",
+      "href": "/family"
+    }
+  ]
+}
