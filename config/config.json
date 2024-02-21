@@ -5,12 +5,12 @@
       "href": "/"
     },
     {
-      "name": "Friends",
-      "href": "/friends"
+      "name": "Portfolio",
+      "href": "/portfolio"
     },
     {
-      "name": "Family",
-      "href": "/family"
+      "name": "Content",
+      "href": "/content"
     }
   ]
 }
