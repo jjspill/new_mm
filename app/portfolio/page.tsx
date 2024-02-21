@@ -1,7 +1,10 @@
+'use client';
+
 import Image from 'next/image';
 import Link from 'next/link';
 
 export default function portfolio() {
+  const commonSpanClasses = 'text-sm flex items-center';
   return (
     <div className="flex justify-center items-start pt-20 px-4">
       <div className="bg-white shadow-lg rounded-2xl overflow-hidden w-full max-w-4xl mb-4 h-fit">
@@ -19,16 +22,20 @@ export default function portfolio() {
                 <span className="font-semibold">About</span>
               </div>
               <div className="flex items-center justify-center">
-                <div className="flex-1 flex justify-end items-center pr-4">
-                  <span className="text-sm">Background</span>
+                <div className="flex-1 flex justify-end pr-4">
+                  <span className={commonSpanClasses}>Background</span>
                 </div>
-                <div className="h-5 w-px bg-black"></div>
+                <div className="flex items-center justify-center">
+                  <div className="h-5 w-px bg-black"></div>
+                </div>
                 <div className="px-4">
-                  <span className="text-sm">Education</span>
+                  <span className={commonSpanClasses}>Education</span>
                 </div>
-                <div className="h-5 w-px bg-black"></div>
-                <div className="flex-1 flex justify-start items-center pl-4">
-                  <span className="text-sm">Goals</span>
+                <div className="flex items-center justify-center">
+                  <div className="h-5 w-px bg-black"></div>
+                </div>
+                <div className="flex-1 flex justify-start pl-4">
+                  <span className={commonSpanClasses}>Goals</span>
                 </div>
               </div>
             </Link>
