@@ -39,7 +39,7 @@ export default function portfolio() {
             </Link>
           </div>
           <div className="flex flex-col justify-center text-center bg-gray-200 hover:bg-gray-300 shadow-lg rounded-2xl py-4 px-2 my-4">
-            <Link href="/portfolio/projects">
+            <Link href="/portfolio/experience">
               <div className="text-xl font-normal pb-1">
                 <span className="font-semibold">Experience</span>
               </div>
