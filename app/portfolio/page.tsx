@@ -7,7 +7,7 @@ export default function portfolio() {
     <div className="flex justify-center items-start pt-20 px-4">
       <div className="bg-white shadow-lg rounded-2xl overflow-hidden w-full max-w-4xl mb-4 h-fit">
         <Image
-          src="/images/grad2.png"
+          src="/images/grad_stadium_small.png"
           alt="Friends"
           width={1200}
           height={900}
