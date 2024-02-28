@@ -1,19 +1,56 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import experienceData from './experiences.json';
+import styles from './Experience.module.css';
 
-const PreContainer: React.FC = () => {
+interface ExperienceProps {
+  title: string;
+  description: string;
+  link?: string;
+}
+
+const Experience: React.FC<ExperienceProps> = (experience) => {
   const [rotateX, setRotateX] = useState(0);
   const [rotateY, setRotateY] = useState(0);
+  const [scale, setScale] = useState(0); // Initial scale state
+  const elementRef = useRef<HTMLDivElement>(null);
+
+  // Generate random style not on mount but before render
+  const initialStyles = useRef(generateRandomStyle()).current;
 
   useEffect(() => {
+    // Apply initial random style immediately
+    if (elementRef.current) {
+      for (const [key, value] of Object.entries(initialStyles)) {
+        elementRef.current.style[key as any] = value;
+      }
+    }
+
+    // Animation for scaling up from 0 to 1 over 2 seconds
+    const scaleDuration = 2000; // 2 seconds for scale animation
+    let startTime: number | null = null;
+
+    const animateScale = (time: number) => {
+      if (!startTime) startTime = time;
+      const elapsedTime = time - startTime;
+      const fraction = Math.min(elapsedTime / scaleDuration, 1);
+
+      setScale(0.1 + fraction * (1 - 0.1)); // Scale from 0.1 to 1
+
+      if (fraction < 1) {
+        requestAnimationFrame(animateScale);
+      }
+    };
+
+    requestAnimationFrame(animateScale);
+
+    // Event listener for mouse movement to adjust rotation
     const handleMouseMove = (event: MouseEvent) => {
       const x = event.clientX;
       const y = event.clientY;
-
       const middleX = window.innerWidth / 2;
       const middleY = window.innerHeight / 2;
-
       const offsetX = ((x - middleX) / middleX) * 45;
       const offsetY = ((y - middleY) / middleY) * 45;
 
@@ -23,54 +60,54 @@ const PreContainer: React.FC = () => {
 
     window.addEventListener('mousemove', handleMouseMove);
 
+    // Cleanup function
     return () => window.removeEventListener('mousemove', handleMouseMove);
   }, []);
 
-  const dynamicStyles: Record<string, string> = {
-    '--rotateX': `${rotateX}deg`,
-    '--rotateY': `${rotateY}deg`,
-    '--selector': 'hsl(338, 70%, 55%)', // Assuming you define these colors in your CSS or :root
-    '--property': 'hsl(183, 70%, 62%)',
-    '--punctuation': 'hsl(334, 7%, 95%)',
-    '--undefined': 'hsl(334, 7%, 95%)',
-    transform: `perspective(5000px) rotateY(${rotateX}deg) rotateX(${rotateY}deg)`, // Direct transformation
-    transformStyle: 'preserve-3d',
-  };
+  useEffect(() => {
+    // Apply dynamic scale and rotation continuously
+    if (elementRef.current) {
+      elementRef.current.style.transform = `scale(${scale}) perspective(5000px) rotateY(${rotateX}deg) rotateX(${rotateY}deg)`;
+    }
+  }, [rotateX, rotateY, scale]);
 
   return (
-    <div className="flex justify-center items-center h-screen overflow-hidden bg-[hsl(224,32%,12%)] bg-[conic-gradient(from_0deg_at_50%_50%,blue,purple,purple,blue)] bg-blend-multiply">
-      <div className="grid grid-cols-3 gap-4">
-        {[...Array(9)].map((_, index) => (
-          <div key={index} className="w-full h-32 bg-black opacity-50"></div>
-        ))}
-      </div>
-      <pre
-        contentEditable
-        className="language-css text-3xl font-bold text-[var(--undefined)] bg-[hsl(222,45%,7%)] p-8 rounded-lg absolute"
-        style={dynamicStyles as React.CSSProperties} // Cast as React.CSSProperties to bypass type checking
-        tabIndex={0}
-      >
-        <code>
-          .awesome-layouts {'{'}
-          <br />
-          &nbsp;&nbsp;display: grid;
-          <br />
-          {'}'}
-        </code>
-      </pre>
-      <a
-        href="https://youtu.be/Z-3tPXf9a7M"
-        target="_blank"
-        rel="noopener noreferrer"
-        className="fixed bottom-6 text-gray-400"
-      >
-        YouTube tutorial on making this here
-      </a>
+    <div
+      ref={elementRef}
+      className="text-3xl font-bold text-[var(--undefined)] bg-white p-8 rounded-lg absolute"
+      tabIndex={0}
+    >
+      <p>{experience.title}</p>
+      <div>{experience.description}</div>
+      {experience.link && (
+        <a href={experience.link} target="_blank" rel="noopener noreferrer">
+          Learn More
+        </a>
+      )}
     </div>
   );
 };
 
-export default PreContainer;
+// Presumed existing function
+const generateRandomStyle = (): React.CSSProperties => ({
+  top: `${Math.random() * 80 + 10}%`,
+  left: `${Math.random() * 80 + 10}%`,
+  position: 'absolute',
+});
+
+const Experiences: React.FC = () => {
+  const experiences: ExperienceProps[] = experienceData;
+
+  return (
+    <div className="flex justify-center items-center h-screen overflow-hidden bg-[hsl(224,32%,12%)] bg-[conic-gradient(from_0deg_at_50%_50%,blue,purple,purple,blue)] bg-blend-multiply">
+      {experiences.map((experience, index) => (
+        <Experience key={index} {...experience} />
+      ))}
+    </div>
+  );
+};
+
+export default Experiences;
 
 // import React, { useState } from 'react';
 // import styles from './Experience.module.css';
