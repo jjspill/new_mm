@@ -139,28 +139,6 @@ const Experience: React.FC<
   );
 };
 
-// const Experiences: React.FC = () => {
-//   const experiences: ExperienceProps[] = experienceData;
-//   const [highestZIndex, setHighestZIndex] = useState(1);
-
-//   const bringToFront = (): number => {
-//     setHighestZIndex(highestZIndex + 1);
-//     return highestZIndex + 1;
-//   };
-
-//   return (
-//     <div className="flex justify-center items-center max-h-screen overflow-hidden">
-//       {experiences.map((experience, index) => (
-//         <Experience
-//           key={index}
-//           {...experience}
-//           onExperienceClick={bringToFront}
-//         />
-//       ))}
-//     </div>
-//   );
-// };
-
 const Experiences: React.FC = () => {
   const experiences: ExperienceProps[] = experienceData;
   const [highestZIndex, setHighestZIndex] = useState(1);
@@ -177,12 +155,22 @@ const Experiences: React.FC = () => {
 
   return (
     <div>
-      <button
-        className="absolute top-14 right-0 m-4 p-2 bg-blue-500 text-white rounded hidden md:block"
-        onClick={toggleMobileView}
-      >
-        Toggle View
-      </button>
+      <div className="fixed top-0 right-0 z-10 h-16 flex justify-end">
+        <button
+          className="p-2 mr-6 text-white rounded hidden md:block hover:text-gray-400"
+          onClick={toggleMobileView}
+        >
+          Toggle View
+        </button>
+      </div>
+
+      <div className="md:hidden sm:flex flex-col pt-20">
+        <div className="flex flex-col flex-grow p-4 m-4 lg:mx-80 bg-white shadow-lg rounded-2xl">
+          {experiences.map((experience, index) => (
+            <RecPageItem key={index} {...experience} />
+          ))}
+        </div>
+      </div>
 
       {isMobileView && (
         <div className="flex flex-col pt-20">
@@ -194,7 +182,7 @@ const Experiences: React.FC = () => {
         </div>
       )}
 
-      <div className="flex justify-center items-center max-h-screen overflow-hidden">
+      <div className="hidden md:flex justify-center items-center max-h-screen overflow-hidden">
         {experiences.map((experience, index) => (
           <div
             key={index}
