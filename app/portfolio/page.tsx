@@ -50,13 +50,27 @@ export default function portfolio() {
               </div>
             </Link>
           </div>
-          <Link href="/portfolio/resume">
-            <div className="flex justify-center bg-gray-200 hover:bg-gray-300 shadow-lg rounded-2xl py-4 px-2 my-4">
+          <div className="hidden md:block">
+            <Link href="/portfolio/resume">
+              <div className="flex justify-center bg-gray-200 hover:bg-gray-300 shadow-lg rounded-2xl py-4 px-2 my-4">
+                <div className="text-xl font-normal">
+                  <span className="font-semibold">Resume</span>
+                </div>
+              </div>
+            </Link>
+          </div>
+          <div className="md:hidden">
+            <a
+              href="/pdf/resume.pdf"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex justify-center bg-gray-200 hover:bg-gray-300 shadow-lg rounded-2xl py-4 px-2 my-4"
+            >
               <div className="text-xl font-normal">
                 <span className="font-semibold">Resume</span>
               </div>
-            </div>
-          </Link>
+            </a>
+          </div>
         </div>
       </div>
     </div>
