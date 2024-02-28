@@ -3,6 +3,31 @@
 import React, { useState, useEffect, useRef } from 'react';
 import experienceData from './experiences.json';
 
+const RecPageItem: React.FC<ExperienceProps> = ({
+  title,
+  description,
+  link,
+}) => {
+  return (
+    <div className="flex flex-grow min-h-40">
+      <div className="flex flex-col w-full py-4 px-2 my-2 bg-gray-100 shadow-lg rounded-2xl">
+        <h1 className="font-bold text-center">{title}</h1>
+        <p>{description}</p>
+        {link && (
+          <a
+            href={link}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-blue-500"
+          >
+            Learn More
+          </a>
+        )}
+      </div>
+    </div>
+  );
+};
+
 interface ExperienceProps {
   title: string;
   description: string;
@@ -105,7 +130,7 @@ const Experience: React.FC<
           href={link}
           target="_blank"
           rel="noopener noreferrer"
-          className="text-xs"
+          className="text-sm text-blue-500"
         >
           Learn More
         </a>
@@ -114,24 +139,73 @@ const Experience: React.FC<
   );
 };
 
+// const Experiences: React.FC = () => {
+//   const experiences: ExperienceProps[] = experienceData;
+//   const [highestZIndex, setHighestZIndex] = useState(1);
+
+//   const bringToFront = (): number => {
+//     setHighestZIndex(highestZIndex + 1);
+//     return highestZIndex + 1;
+//   };
+
+//   return (
+//     <div className="flex justify-center items-center max-h-screen overflow-hidden">
+//       {experiences.map((experience, index) => (
+//         <Experience
+//           key={index}
+//           {...experience}
+//           onExperienceClick={bringToFront}
+//         />
+//       ))}
+//     </div>
+//   );
+// };
+
 const Experiences: React.FC = () => {
   const experiences: ExperienceProps[] = experienceData;
   const [highestZIndex, setHighestZIndex] = useState(1);
+  const [isMobileView, setIsMobileView] = useState(false);
 
   const bringToFront = (): number => {
     setHighestZIndex(highestZIndex + 1);
     return highestZIndex + 1;
   };
 
+  const toggleMobileView = () => {
+    setIsMobileView(!isMobileView);
+  };
+
   return (
-    <div className="flex justify-center items-center max-h-screen overflow-hidden">
-      {experiences.map((experience, index) => (
-        <Experience
-          key={index}
-          {...experience}
-          onExperienceClick={bringToFront}
-        />
-      ))}
+    <div>
+      <button
+        className="absolute top-14 right-0 m-4 p-2 bg-blue-500 text-white rounded hidden md:block"
+        onClick={toggleMobileView}
+      >
+        Toggle View
+      </button>
+
+      {isMobileView && (
+        <div className="flex flex-col pt-20">
+          <div className="flex flex-col flex-grow p-4 m-4 lg:mx-80 bg-white shadow-lg rounded-2xl">
+            {experiences.map((experience, index) => (
+              <RecPageItem key={index} {...experience} />
+            ))}
+          </div>
+        </div>
+      )}
+
+      <div className="flex justify-center items-center max-h-screen overflow-hidden">
+        {experiences.map((experience, index) => (
+          <div
+            key={index}
+            className={`w-full ${isMobileView ? 'block' : 'hidden'} md:block`}
+          >
+            {!isMobileView && (
+              <Experience {...experience} onExperienceClick={bringToFront} />
+            )}
+          </div>
+        ))}
+      </div>
     </div>
   );
 };
