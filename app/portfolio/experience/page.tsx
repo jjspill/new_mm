@@ -2,6 +2,8 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import experienceData from './experiences.json';
+import { ExperienceProps } from './experienceProps';
+import Link from 'next/link';
 
 const RecPageItem: React.FC<ExperienceProps> = ({
   title,
@@ -13,26 +15,13 @@ const RecPageItem: React.FC<ExperienceProps> = ({
       <div className="flex flex-col w-full py-4 px-2 my-2 bg-gray-100 shadow-lg rounded-2xl">
         <h1 className="font-bold text-center">{title}</h1>
         <p>{description}</p>
-        {link && (
-          <a
-            href={link}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-blue-500"
-          >
-            Learn More
-          </a>
-        )}
+        <Link href={`experience/${title}`} className="text-sm text-blue-500">
+          Learn More
+        </Link>
       </div>
     </div>
   );
 };
-
-interface ExperienceProps {
-  title: string;
-  description: string;
-  link?: string;
-}
 
 const generateRandomStyle = (): React.CSSProperties => {
   const maxHeightPercentage = 70;
@@ -125,16 +114,9 @@ const Experience: React.FC<
     >
       <p className="font-bold text-center">{title}</p>
       <div className="text-sm">{description}</div>
-      {link && (
-        <a
-          href={link}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-sm text-blue-500"
-        >
-          Learn More
-        </a>
-      )}
+      <Link href={`experience/${title}`} className="text-sm text-blue-500">
+        Learn More
+      </Link>
     </div>
   );
 };
