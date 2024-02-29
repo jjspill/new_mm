@@ -13,7 +13,7 @@ export default function portfolio() {
           height={900}
           layout="responsive"
         />
-        <div className="p-2">
+        <div className="px-2">
           <div className="flex flex-col justify-center text-center bg-gray-200 hover:bg-gray-300 shadow-lg rounded-2xl py-4 px-2 my-4">
             <Link href="/portfolio/about">
               <div className="text-xl font-normal pb-1">

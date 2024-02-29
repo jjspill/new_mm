@@ -4,6 +4,10 @@ import React, { useState, useEffect, useRef } from 'react';
 import experienceData from './experiences.json';
 import { ExperienceProps } from './experienceProps';
 import Link from 'next/link';
+import {
+  IsClientCtxProvider,
+  useIsClient,
+} from '../../components/client-render/is_client_ctx';
 
 const RecPageItem: React.FC<ExperienceProps> = ({
   title,
@@ -22,40 +26,47 @@ const RecPageItem: React.FC<ExperienceProps> = ({
     </div>
   );
 };
-
-const generateRandomStyle = (): React.CSSProperties => {
-  const maxHeightPercentage = 70;
-  const maxWidthPercentage = 70;
-
-  const grayValue = Math.floor(Math.random() * 56) + 200;
-  const grayColor = `rgb(${grayValue}, ${grayValue}, ${grayValue})`;
-
-  return {
-    top: `${Math.random() * maxHeightPercentage + 5}%`,
-    left: `${Math.random() * maxWidthPercentage + 5}%`,
-    position: 'absolute',
-    backgroundColor: grayColor,
-  };
-};
+// Assume each Experience component is 300px wide and 200px tall
 
 const Experience: React.FC<
-  ExperienceProps & { onExperienceClick: () => number }
-> = ({ title, description, link, onExperienceClick }) => {
+  ExperienceProps & { onExperienceClick: () => number } & {
+    totalExperiences: number;
+    screenWidth: number;
+    screenHeight: number;
+    index: number;
+  }
+> = ({
+  title,
+  description,
+  link,
+  onExperienceClick,
+  totalExperiences,
+  screenWidth,
+  screenHeight,
+  index,
+}) => {
   const [rotateX, setRotateX] = useState(0);
   const [rotateY, setRotateY] = useState(0);
   const [scale, setScale] = useState(0.1);
-  const [zIndex, setZIndex] = useState(1);
+  const [zIndex, setZIndex] = useState(10);
   const elementRef = useRef<HTMLDivElement>(null);
 
-  const initialStyles = useRef(generateRandomStyle()).current;
+  const styleRef = useRef<{
+    top: string;
+    left: string;
+    backgroundColor: string;
+  }>();
+
+  if (!styleRef.current) {
+    styleRef.current = generateRandomStyle(
+      totalExperiences,
+      screenWidth,
+      screenHeight,
+      index
+    );
+  }
 
   useEffect(() => {
-    if (elementRef.current) {
-      for (const [key, value] of Object.entries(initialStyles)) {
-        elementRef.current.style[key as any] = value;
-      }
-    }
-
     const scaleDuration = Math.floor(Math.random() * (4000 - 1000 + 1)) + 1000;
     let startTime: number | null = null;
 
@@ -103,28 +114,95 @@ const Experience: React.FC<
   return (
     <div
       ref={elementRef}
-      className="text-xl bg-white p-4 rounded-lg absolute"
+      className="text-xl bg-white p-4 rounded-lg absolute w-fit h-[200px] shadow-lg"
       tabIndex={0}
       onClick={handleClick}
       style={{
         maxWidth: '300px',
         overflow: 'auto',
         zIndex: zIndex,
+        ...styleRef.current,
       }}
     >
       <p className="font-bold text-center">{title}</p>
-      <div className="text-sm">{description}</div>
-      <Link href={`experience/${title}`} className="text-sm text-blue-500">
+      <div className="text-sm w-fit text-center pt-2">{description}</div>
+      <Link
+        href={`experience/${title}`}
+        className="text-sm text-blue-500 text-center"
+      >
         Learn More
       </Link>
     </div>
   );
 };
 
+const componentWidth = 300;
+const componentHeight = 200;
+
+const generateRandomStyle = (
+  totalExperiences: number,
+  screenWidth: number,
+  screenHeight: number,
+  index: number
+): { left: string; top: string; backgroundColor: string } => {
+  console.log('xIndex', index);
+  console.log('screenWidth', screenWidth);
+
+  const maxTop = screenHeight - componentHeight - 20;
+  let top = Math.random() * maxTop;
+  if (top < 40) {
+    top = 40 + Math.floor(Math.random() * 40);
+  }
+
+  const sectionWidth = screenWidth / totalExperiences;
+  const sectionX = index * sectionWidth;
+  const maxLeft = sectionWidth - componentWidth;
+  let left = Math.random() * maxLeft + sectionX;
+
+  if (left < 20) {
+    left = 20 + Math.floor(Math.random() * 40);
+  }
+
+  if (left > screenWidth - componentWidth - 20) {
+    left = screenWidth - componentWidth - 20;
+  }
+
+  const grayValue = Math.floor(Math.random() * 56) + 200;
+  const grayColor = `rgb(${grayValue}, ${grayValue}, ${grayValue})`;
+
+  return {
+    top: `${top}px`,
+    left: `${left}px`,
+    backgroundColor: grayColor,
+  };
+};
+
 const Experiences: React.FC = () => {
   const experiences: ExperienceProps[] = experienceData;
-  const [highestZIndex, setHighestZIndex] = useState(1);
+  const [highestZIndex, setHighestZIndex] = useState(10);
   const [isMobileView, setIsMobileView] = useState(false);
+  const [screenWidth, setScreenWidth] = useState<number | undefined>(undefined);
+  const [screenHeight, setScreenHeight] = useState<number | undefined>(
+    undefined
+  );
+
+  useEffect(() => {
+    // Ensure window object is available before attempting to access its properties
+    if (typeof window !== 'undefined') {
+      setScreenWidth(window.innerWidth);
+      setScreenHeight(window.innerHeight);
+
+      const handleResize = () => {
+        setScreenWidth(window.innerWidth);
+        setScreenHeight(window.innerHeight);
+      };
+
+      window.addEventListener('resize', handleResize);
+
+      // Cleanup listener on component unmount
+      return () => window.removeEventListener('resize', handleResize);
+    }
+  }, []);
 
   const bringToFront = (): number => {
     setHighestZIndex(highestZIndex + 1);
@@ -135,6 +213,8 @@ const Experiences: React.FC = () => {
     setIsMobileView(!isMobileView);
   };
 
+  const isClient = useIsClient();
+  console.log('isClient', isClient);
   return (
     <div>
       <div className="fixed top-0 right-0 z-10 h-16 flex justify-end">
@@ -165,19 +245,41 @@ const Experiences: React.FC = () => {
       )}
 
       <div className="hidden md:flex justify-center items-center max-h-screen overflow-hidden">
-        {experiences.map((experience, index) => (
-          <div
-            key={index}
-            className={`w-full ${isMobileView ? 'block' : 'hidden'} md:block`}
-          >
-            {!isMobileView && (
-              <Experience {...experience} onExperienceClick={bringToFront} />
-            )}
-          </div>
-        ))}
+        {isClient &&
+          experiences.map((experience, index) => {
+            return (
+              <div
+                key={index}
+                className={`w-full ${
+                  isMobileView ? 'block' : 'hidden'
+                } md:block`}
+              >
+                {!isMobileView && (
+                  <Experience
+                    {...experience}
+                    onExperienceClick={bringToFront}
+                    totalExperiences={experiences.length}
+                    screenWidth={screenWidth!}
+                    screenHeight={screenHeight!}
+                    index={index}
+                  />
+                )}
+              </div>
+            );
+          })}
       </div>
     </div>
   );
 };
 
-export default Experiences;
+const ExperiencesContainer: React.FC = (children) => {
+  return (
+    <div>
+      <IsClientCtxProvider>
+        <Experiences {...children} />
+      </IsClientCtxProvider>
+    </div>
+  );
+};
+
+export default ExperiencesContainer;

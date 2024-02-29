@@ -3,51 +3,63 @@
     {
         "title": "Social Sphere",
         "description": "A social media analytics tool that aggregates data across platforms to provide insights into user engagement and content performance.",
-        "link": "https://example.com/social-sphere"
+        "link": "https://example.com/social-sphere",
+        "long_text": "Lorem ipsum dolor sit amet, sea illud apeirian efficiantur te, eos an velit vivendum voluptatibus, ex vim agam facilis consetetur. Nisl legimus adipisci id vix, ea impetus ceteros his. Ex quod sapientem per, mei nusquam suscipit forensibus te. Ut unum case euripidis mei. Sea ut semper gubergren, ei affert neglegentur eos.\n\nPorro invenire explicari pri an. Vis et brute sonet dissentiet. Putant singulis suavitate te mea. Et per vitae nostrum. Eam ut agam atqui maluisset, omnes dicant suscipit vis at. Ne mei mutat labore ornatus. \n\nDoming recteque concludaturque per ut, ne quo falli novum hendrerit. Ei exerci detraxit ocurreret nam, qui ne laoreet qualisque, accusam eleifend te sit. Eam falli primis euripidis cu, per cu quot senserit petentium, ex altera essent diceret qui. Ex laudem libris vim, at vide summo choro mel, ad purto illum suscipit ius. Constituam adversarium eos ea."
+        
+
     },
     {
         "title": "EcoTrack",
         "description": "An app that tracks your carbon footprint based on daily activities and purchases, offering suggestions to reduce and offset your impact.",
-        "link": "https://example.com/ecotrack"
+        "link": "https://example.com/ecotrack",
+        "long_text": "Lorem ipsum dolor sit amet, sea illud apeirian efficiantur te, eos an velit vivendum voluptatibus, ex vim agam facilis consetetur. Nisl legimus adipisci id vix, ea impetus ceteros his. Ex quod sapientem per, mei nusquam suscipit forensibus te. Ut unum case euripidis mei. Sea ut semper gubergren, ei affert neglegentur eos.\n\nPorro invenire explicari pri an. Vis et brute sonet dissentiet. Putant singulis suavitate te mea. Et per vitae nostrum. Eam ut agam atqui maluisset, omnes dicant suscipit vis at. Ne mei mutat labore ornatus. \n\nDoming recteque concludaturque per ut, ne quo falli novum hendrerit. Ei exerci detraxit ocurreret nam, qui ne laoreet qualisque, accusam eleifend te sit. Eam falli primis euripidis cu, per cu quot senserit petentium, ex altera essent diceret qui. Ex laudem libris vim, at vide summo choro mel, ad purto illum suscipit ius. Constituam adversarium eos ea."
     },
     {
         "title": "Health Companion",
         "description": "A personal health and fitness app that uses AI to customize workout and nutrition plans based on your goals and progress.",
-        "link": "https://example.com/health-companion"
+        "link": "https://example.com/health-companion",
+        "long_text": "Lorem ipsum dolor sit amet, sea illud apeirian efficiantur te, eos an velit vivendum voluptatibus, ex vim agam facilis consetetur. Nisl legimus adipisci id vix, ea impetus ceteros his. Ex quod sapientem per, mei nusquam suscipit forensibus te. Ut unum case euripidis mei. Sea ut semper gubergren, ei affert neglegentur eos.\n\nPorro invenire explicari pri an. Vis et brute sonet dissentiet. Putant singulis suavitate te mea. Et per vitae nostrum. Eam ut agam atqui maluisset, omnes dicant suscipit vis at. Ne mei mutat labore ornatus. \n\nDoming recteque concludaturque per ut, ne quo falli novum hendrerit. Ei exerci detraxit ocurreret nam, qui ne laoreet qualisque, accusam eleifend te sit. Eam falli primis euripidis cu, per cu quot senserit petentium, ex altera essent diceret qui. Ex laudem libris vim, at vide summo choro mel, ad purto illum suscipit ius. Constituam adversarium eos ea."
     },
     {
         "title": "Budget Buddy",
         "description": "An intuitive budgeting app that helps users manage their finances, track spending, and save money with smart insights and reminders.",
-        "link": "https://example.com/budget-buddy"
+        "link": "https://example.com/budget-buddy",
+        "long_text": "Lorem ipsum dolor sit amet, sea illud apeirian efficiantur te, eos an velit vivendum voluptatibus, ex vim agam facilis consetetur. Nisl legimus adipisci id vix, ea impetus ceteros his. Ex quod sapientem per, mei nusquam suscipit forensibus te. Ut unum case euripidis mei. Sea ut semper gubergren, ei affert neglegentur eos.\n\nPorro invenire explicari pri an. Vis et brute sonet dissentiet. Putant singulis suavitate te mea. Et per vitae nostrum. Eam ut agam atqui maluisset, omnes dicant suscipit vis at. Ne mei mutat labore ornatus. \n\nDoming recteque concludaturque per ut, ne quo falli novum hendrerit. Ei exerci detraxit ocurreret nam, qui ne laoreet qualisque, accusam eleifend te sit. Eam falli primis euripidis cu, per cu quot senserit petentium, ex altera essent diceret qui. Ex laudem libris vim, at vide summo choro mel, ad purto illum suscipit ius. Constituam adversarium eos ea."
     },
     {
         "title": "Artificial Tutor",
         "description": "An AI-driven tutoring platform that offers personalized learning experiences for students in various subjects.",
-        "link": "https://example.com/artificial-tutor"
+        "link": "https://example.com/artificial-tutor",
+        "long_text": "Lorem ipsum dolor sit amet, sea illud apeirian efficiantur te, eos an velit vivendum voluptatibus, ex vim agam facilis consetetur. Nisl legimus adipisci id vix, ea impetus ceteros his. Ex quod sapientem per, mei nusquam suscipit forensibus te. Ut unum case euripidis mei. Sea ut semper gubergren, ei affert neglegentur eos.\n\nPorro invenire explicari pri an. Vis et brute sonet dissentiet. Putant singulis suavitate te mea. Et per vitae nostrum. Eam ut agam atqui maluisset, omnes dicant suscipit vis at. Ne mei mutat labore ornatus. \n\nDoming recteque concludaturque per ut, ne quo falli novum hendrerit. Ei exerci detraxit ocurreret nam, qui ne laoreet qualisque, accusam eleifend te sit. Eam falli primis euripidis cu, per cu quot senserit petentium, ex altera essent diceret qui. Ex laudem libris vim, at vide summo choro mel, ad purto illum suscipit ius. Constituam adversarium eos ea."
     },
     {
         "title": "Safe Streets",
         "description": "A community-driven app that allows users to report and view local safety incidents in real-time, promoting safer neighborhoods.",
-        "link": "https://example.com/safe-streets"
+        "link": "https://example.com/safe-streets",
+        "long_text": "Lorem ipsum dolor sit amet, sea illud apeirian efficiantur te, eos an velit vivendum voluptatibus, ex vim agam facilis consetetur. Nisl legimus adipisci id vix, ea impetus ceteros his. Ex quod sapientem per, mei nusquam suscipit forensibus te. Ut unum case euripidis mei. Sea ut semper gubergren, ei affert neglegentur eos.\n\nPorro invenire explicari pri an. Vis et brute sonet dissentiet. Putant singulis suavitate te mea. Et per vitae nostrum. Eam ut agam atqui maluisset, omnes dicant suscipit vis at. Ne mei mutat labore ornatus. \n\nDoming recteque concludaturque per ut, ne quo falli novum hendrerit. Ei exerci detraxit ocurreret nam, qui ne laoreet qualisque, accusam eleifend te sit. Eam falli primis euripidis cu, per cu quot senserit petentium, ex altera essent diceret qui. Ex laudem libris vim, at vide summo choro mel, ad purto illum suscipit ius. Constituam adversarium eos ea."
     },
     {
         "title": "Freelance Finder",
         "description": "A platform connecting freelancers with projects that match their skills and preferences, streamlining the search and hiring process.",
-        "link": "https://example.com/freelance-finder"
+        "link": "https://example.com/freelance-finder",
+        "long_text": "Lorem ipsum dolor sit amet, sea illud apeirian efficiantur te, eos an velit vivendum voluptatibus, ex vim agam facilis consetetur. Nisl legimus adipisci id vix, ea impetus ceteros his. Ex quod sapientem per, mei nusquam suscipit forensibus te. Ut unum case euripidis mei. Sea ut semper gubergren, ei affert neglegentur eos.\n\nPorro invenire explicari pri an. Vis et brute sonet dissentiet. Putant singulis suavitate te mea. Et per vitae nostrum. Eam ut agam atqui maluisset, omnes dicant suscipit vis at. Ne mei mutat labore ornatus. \n\nDoming recteque concludaturque per ut, ne quo falli novum hendrerit. Ei exerci detraxit ocurreret nam, qui ne laoreet qualisque, accusam eleifend te sit. Eam falli primis euripidis cu, per cu quot senserit petentium, ex altera essent diceret qui. Ex laudem libris vim, at vide summo choro mel, ad purto illum suscipit ius. Constituam adversarium eos ea."
     },
     {
         "title": "Mindful Moments",
         "description": "A mindfulness and meditation app designed to help users reduce stress, improve focus, and find peace throughout their day.",
-        "link": "https://example.com/mindful-moments"
+        "link": "https://example.com/mindful-moments",
+        "long_text": "Lorem ipsum dolor sit amet, sea illud apeirian efficiantur te, eos an velit vivendum voluptatibus, ex vim agam facilis consetetur. Nisl legimus adipisci id vix, ea impetus ceteros his. Ex quod sapientem per, mei nusquam suscipit forensibus te. Ut unum case euripidis mei. Sea ut semper gubergren, ei affert neglegentur eos.\n\nPorro invenire explicari pri an. Vis et brute sonet dissentiet. Putant singulis suavitate te mea. Et per vitae nostrum. Eam ut agam atqui maluisset, omnes dicant suscipit vis at. Ne mei mutat labore ornatus. \n\nDoming recteque concludaturque per ut, ne quo falli novum hendrerit. Ei exerci detraxit ocurreret nam, qui ne laoreet qualisque, accusam eleifend te sit. Eam falli primis euripidis cu, per cu quot senserit petentium, ex altera essent diceret qui. Ex laudem libris vim, at vide summo choro mel, ad purto illum suscipit ius. Constituam adversarium eos ea."
     },
     {
         "title": "Code Camp",
         "description": "An interactive coding platform for beginners to learn programming through hands-on projects and challenges.",
-        "link": "https://example.com/code-camp"
+        "link": "https://example.com/code-camp",
+        "long_text": "Lorem ipsum dolor sit amet, sea illud apeirian efficiantur te, eos an velit vivendum voluptatibus, ex vim agam facilis consetetur. Nisl legimus adipisci id vix, ea impetus ceteros his. Ex quod sapientem per, mei nusquam suscipit forensibus te. Ut unum case euripidis mei. Sea ut semper gubergren, ei affert neglegentur eos.\n\nPorro invenire explicari pri an. Vis et brute sonet dissentiet. Putant singulis suavitate te mea. Et per vitae nostrum. Eam ut agam atqui maluisset, omnes dicant suscipit vis at. Ne mei mutat labore ornatus. \n\nDoming recteque concludaturque per ut, ne quo falli novum hendrerit. Ei exerci detraxit ocurreret nam, qui ne laoreet qualisque, accusam eleifend te sit. Eam falli primis euripidis cu, per cu quot senserit petentium, ex altera essent diceret qui. Ex laudem libris vim, at vide summo choro mel, ad purto illum suscipit ius. Constituam adversarium eos ea."
     },
     {
         "title": "Travel Trekker",
         "description": "A travel planning app that helps users discover and organize their next adventure with customized itineraries and recommendations.",
-        "link": "https://example.com/travel-trekker"
+        "link": "https://example.com/travel-trekker", 
+        "long_text": "Lorem ipsum dolor sit amet, sea illud apeirian efficiantur te, eos an velit vivendum voluptatibus, ex vim agam facilis consetetur. Nisl legimus adipisci id vix, ea impetus ceteros his. Ex quod sapientem per, mei nusquam suscipit forensibus te. Ut unum case euripidis mei. Sea ut semper gubergren, ei affert neglegentur eos. \n\n Porro invenire explicari pri an. Vis et brute sonet dissentiet. Putant singulis suavitate te mea. Et per vitae nostrum. Eam ut agam atqui maluisset, omnes dicant suscipit vis at. Ne mei mutat labore ornatus. \n\nDoming recteque concludaturque per ut, ne quo falli novum hendrerit. Ei exerci detraxit ocurreret nam, qui ne laoreet qualisque, accusam eleifend te sit. Eam falli primis euripidis cu, per cu quot senserit petentium, ex altera essent diceret qui. Ex laudem libris vim, at vide summo choro mel, ad purto illum suscipit ius. Constituam adversarium eos ea."
     }
   ]
