@@ -3,4 +3,5 @@ export interface ExperienceProps {
   description: string;
   long_text: string;
   link?: string;
+  technologies?: string[];
 }

@@ -12,7 +12,6 @@ const App: React.FC = () => {
           title="PDF Viewer"
         />
       </div>
-      q
       <p className="text-center text-sm">
         If you&apos;re having trouble viewing the PDF, you can{' '}
         <a

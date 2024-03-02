@@ -31,7 +31,20 @@ export default function ExperiencePage({
             </p>
           </div>
 
-          {experience && (
+          {experience.technologies && (
+            <div className="flex flex-wrap justify-center items-center p-4">
+              {experience.technologies.map((technology) => (
+                <div
+                  key={technology}
+                  className="bg-gray-200 px-4 py-2 m-2 rounded-full"
+                >
+                  {technology}
+                </div>
+              ))}
+            </div>
+          )}
+
+          {experience.link && (
             <div className="bg-gray-200 px-8 h-16 max-h-full max-w-full hover:bg-gray-300">
               <a
                 href={experience.link}

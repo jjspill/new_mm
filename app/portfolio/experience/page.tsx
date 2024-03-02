@@ -8,6 +8,7 @@ import {
   IsClientCtxProvider,
   useIsClient,
 } from '../../components/client-render/is_client_ctx';
+import './experience.css';
 
 const RecPageItem: React.FC<ExperienceProps> = ({
   title,
@@ -15,13 +16,17 @@ const RecPageItem: React.FC<ExperienceProps> = ({
   link,
 }) => {
   return (
-    <div className="flex flex-grow min-h-40">
-      <div className="flex flex-col w-full py-4 px-2 my-2 bg-gray-100 shadow-lg rounded-2xl">
+    <div className="flex h-fit justify-center">
+      <div className="flex flex-col py-4 px-4 my-2 bg-gray-100 shadow-lg rounded-2xl w-full">
         <h1 className="font-bold text-center">{title}</h1>
-        <p>{description}</p>
-        <Link href={`experience/${title}`} className="text-sm text-blue-500">
-          Learn More
-        </Link>
+        <p className="text-center">{description}</p>
+        <div className="flex justify-center">
+          <Link href={`experience/${title}`}>
+            <div className="creep-in-bg border border-black mt-2 p-2 rounded-full w-fit text-xs">
+              Learn More
+            </div>
+          </Link>
+        </div>
       </div>
     </div>
   );
@@ -114,7 +119,7 @@ const Experience: React.FC<
   return (
     <div
       ref={elementRef}
-      className="text-xl bg-white p-4 rounded-lg absolute w-fit h-[200px] shadow-lg"
+      className="flex flex-col items-center text-xl bg-white p-4 rounded-lg absolute w-fit h-fit max-h-[200px] shadow-lg"
       tabIndex={0}
       onClick={handleClick}
       style={{
@@ -126,11 +131,10 @@ const Experience: React.FC<
     >
       <p className="font-bold text-center">{title}</p>
       <div className="text-sm w-fit text-center pt-2">{description}</div>
-      <Link
-        href={`experience/${title}`}
-        className="text-sm text-blue-500 text-center"
-      >
-        Learn More
+      <Link href={`experience/${title}`}>
+        <div className="creep-in-bg border border-black mt-2 p-2 rounded-full w-fit text-xs">
+          Learn More
+        </div>
       </Link>
     </div>
   );
@@ -214,7 +218,6 @@ const Experiences: React.FC = () => {
   };
 
   const isClient = useIsClient();
-  console.log('isClient', isClient);
   return (
     <div>
       <div className="fixed top-0 right-0 z-10 h-16 flex justify-end">
@@ -226,7 +229,7 @@ const Experiences: React.FC = () => {
         </button>
       </div>
 
-      <div className="md:hidden sm:flex flex-col pt-20">
+      <div className="md:hidden sm:flex flex-col pt-20 items-center">
         <div className="flex flex-col flex-grow p-4 m-4 lg:mx-80 bg-white shadow-lg rounded-2xl">
           {experiences.map((experience, index) => (
             <RecPageItem key={index} {...experience} />
@@ -235,11 +238,13 @@ const Experiences: React.FC = () => {
       </div>
 
       {isMobileView && (
-        <div className="flex flex-col pt-20">
-          <div className="flex flex-col flex-grow p-4 m-4 lg:mx-80 bg-white shadow-lg rounded-2xl">
-            {experiences.map((experience, index) => (
-              <RecPageItem key={index} {...experience} />
-            ))}
+        <div className="flex justify-center items-center">
+          <div className="flex flex-col px-4 pt-20 ">
+            <div className="bg-white shadow-lg rounded-2xl w-full max-w-4xl px-4 py-2 m-4 lg:mx-80">
+              {experiences.map((experience, index) => (
+                <RecPageItem key={index} {...experience} />
+              ))}
+            </div>
           </div>
         </div>
       )}
