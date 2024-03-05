@@ -1,0 +1,17 @@
+{
+  "navigation": [
+    {
+      "name": "Home",
+      "href": "/"
+    },
+    {
+      "name": "Portfolio",
+      "href": "/portfolio"
+    },
+    {
+      "name": "Content",
+      "href": "/content"
+    }
+  ]
+}
+
