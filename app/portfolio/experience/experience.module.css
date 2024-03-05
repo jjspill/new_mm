@@ -1,0 +1,79 @@
+.creepInBg {
+    position: relative;
+    overflow: hidden;
+    background-color: transparent;
+    background-image: linear-gradient(to right, black 50%, transparent 50%);
+    background-repeat: no-repeat;
+    background-size: 0% 100%;
+    transition: background-size 0.5s ease, color 0.4s ease;
+}
+
+.creepInBg:hover {
+    background-size: 200% 100%;
+    color: white;
+}
+
+@keyframes slideInFromBottom {
+    from {
+        opacity: 0;
+        transform: translateY(100px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideOutToBottom {
+    from {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    to {
+        opacity: 0;
+        transform: translateY(100px);
+    }
+}
+
+.slideInFromBottom {
+    animation: slideInFromBottom 0.5s ease-out forwards;
+}
+
+.slideOutToBottom {
+    animation: slideOutToBottom 0.5s ease-out forwards;
+}
+
+@keyframes slideInFromTop {
+    from {
+        opacity: 0;
+        transform: translateY(-100px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideOutFromTop {
+    from {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    to {
+        opacity: 0;
+        transform: translateY(-100px);
+    }
+}
+
+.slideInFromTop {
+    animation: slideInFromTop 0.5s ease-out forwards;
+}
+
+.slideOutFromTop {
+    animation: slideOutFromTop 0.5s ease-out forwards;
+}
+

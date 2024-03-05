@@ -2,13 +2,14 @@
 
 import React from 'react';
 import Image from 'next/image';
+import './about.css';
 
 export default function About() {
   return (
     <div className="flex justify-center pt-20 px-4">
       <div className="bg-white shadow-lg rounded-2xl overflow-hidden w-full max-w-4xl mb-4">
         <div className="flex justify-center mt-6">
-          <div className="w-fit h-fit bg-gray-200 p-2 rounded-xl font-bold text-3xl">
+          <div className="slideInRight w-fit h-fit bg-gray-200 p-2 rounded-xl font-bold text-3xl">
             James Spillmann
           </div>
         </div>
@@ -88,6 +89,45 @@ export default function About() {
                 cognition to develop innovative solutions that improve user
                 experiences and business processes.
               </p>
+            </div>
+          </div>
+          <div className="flex w-full mt-4">
+            <div className="bg-gray-200 rounded-xl min-w-fit">
+              <div className="flex justify-center">
+                <div className="w-fit h-fit bg-gray-200 p-2 rounded-xl font-bold">
+                  Hobbies
+                </div>
+              </div>
+              <div>
+                <ul className="p-2 pl-6 text-sm list-disc">
+                  <li>Michigan Football</li>
+                  <li>Tennis</li>
+                  <li>Live Music</li>
+                  <li>Biking around the city</li>
+                </ul>
+              </div>
+            </div>
+            <div className="bg-gray-200 rounded-xl ml-4 min-w-fit">
+              <div className="flex justify-center">
+                <div className="w-fit h-fit bg-gray-200 p-2 rounded-xl font-bold">
+                  Fun Facts
+                </div>
+              </div>
+              <div>
+                <ul className="p-2 pl-6 text-sm list-disc">
+                  <li>Born in Zürich</li>
+                  <li>Clothing enthusiast</li>
+                  <li>Tom Brady hater</li>
+                </ul>
+              </div>
+            </div>
+            <div className="flex-grow bg-gray-200 ml-4 rounded-xl">
+              <div className="flex justify-center">
+                <div className="w-fit h-fit bg-gray-200 p-2 rounded-xl font-bold">
+                  Stats
+                </div>
+              </div>
+              <p className="p-2 text-sm">Need content ideas</p>
             </div>
           </div>
         </div>

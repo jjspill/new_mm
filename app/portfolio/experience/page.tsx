@@ -8,21 +8,85 @@ import {
   IsClientCtxProvider,
   useIsClient,
 } from '../../components/client-render/is_client_ctx';
-import './experience.css';
+// import './experience.css';
+import styles from './experience.module.css';
+import debounce from 'lodash/debounce';
+import { has } from 'lodash';
 
 const RecPageItem: React.FC<ExperienceProps> = ({
   title,
   description,
   link,
 }) => {
+  const [animationClass, setAnimationClass] = useState('');
+  const [blurAmount, setBlurAmount] = useState(0);
+  const [hasMounted, setHasMounted] = useState(false);
+  const animationRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    setHasMounted(true);
+  }, []);
+
+  useEffect(() => {
+    console.log('hasMounted', hasMounted);
+    if (!hasMounted) return;
+
+    const observerCallback = debounce(([entry]) => {
+      console.log('calling observerCallback');
+      if (entry.isIntersecting) {
+        console.log('intersecting', title);
+        if (entry.boundingClientRect.top > 0) {
+          setAnimationClass(styles.slideInFromBottom);
+        } else {
+          setAnimationClass(styles.slideInFromTop);
+        }
+        setBlurAmount(0);
+      } else {
+        console.log('not intersecting', title);
+        if (
+          entry.boundingClientRect.top + entry.boundingClientRect.height <
+          0
+        ) {
+          setAnimationClass(styles.slideOutFromTop);
+        } else {
+          setAnimationClass(styles.slideOutToBottom);
+        }
+        setBlurAmount(5);
+      }
+    }, 100);
+
+    const observer = new IntersectionObserver(observerCallback, {
+      threshold: 0.5,
+      rootMargin: '50px 0px',
+    });
+
+    if (animationRef.current) {
+      observer.observe(animationRef.current);
+    }
+
+    const currentRef = animationRef.current;
+
+    return () => {
+      if (currentRef) {
+        observer.unobserve(currentRef);
+      }
+    };
+  }, [hasMounted]);
+
   return (
-    <div className="flex h-fit justify-center">
+    <div
+      className={`${animationClass} flex h-fit justify-center`}
+      ref={animationRef}
+      style={{ filter: `blur(${blurAmount}px)` }}
+    >
       <div className="flex flex-col py-4 px-4 my-2 bg-gray-100 shadow-lg rounded-2xl w-full">
         <h1 className="font-bold text-center">{title}</h1>
         <p className="text-center">{description}</p>
         <div className="flex justify-center">
           <Link href={`experience/${title}`}>
-            <div className="creep-in-bg border border-black mt-2 p-2 rounded-full w-fit text-xs">
+            <div
+              className={`${styles.creepInBg} border border-black mt-2 p-2 rounded-full w-fit text-xs`}
+            >
               Learn More
             </div>
           </Link>
@@ -132,7 +196,9 @@ const Experience: React.FC<
       <p className="font-bold text-center">{title}</p>
       <div className="text-sm w-fit text-center pt-2">{description}</div>
       <Link href={`experience/${title}`}>
-        <div className="creep-in-bg border border-black mt-2 p-2 rounded-full w-fit text-xs">
+        <div
+          className={`${styles.creepInBg} border border-black mt-2 p-2 rounded-full w-fit text-xs`}
+        >
           Learn More
         </div>
       </Link>
