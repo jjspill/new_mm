@@ -29,12 +29,16 @@ const RecPageItem: React.FC<ExperienceProps> = ({
 
   useEffect(() => {
     console.log('hasMounted', hasMounted);
-    if (!hasMounted) return;
 
     const observerCallback = debounce(([entry]) => {
-      console.log('calling observerCallback');
+      if (!hasMounted) return;
+      const isFullyVisible = entry.intersectionRatio === 1;
+      if (isFullyVisible) return;
+      console.log('title', title);
+      console.log('entry', entry);
+      console.log(hasMounted);
+
       if (entry.isIntersecting) {
-        console.log('intersecting', title);
         if (entry.boundingClientRect.top > 0) {
           setAnimationClass(styles.slideInFromBottom);
         } else {
@@ -42,7 +46,6 @@ const RecPageItem: React.FC<ExperienceProps> = ({
         }
         setBlurAmount(0);
       } else {
-        console.log('not intersecting', title);
         if (
           entry.boundingClientRect.top + entry.boundingClientRect.height <
           0
@@ -56,7 +59,7 @@ const RecPageItem: React.FC<ExperienceProps> = ({
     }, 100);
 
     const observer = new IntersectionObserver(observerCallback, {
-      threshold: 0.5,
+      threshold: 0.6,
       rootMargin: '50px 0px',
     });
 
