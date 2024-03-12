@@ -22,45 +22,34 @@ const RecPageItem: React.FC<ExperienceProps> = ({
   const [blurAmount, setBlurAmount] = useState(0);
   const [hasMounted, setHasMounted] = useState(false);
   const animationRef = useRef<HTMLDivElement>(null);
+  const beenVisible = useRef(false);
 
   useEffect(() => {
     setHasMounted(true);
   }, []);
 
   useEffect(() => {
-    console.log('hasMounted', hasMounted);
-
     const observerCallback = debounce(([entry]) => {
       if (!hasMounted) return;
       const isFullyVisible = entry.intersectionRatio === 1;
-      if (isFullyVisible) return;
-      console.log('title', title);
-      console.log('entry', entry);
-      console.log(hasMounted);
+
+      if (isFullyVisible) {
+        beenVisible.current = true;
+        setAnimationClass(styles.slideInFromBottom);
+        return;
+      }
 
       if (entry.isIntersecting) {
         if (entry.boundingClientRect.top > 0) {
           setAnimationClass(styles.slideInFromBottom);
-        } else {
-          setAnimationClass(styles.slideInFromTop);
         }
         setBlurAmount(0);
-      } else {
-        if (
-          entry.boundingClientRect.top + entry.boundingClientRect.height <
-          0
-        ) {
-          setAnimationClass(styles.slideOutFromTop);
-        } else {
-          setAnimationClass(styles.slideOutToBottom);
-        }
-        setBlurAmount(5);
       }
     }, 100);
 
     const observer = new IntersectionObserver(observerCallback, {
-      threshold: 0.6,
-      rootMargin: '50px 0px',
+      threshold: 0.5,
+      rootMargin: '0px',
     });
 
     if (animationRef.current) {
@@ -78,7 +67,7 @@ const RecPageItem: React.FC<ExperienceProps> = ({
 
   return (
     <div
-      className={`${animationClass} flex h-fit justify-center`}
+      className={`${animationClass} flex h-fit justify-center opacity-0`}
       ref={animationRef}
       style={{ filter: `blur(${blurAmount}px)` }}
     >
@@ -309,7 +298,7 @@ const Experiences: React.FC = () => {
       {isMobileView && (
         <div className="flex justify-center items-center">
           <div className="flex flex-col px-4 pt-20 ">
-            <div className="bg-white shadow-lg rounded-2xl w-full max-w-4xl px-4 py-2 m-4 lg:mx-80">
+            <div className="bg-white overflow-hidden shadow-lg rounded-2xl w-full max-w-4xl px-4 py-2 m-4 lg:mx-80">
               {experiences.map((experience, index) => (
                 <RecPageItem key={index} {...experience} />
               ))}
