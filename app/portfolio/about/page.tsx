@@ -1,133 +1,103 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
+import styles from './about.module.css';
+import PopInComponent from '@/app/components/pageItems/popInContainer';
 import Image from 'next/image';
-import './about.css';
+
+type DropdownComponentProps = {
+  buttonText: string;
+  style?: string;
+  children?: React.ReactNode;
+};
+
+const DropdownComponent: React.FC<DropdownComponentProps> = ({
+  buttonText,
+  style,
+  children,
+}) => {
+  const [isVisible, setIsVisible] = useState(false);
+
+  const toggleVisibility = () => {
+    setIsVisible(!isVisible);
+  };
+
+  return (
+    <div className={`${style}`}>
+      <button type="button" onClick={toggleVisibility} title={`${buttonText}`}>
+        <div className="flex flex-row w-full">
+          <svg
+            data-slot="icon"
+            fill="none"
+            stroke-width="1.5"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+            aria-hidden="true"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="m19.5 8.25-7.5 7.5-7.5-7.5"
+            ></path>
+          </svg>
+          {buttonText}
+        </div>
+      </button>
+
+      {isVisible && children}
+    </div>
+  );
+};
 
 export default function About() {
   return (
     <div className="flex justify-center pt-20 px-4">
       <div className="bg-white shadow-lg rounded-2xl overflow-hidden w-full max-w-4xl mb-4">
-        <div className="flex justify-center mt-6">
-          <div className="slideInRight w-fit h-fit bg-gray-200 p-2 rounded-xl font-bold text-3xl">
-            James Spillmann
+        <Image
+          src="/images/flatirons.png"
+          alt="Friends"
+          width={1200}
+          height={900}
+        />
+        <div className="flex justify-center m-6">
+          <div className="w-fit">
+            <h1 className={`${styles.typewriter} text-6xl pt-20`}>
+              Hello, my name is James!
+            </h1>
           </div>
         </div>
-        <div className="p-6">
-          {/* Image container floated to the right */}
-          <div className="bg-gray-200 rounded-xl">
-            <div className="relative rounded-xl bg-gray-200 overflow-hidden w-96 h-96 float-right ml-6 mb-4">
-              <Image
-                src="/images/james_portrait.png" // Replace with your photo path
-                alt="Profile Photo"
-                objectFit="cover"
-                className="rounded-xl p-2"
-                fill
-              />
-            </div>
-            {/* Text content */}
-            <div className="flex justify-center">
-              <div className="w-fit h-fit  p-2 font-bold">Background</div>
-            </div>
-            <p className="p-2 text-sm">
+        <div className="flex justify-center pt-20 ">
+          <h1 className="text-5xl">About Me</h1>
+        </div>
+        <PopInComponent delay={-0.5}>
+          <div className="p-2">
+            <p>
               Hello! I&apos;m James, a Boulder, Colorado, native and a recent
               graduate from the University of Michigan. Since packing up my bags
               in Ann Arbor, I have settled into New York City to pursue a career
               in the tech industry.
-              <br />
-              <br />
-              Upon arrival, with no job lined up (due to unforeseen
-              circumstances), I took my talents to the fine establishment of
-              Locanda Verde. After working with stars such as Robert Di Nero,
-              Ryan Reynolds, Frank Ocean, and many more, I decided to take my
-              talents back, to the tech industry.
-              <br />
-              <br />
-              Recently, at SPACInsider, my work has centered on crafting
-              flexible technological solutions, leveraging a wide range of
-              programming languages to boost user experiences and operational
-              efficiencies across platforms. I have played a key role in
-              bridging the gap between front-end design and back-end
-              architecture, enhancing my full-stack technical prowess.
-              <br />
-              <br />
-              As I continue to navigate the tech landscape, I&apos;m always on
-              the lookout for new opportunities and collaborations that
-              challenge and expand my skill set. Whether it&apos;s discussing
-              potential job openings, exploring innovative tech projects, or
-              simply exchanging ideas about the future of technology, please
-              feel free to reach out!
             </p>
           </div>
-          {/* Ensure the following content clears the float */}
-          <div className="flex w-full mt-4">
-            <div className="bg-gray-200 rounded-xl min-w-fit">
-              <div className="flex justify-center">
-                <div className="w-fit h-fit bg-gray-200 p-2 rounded-xl font-bold">
-                  Education
-                </div>
+        </PopInComponent>
+        <div className="py-8">
+          <div className="flex items-start space-x-8">
+            <div className="flex">
+              <div className="space-y-4">
+                <Image
+                  src="/path-to-your-home-image.jpg"
+                  alt="Home"
+                  width={200}
+                  height={200}
+                  className="bg-blue-500"
+                />
               </div>
-              <p className="p-2 text-sm">
-                <strong>University of Michigan</strong> - Ann Arbor, MI
-                <br />
-                <span className="italic">August 2019 - May 2023</span>
-                <br />
-                Bachelor of Science in Computer Science and Cognitive Science
-                <br />
-              </p>
-            </div>
-            <div className="flex-grow bg-gray-200 ml-4 rounded-xl">
-              <div className="flex justify-center">
-                <div className="w-fit h-fit bg-gray-200 p-2 rounded-xl font-bold">
-                  Goals
-                </div>
+              <div className="flex-1">
+                <h1 className="text-3xl font-bold mb-4">Home</h1>
+                <p className="text-lg mb-4">
+                  This is some description about the home.
+                </p>
               </div>
-              <p className="p-2 text-sm">
-                I am keen on applying my diverse skills in software engineering,
-                web development, cybersecurity, fintech, and tech consulting. My
-                professional goal is to harness the power of computing and human
-                cognition to develop innovative solutions that improve user
-                experiences and business processes.
-              </p>
-            </div>
-          </div>
-          <div className="flex w-full mt-4">
-            <div className="bg-gray-200 rounded-xl min-w-fit">
-              <div className="flex justify-center">
-                <div className="w-fit h-fit bg-gray-200 p-2 rounded-xl font-bold">
-                  Hobbies
-                </div>
-              </div>
-              <div>
-                <ul className="p-2 pl-6 text-sm list-disc">
-                  <li>Michigan Football</li>
-                  <li>Tennis</li>
-                  <li>Live Music</li>
-                  <li>Biking around the city</li>
-                </ul>
-              </div>
-            </div>
-            <div className="bg-gray-200 rounded-xl ml-4 min-w-fit">
-              <div className="flex justify-center">
-                <div className="w-fit h-fit bg-gray-200 p-2 rounded-xl font-bold">
-                  Fun Facts
-                </div>
-              </div>
-              <div>
-                <ul className="p-2 pl-6 text-sm list-disc">
-                  <li>Born in Zürich</li>
-                  <li>Clothing enthusiast</li>
-                  <li>Tom Brady hater</li>
-                </ul>
-              </div>
-            </div>
-            <div className="flex-grow bg-gray-200 ml-4 rounded-xl">
-              <div className="flex justify-center">
-                <div className="w-fit h-fit bg-gray-200 p-2 rounded-xl font-bold">
-                  Stats
-                </div>
-              </div>
-              <p className="p-2 text-sm">Need content ideas</p>
             </div>
           </div>
         </div>

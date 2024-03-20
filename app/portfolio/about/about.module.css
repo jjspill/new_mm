@@ -1,0 +1,94 @@
+.typewriter {
+    color: black;
+    overflow: hidden;
+    /* Ensures the content is not revealed until the animation */
+    border-right: .15em solid orange;
+    /* The typwriter cursor */
+    white-space: nowrap;
+    /* Keeps the content on a single line */
+    margin: 0 auto;
+    /* Gives that scrolling effect as the typing happens */
+    /* letter-spacing: .15em; */
+    /* Adjust as needed */
+    animation:
+        typing 3.5s steps(30, end),
+        blink-caret .5s step-start 4.5s;
+    font-family: inherit;
+}
+
+/* The typing effect */
+@keyframes typing {
+    from {
+        width: 0
+    }
+
+    to {
+        width: 100%
+    }
+}
+
+/* The typewriter cursor effect */
+@keyframes blink-caret {
+
+    from,
+    to {
+        border-color: transparent
+    }
+
+    50% {
+        border-color: orange
+    }
+}
+
+@keyframes popIn {
+    from {
+        opacity: 0;
+        transform: translateY(500%);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.popIn1 {
+    animation: popIn 0.75s ease-out forwards;
+    animation-delay: 3.5s;
+    opacity: 0;
+}
+
+
+
+/* About.module.css */
+@keyframes slideInLeft {
+    from {
+        transform: translateX(-100%);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideInRight {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+.slideInLeft {
+    animation: slideInLeft 0.5s ease-out forwards;
+}
+
+.slideInRight {
+    animation: slideInRight 0.5s ease-out forwards;
+}
