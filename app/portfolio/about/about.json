@@ -1,0 +1,51 @@
+{
+  "aboutData": [
+    {
+      "title": "About Me",
+      "description": "Hello! I&apos;m James, a Boulder, Colorado, native and a recent graduate from the University of Michigan. Since packing up my bags in Ann Arbor, I has settled into New York City to pursue a career in the tech industry.",
+      "photo": "/images/stock1.png"
+    },
+    {
+      "title": "Background",
+      "description": "Hello! I&apos;m James, a Boulder, Colorado, native and a recent graduate from the University of Michigan. Since packing up my bags in Ann Arbor, I has settled into New York City to pursue a career in the tech industry.",
+      "photo": "/images/stock2.png"
+    },
+    {
+      "title": "School",
+      "description": "Hello! I&apos;m James, a Boulder, Colorado, native and a recent graduate from the University of Michigan. Since packing up my bags in Ann Arbor, I has settled into New York City to pursue a career in the tech industry.",
+      "photo": "/images/stock3.png"
+    }
+  ],
+  "widgetData": [
+    {
+      "title": "Hobbies",
+      "content": [
+        "skiing",
+        "hiking",
+        "biking",
+        "reading",
+        "cooking"
+      ]
+    },
+    {
+      "title": "Skills",
+      "content": [
+        "javascript",
+        "python",
+        "ruby",
+        "html",
+        "css"
+      ]
+    },
+    {
+      "title": "Interests",
+      "content": [
+        "web development",
+        "machine learning",
+        "data science",
+        "artificial intelligence",
+        "blockchain"
+      ]
+    }
+  ]
+}

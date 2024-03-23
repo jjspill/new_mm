@@ -8,10 +8,8 @@ import {
   IsClientCtxProvider,
   useIsClient,
 } from '../../components/client-render/is_client_ctx';
-// import './experience.css';
 import styles from './experience.module.css';
 import debounce from 'lodash/debounce';
-import { has } from 'lodash';
 
 const RecPageItem: React.FC<ExperienceProps> = ({
   title,

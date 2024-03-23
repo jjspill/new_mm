@@ -11,7 +11,6 @@ export default function portfolio() {
           alt="Friends"
           width={1200}
           height={900}
-          layout="responsive"
         />
         <div className="px-2">
           <div className="flex flex-col justify-center text-center bg-gray-200 hover:bg-gray-300 shadow-lg rounded-2xl py-4 px-2 my-4">
