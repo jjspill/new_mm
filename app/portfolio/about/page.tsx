@@ -34,14 +34,15 @@ interface aboutWidgetProps {
 
 const AboutItem: React.FC<aboutItemProps> = ({ title, description, photo }) => {
   return (
-    <div className="flex pb-6">
-      <div>
-        <div className="bg-gray-200 p-1">
+    <div className="flex flex-col md:flex-row pb-6 space-x-0 md:space-x-4">
+      <div className="bg-gray-200 p-1 mb-6">
+        <div className="relative w-full min-w-0 md:w-40 h-[40vh] md:h-[20vh]">
           <Image
             src={photo}
             alt="Home"
-            width={200}
-            height={200}
+            layout="fill"
+            objectFit="cover"
+            objectPosition="center"
             className="bg-blue-500"
           />
         </div>
@@ -74,12 +75,16 @@ export default function About() {
     <div className="flex justify-center pt-20 px-4">
       <div className="bg-white shadow-2xl rounded-2xl overflow-hidden w-full max-w-4xl mb-4">
         <div className="pb-40">
-          <Image
-            src="/images/flatirons.png"
-            alt="Friends"
-            width={1200}
-            height={900}
-          />
+          <div className="relative w-full h-[56.25vw] md:h-[17.5vw]">
+            <Image
+              src="/images/flatirons.png"
+              alt="Friends"
+              layout="fill"
+              objectFit="cover"
+              objectPosition="center"
+            />
+          </div>
+
           <AnimationComponent />
         </div>
         <div className="py-8 px-12">
@@ -94,7 +99,7 @@ export default function About() {
                         'linear-gradient(to left, rgba(128, 128, 128, 0.5), rgba(255, 255, 255, 0.5))',
                       height: '4px',
                     }}
-                    className="mb-6"
+                    className="mb-8 md:mb-6"
                   ></div>
                 )}
               </SlideInFromRightComponent>
@@ -102,7 +107,7 @@ export default function About() {
           ))}
         </div>
         <AppearInComponent delay={0}>
-          <div className="flex justify-between items-center mx-12 py-40">
+          <div className="flex flex-col md:flex-row space-y-20 justify-between items-center mx-12 py-40">
             {widgetData.map((item, index) => (
               <AboutWidget key={index} {...item} />
             ))}

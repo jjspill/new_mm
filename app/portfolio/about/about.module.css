@@ -35,6 +35,20 @@
     animation: shring-animation 2.2s steps(40, end) 2s forwards, blink .5s step-end 9 alternate;
 }
 
+@media (max-width: 480px) {
+    .nameContainer h1:nth-child(1) {
+        font-size: 28px;
+        width: 100px;
+    }
+}
+
+@media (max-width: 768px) {
+    .nameContainer h1:nth-child(2) {
+        font-size: 70px;
+        width: 350px;
+    }
+}
+
 @keyframes shring-animation {
     0% {
         background-position: 0 0;
