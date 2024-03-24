@@ -13,7 +13,7 @@ export default function ExperiencePage({
 }) {
   const experience = getExperienceByTitle(decodeURIComponent(params.slug));
   return (
-    <div className="flex justify-center items-center pt-20 px-4 ">
+    <div className="flex justify-center items-center pt-20 px-4 pb-4 ">
       {experience && (
         <div className="bg-white shadow-xl rounded-3xl overflow-hidden w-full max-w-4xl">
           <div className="bg-gray-200 text-center py-12">

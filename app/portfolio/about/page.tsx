@@ -57,13 +57,18 @@ const AboutItem: React.FC<aboutItemProps> = ({ title, description, photo }) => {
 
 const AboutWidget: React.FC<aboutWidgetProps> = ({ title, content, photo }) => {
   return (
-    <div className="flex flex-col justify-center w-fit pl-4 pr-2">
-      <h1 className="font-bold text-2xl border-b-2 border-black mb-2 text-center">
+    <div className="p-4 m-2 bg-white rounded-lg shadow-md hover:shadow-2xl transition duration-300 ease-in-out border border-gray-200">
+      <h3 className="text-xl font-semibold text-gray-800 mb-2 text-center">
         {title}
-      </h1>
-      <ul className="list-disc">
+      </h3>
+      <ul className="list-disc pl-5 space-y-1">
         {content.map((item, index) => (
-          <li key={index}>{item}</li>
+          <li
+            key={index}
+            className="text-gray-600 hover:text-gray-800 transition-colors duration-300"
+          >
+            {item}
+          </li>
         ))}
       </ul>
     </div>
@@ -106,13 +111,13 @@ export default function About() {
             </React.Fragment>
           ))}
         </div>
-        <AppearInComponent delay={0}>
-          <div className="flex flex-col md:flex-row space-y-20 justify-between items-center mx-12 py-40">
-            {widgetData.map((item, index) => (
-              <AboutWidget key={index} {...item} />
-            ))}
-          </div>
-        </AppearInComponent>
+        <div className="flex flex-col md:flex-row md:space-x-4 space-y-4 md:space-y-0 justify-center items-center py-10">
+          {widgetData.map((item, index) => (
+            <AppearInComponent key={index} delay={index * 0.3}>
+              <AboutWidget {...item} />
+            </AppearInComponent>
+          ))}
+        </div>
       </div>
     </div>
   );

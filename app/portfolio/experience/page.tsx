@@ -11,7 +11,7 @@ import {
 import styles from './experience.module.css';
 import debounce from 'lodash/debounce';
 
-const RecPageItem: React.FC<ExperienceProps> = ({
+const RecPageItemAnimation: React.FC<ExperienceProps> = ({
   title,
   description,
   link,
@@ -79,6 +79,28 @@ const RecPageItem: React.FC<ExperienceProps> = ({
             >
               Learn More
             </div>
+          </Link>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const RecPageItem: React.FC<ExperienceProps> = ({
+  title,
+  description,
+  link,
+}) => {
+  return (
+    <div className="flex h-fit justify-center">
+      <div className="flex flex-col py-4 px-4 my-2 bg-gray-100 shadow-lg rounded-2xl w-full">
+        <h1 className="font-bold text-center">{title}</h1>
+        <p className="text-center">{description}</p>
+        <div className="flex justify-center">
+          <Link href={`experience/${title}`}>
+            <p className="border border-black mt-2 p-2 rounded-full w-fit text-xs cursor-pointer">
+              Learn More
+            </p>
           </Link>
         </div>
       </div>
@@ -285,8 +307,8 @@ const Experiences: React.FC = () => {
         </button>
       </div>
 
-      <div className="md:hidden sm:flex flex-col pt-20 items-center">
-        <div className="flex flex-col flex-grow p-4 m-4 lg:mx-80 bg-white shadow-lg rounded-2xl">
+      <div className=" flex flex-col md:hidden pt-20 items-center">
+        <div className="flex flex-col flex-grow px-4 py-2 mx-4 mb-4 lg:mx-80 bg-white shadow-lg rounded-2xl">
           {experiences.map((experience, index) => (
             <RecPageItem key={index} {...experience} />
           ))}
@@ -296,9 +318,9 @@ const Experiences: React.FC = () => {
       {isMobileView && (
         <div className="flex justify-center items-center">
           <div className="flex flex-col px-4 pt-20 ">
-            <div className="bg-white overflow-hidden shadow-lg rounded-2xl w-full max-w-4xl px-4 py-2 m-4 lg:mx-80">
+            <div className="bg-white overflow-hidden shadow-lg rounded-2xl w-full max-w-4xl px-4 py-2 mx-4 mb-4 lg:mx-80">
               {experiences.map((experience, index) => (
-                <RecPageItem key={index} {...experience} />
+                <RecPageItemAnimation key={index} {...experience} />
               ))}
             </div>
           </div>
