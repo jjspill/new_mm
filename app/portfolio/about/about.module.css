@@ -16,7 +16,7 @@
     white-space: nowrap;
     overflow: hidden;
     width: 170px;
-    animation: type 2s steps(40, end) forwards;
+    animation: type 1s steps(40, end) forwards;
 }
 
 .nameContainer h1:nth-child(2) {
@@ -32,7 +32,7 @@
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     overflow: hidden;
-    animation: shring-animation 2.2s steps(40, end) 2s forwards, blink .5s step-end 9 alternate;
+    animation: shring-animation 1.2s steps(40, end) 1s forwards;
 }
 
 @media (max-width: 480px) {

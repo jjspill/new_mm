@@ -1,0 +1,27 @@
+@keyframes rotateOpen {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(90deg);
+    }
+}
+
+@keyframes rotateClose {
+    from {
+        transform: rotate(90deg);
+    }
+
+    to {
+        transform: rotate(0deg);
+    }
+}
+
+.rotateOpen {
+    animation: rotateOpen 0.3s cubic-bezier(0.42, 0, 0.58, 1) forwards;
+}
+
+.rotateClose {
+    animation: rotateClose 0.3s cubic-bezier(0.42, 0, 0.58, 1) forwards;
+}

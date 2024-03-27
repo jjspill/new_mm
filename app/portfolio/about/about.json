@@ -2,18 +2,19 @@
   "aboutData": [
     {
       "title": "About Me",
-      "description": "Hello! I&apos;m James, a Boulder, Colorado, native and a recent graduate from the University of Michigan. Since packing up my bags in Ann Arbor, I has settled into New York City to pursue a career in the tech industry.",
-      "photo": "/images/stock1.png"
+      "description": "Upon arriving in New York City in June 2023, after completing four years at the University of Michigan in Ann Arbor, I immersed myself in an environment vastly different from my academic and native Colorado settings. I quickly took my talents to Locanda Verde, where I had the privilege of working alongside stars like Robert Di Nero, Ryan Reynolds, and countless other amazing people. These encounters enriched my journey, allowing me to see a much more active part of the city than the view from an office window. Since September, my journey has led me to SPACInsider, a FinTech startup nestled in the heart of Manhattan. Here, I've become an integral part of a fantastic team where every day is an opportunity to make impactful decisions and refine my engineering skills.",
+      "photo": "/images/james_dinero.png"
     },
     {
-      "title": "Background",
-      "description": "Hello! I&apos;m James, a Boulder, Colorado, native and a recent graduate from the University of Michigan. Since packing up my bags in Ann Arbor, I has settled into New York City to pursue a career in the tech industry.",
-      "photo": "/images/stock2.png"
+      "title": "Experience",
+      "description": "In my software engineering journey, I've made meaningful contributions across roles at Intel, Solidigm, and now SPACInsider, where I focus on developing impactful technological solutions. At Intel, I improved testing processes, setting a solid foundation for my career. My experience at Solidigm involved streamlining system transitions and showcasing my problem-solving skills. At SPACInsider, I leverage my technical expertise and educational background from the University of Michigan in Computer Science and Cognitive Science to enhance information delivery systems for our clients.",
+      "photo": "/images/spac_square.png",
+      "photoLink": "https://spacinsider.com"
     },
     {
-      "title": "School",
-      "description": "Hello! I&apos;m James, a Boulder, Colorado, native and a recent graduate from the University of Michigan. Since packing up my bags in Ann Arbor, I has settled into New York City to pursue a career in the tech industry.",
-      "photo": "/images/stock3.png"
+      "title": "Looking Ahead",
+      "description": "As I continue to navigate the tech landscape, I'm always on the lookout for new opportunities and collaborations that challenge and expand my skill set. Whether it's discussing potential job openings, exploring innovative tech projects, or simply exchanging ideas about the future of technology, please feel free to reach out!",
+      "photo": "/images/james_kid.png"
     }
   ],
   "widgetData": [

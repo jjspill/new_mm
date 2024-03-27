@@ -7,6 +7,7 @@ import SlideInFromRightComponent from '@/app/components/pageItems/slideInFromRig
 import Image from 'next/image';
 import aboutJsonData from './about.json';
 import AppearInComponent from '@/app/components/pageItems/appearInComponent';
+import Link from 'next/link';
 // import './animation.css';
 
 const { aboutData, widgetData } = aboutJsonData;
@@ -24,6 +25,7 @@ interface aboutItemProps {
   title: string;
   description: string;
   photo: string;
+  photoLink?: string;
 }
 
 interface aboutWidgetProps {
@@ -32,19 +34,36 @@ interface aboutWidgetProps {
   photo?: string;
 }
 
-const AboutItem: React.FC<aboutItemProps> = ({ title, description, photo }) => {
+const AboutItem: React.FC<aboutItemProps> = ({
+  title,
+  description,
+  photo,
+  photoLink,
+}) => {
   return (
     <div className="flex flex-col md:flex-row pb-6 space-x-0 md:space-x-4">
-      <div className="bg-gray-200 p-1 mb-6">
+      <div className="bg-gray-200 p-1 h-fit w-fit">
         <div className="relative w-full min-w-0 md:w-40 h-[40vh] md:h-[20vh]">
-          <Image
-            src={photo}
-            alt="Home"
-            layout="fill"
-            objectFit="cover"
-            objectPosition="center"
-            className="bg-blue-500"
-          />
+          {photoLink && (
+            <Link href={photoLink}>
+              <Image
+                src={photo}
+                alt="Home"
+                layout="fill"
+                objectFit="cover"
+                objectPosition="center"
+              />
+            </Link>
+          )}
+          {!photoLink && (
+            <Image
+              src={photo}
+              alt="Home"
+              layout="fill"
+              objectFit="cover"
+              objectPosition="center"
+            />
+          )}
         </div>
       </div>
       <div className="flex-1 ml-10">

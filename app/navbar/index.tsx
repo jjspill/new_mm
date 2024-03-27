@@ -1,7 +1,14 @@
 import React from 'react';
 import NavbarItems from '../components/Navigation/navitems/navbaritems';
+import styles from './navbar.module.css';
 
-const Navbar = ({ toggle }: { toggle: () => void }) => {
+const Navbar = ({
+  toggle,
+  isOpen,
+}: {
+  toggle: () => void;
+  isOpen: boolean;
+}) => {
   return (
     <>
       <div className="w-full h-16 bg-gray-800 fixed top-0 z-10">
@@ -13,7 +20,9 @@ const Navbar = ({ toggle }: { toggle: () => void }) => {
             <button
               type="button"
               title="Toggle Menu"
-              className="inline-flex items-center md:hidden mr-2"
+              className={`inline-flex items-center md:hidden mr-2 ${
+                isOpen ? styles.rotateOpen : styles.rotateClose
+              }`}
               onClick={toggle}
             >
               <svg
