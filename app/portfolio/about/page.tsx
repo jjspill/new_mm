@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import styles from './about.module.css';
 import PopInComponent from '@/app/components/pageItems/popInContainer';
 import SlideInFromRightComponent from '@/app/components/pageItems/slideInFromRight';
-import Image from 'next/image';
+import Image from "next/legacy/image";
 import aboutJsonData from './about.json';
 import AppearInComponent from '@/app/components/pageItems/appearInComponent';
 import Link from 'next/link';

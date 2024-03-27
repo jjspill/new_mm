@@ -1,6 +1,6 @@
 import { ExperienceProps } from './../experienceProps';
 import experienceData from './../../experience/experiences.json';
-import Image from 'next/image';
+import Image from "next/legacy/image";
 
 const getExperienceByTitle = (title: string) => {
   return experienceData.find((experience) => experience.title === title);
