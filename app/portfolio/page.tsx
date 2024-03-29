@@ -11,16 +11,17 @@ export default function portfolio() {
   return (
     <div className="flex justify-center items-start pt-20 px-4">
       <div className="bg-white shadow-lg rounded-2xl overflow-hidden w-full max-w-4xl mb-4 h-fit">
-        <Image
-          src="/images/grad_stadium_smaller.jpeg"
-          alt="Friends"
-          width={1200}
-          height={900}
-          style={{
-            maxWidth: '100%',
-            height: 'auto',
-          }}
-        />
+        <div className="relative h-[30vw] w-full">
+          <Image
+            src="/images/grad_stadium_smaller.jpeg"
+            alt="Friends"
+            fill
+            style={{
+              objectFit: 'cover',
+              objectPosition: 'center',
+            }}
+          />
+        </div>
         <div className="px-2">
           <div className="flex flex-col justify-center text-center bg-gray-200 hover:bg-gray-300 shadow-lg rounded-2xl py-4 px-2 my-4">
             <Link href="/portfolio/about">

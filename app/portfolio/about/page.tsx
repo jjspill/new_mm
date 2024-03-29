@@ -104,7 +104,7 @@ export default function About() {
     <div className="flex justify-center pt-20 px-4">
       <div className="bg-white shadow-2xl rounded-2xl overflow-hidden w-full max-w-4xl mb-4">
         <div className="pb-40">
-          <div className="relative w-full h-[56.25vw] md:h-[25vw] lg:h-[17.5vw] xl:h-[14vw]">
+          <div className="relative w-full h-[56.25vw] md:h-[25vw] lg:h-[20vw]">
             <Image
               src="/images/flatirons_smaller.jpeg"
               alt="Friends"
