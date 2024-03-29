@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import styles from './about.module.css';
 import PopInComponent from '@/app/components/pageItems/popInContainer';
 import SlideInFromRightComponent from '@/app/components/pageItems/slideInFromRight';
-import Image from "next/legacy/image";
+import Image from 'next/image';
 import aboutJsonData from './about.json';
 import AppearInComponent from '@/app/components/pageItems/appearInComponent';
 import Link from 'next/link';
@@ -43,15 +43,18 @@ const AboutItem: React.FC<aboutItemProps> = ({
   return (
     <div className="flex flex-col md:flex-row pb-6 space-x-0 md:space-x-4">
       <div className="bg-gray-200 p-1 h-fit w-fit">
-        <div className="relative w-full min-w-0 md:w-40 h-[40vh] md:h-[20vh]">
+        <div className="relative w-full min-w-0 md:w-40 h-[20vh] md:h-[20vh]">
           {photoLink && (
             <Link href={photoLink}>
               <Image
                 src={photo}
                 alt="Home"
-                layout="fill"
-                objectFit="cover"
-                objectPosition="center"
+                fill
+                sizes="100vw"
+                style={{
+                  objectFit: 'cover',
+                  objectPosition: 'center',
+                }}
               />
             </Link>
           )}
@@ -59,9 +62,12 @@ const AboutItem: React.FC<aboutItemProps> = ({
             <Image
               src={photo}
               alt="Home"
-              layout="fill"
-              objectFit="cover"
-              objectPosition="center"
+              fill
+              sizes="100vw"
+              style={{
+                objectFit: 'cover',
+                objectPosition: 'center',
+              }}
             />
           )}
         </div>
@@ -103,9 +109,12 @@ export default function About() {
             <Image
               src="/images/flatirons.png"
               alt="Friends"
-              layout="fill"
-              objectFit="cover"
-              objectPosition="center"
+              fill
+              sizes="100vw"
+              style={{
+                objectFit: 'cover',
+                objectPosition: 'center',
+              }}
             />
           </div>
 

@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import Image from "next/legacy/image";
+import Image from "next/image";
 import styles from './about.module.css';
 
 export default function About() {
@@ -18,12 +18,16 @@ export default function About() {
           <div className="bg-gray-200 rounded-xl">
             <div className="relative rounded-xl bg-gray-200 overflow-hidden w-96 h-96 float-right ml-6 mb-4">
               <Image
-                src="/images/james_portrait.png" // Replace with your photo path
+                // Replace with your photo path
+                src="/images/james_portrait.png"
                 alt="Profile Photo"
-                objectFit="cover"
                 className="rounded-xl p-2"
                 fill
-              />
+                style={{
+                  maxWidth: "100%",
+                  height: "auto",
+                  objectFit: "cover"
+                }} />
             </div>
             {/* Text content */}
             <div className="flex justify-center">

@@ -1,6 +1,6 @@
 import { ExperienceProps } from './../experienceProps';
 import experienceData from './../../experience/experiences.json';
-import Image from "next/legacy/image";
+import Image from "next/image";
 
 const getExperienceByTitle = (title: string) => {
   return experienceData.find((experience) => experience.title === title);
@@ -59,7 +59,10 @@ export default function ExperiencePage({
                     alt="GitHub Logo"
                     width={40}
                     height={40}
-                  />
+                    style={{
+                      maxWidth: "100%",
+                      height: "auto"
+                    }} />
                 </div>
               </a>
             </div>
