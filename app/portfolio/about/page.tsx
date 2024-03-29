@@ -2,7 +2,6 @@
 
 import React, { useState } from 'react';
 import styles from './about.module.css';
-import PopInComponent from '@/app/components/pageItems/popInContainer';
 import SlideInFromRightComponent from '@/app/components/pageItems/slideInFromRight';
 import Image from 'next/image';
 import aboutJsonData from './about.json';
@@ -41,9 +40,9 @@ const AboutItem: React.FC<aboutItemProps> = ({
   photoLink,
 }) => {
   return (
-    <div className="flex flex-col md:flex-row pb-6 space-x-0 md:space-x-4">
-      <div className="bg-gray-200 p-1 h-fit w-fit">
-        <div className="relative w-full min-w-0 md:w-40 h-[20vh] md:h-[20vh]">
+    <div className="flex flex-col md:flex-row pb-6 space-x-0 md:space-x-4 items-center md:items-start">
+      <div className="bg-gray-200 p-1 h-fit w-fit mb-4 md:mb-0">
+        <div className="relative w-60 md:w-40 h-[20vh]">
           {photoLink && (
             <Link href={photoLink}>
               <Image

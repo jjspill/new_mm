@@ -7,8 +7,11 @@ import { SpeedInsights } from '@vercel/speed-insights/next';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: 'James Spillmann',
-  description: 'James Spillmann Portfolio and so much more',
+  title: {
+    template: ' %s | James Spillmann',
+    default: 'James Spillmann',
+  },
+  description: 'James Spillmann Website and so much more',
 };
 
 export const viewport: Viewport = {

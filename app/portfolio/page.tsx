@@ -1,6 +1,11 @@
 import Image from 'next/image';
 import Link from 'next/link';
 
+export const metadata = {
+  title: 'Portfolio',
+  description: 'James Spillmann Portfolio',
+};
+
 export default function portfolio() {
   const commonSpanClasses = 'text-sm flex items-center';
   return (
