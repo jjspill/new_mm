@@ -107,7 +107,7 @@ export default function About() {
         <div className="pb-40">
           <div className="relative w-full h-[56.25vw] md:h-[17.5vw]">
             <Image
-              src="/images/flatirons.png"
+              src="/images/flatirons_smaller.jpeg"
               alt="Friends"
               fill
               sizes="100vw"
