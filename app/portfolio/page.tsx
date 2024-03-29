@@ -11,7 +11,7 @@ export default function portfolio() {
   return (
     <div className="flex justify-center items-start pt-20 px-4">
       <div className="bg-white shadow-lg rounded-2xl overflow-hidden w-full max-w-4xl mb-4 h-fit">
-        <div className="relative h-[30vw] w-full">
+        <div className="relative h-[40vh] md:h-[55vh] w-full">
           <Image
             src="/images/grad_stadium_smaller.jpeg"
             alt="Friends"
