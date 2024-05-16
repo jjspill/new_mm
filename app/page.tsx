@@ -3,7 +3,6 @@ import { redirect } from 'next/navigation';
 
 export default async function HomePage() {
   redirect('/portfolio');
-  // ...
 }
 
 // export default function HomePage() {
