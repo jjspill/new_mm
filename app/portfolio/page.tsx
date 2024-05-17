@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import grad_stadium_smaller from 'public/images/grad_stadium_smaller.jpeg';
+import grad_stadium_smallest from 'public/images/grad_stadium_smallest.jpg';
 
 export const metadata = {
   title: 'Portfolio',
@@ -16,12 +16,12 @@ export default function portfolio() {
           <div className="relative h-full w-full overflow-hidden">
             <Image
               alt="James Spillmann Graduation"
-              src={grad_stadium_smaller}
+              src={grad_stadium_smallest}
               sizes="100vw"
-              style={{
-                width: '100%',
-                height: 'auto%',
-              }}
+              // style={{
+              //   width: '100%',
+              //   height: 'auto%',
+              // }}
               // style={{
               //   objectFit: 'cover',
               //   // objectPosition: 'center',
