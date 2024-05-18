@@ -53,7 +53,7 @@ export function assignScoresToTeams(config: any, scores: Scores) {
     const teamScores = team.players.map((player: any) => {
       const key = `${player.first_name.toLowerCase()}_${player.last_name.toLowerCase()}`;
       const score = scores[key];
-      if (score.status !== 'active') {
+      if (score.status === 'cut') {
         score.score = highestScore.score;
       }
       player.score = score.score;
@@ -83,7 +83,7 @@ export function getHighestActiveScore(
   let highestScorer = null;
 
   for (const [name, data] of Object.entries(scores)) {
-    if (data.status === 'active' && data.score > highestScore) {
+    if (data.status !== 'cut' && data.score > highestScore) {
       highestScore = data.score;
       highestScorer = { name, score: data.score };
     }
