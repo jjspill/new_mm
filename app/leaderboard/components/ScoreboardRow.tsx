@@ -11,7 +11,6 @@ export const ScoreboardRow: React.FC<ScoreboardRowData> = ({
   const [showPlayers, setShowPlayers] = useState(false);
 
   const togglePlayers = () => {
-    console.log('togglePlayers');
     setShowPlayers(!showPlayers);
   };
 
@@ -22,9 +21,26 @@ export const ScoreboardRow: React.FC<ScoreboardRowData> = ({
         <p className="text-center w-10 md:w-80">{total_score}</p>
         <button
           onClick={togglePlayers}
-          className="bg-blue-500 text-white py-1 px-3 rounded ml-4"
+          className="text-black py-1 px-3 rounded ml-4 flex items-center"
+          aria-label={showPlayers ? 'Hide Players' : 'Show Players'}
         >
-          {showPlayers ? 'Hide Players' : 'Show Players'}
+          <svg
+            className={`transform transition-transform duration-300 ${showPlayers ? 'rotate-180' : 'rotate-0'}`}
+            fill="none"
+            strokeWidth="1.5"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+            aria-hidden="true"
+            width="24"
+            height="24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="m19.5 8.25-7.5 7.5-7.5-7.5"
+            ></path>
+          </svg>
         </button>
       </div>
       {showPlayers && players && (
