@@ -2,9 +2,7 @@
 
 const convertUTCDateToLocalDate = (date: string): string => {
   const newDate = new Date(date);
-  const offset = newDate.getTimezoneOffset();
-  const localDate = new Date(newDate.getTime() - offset * 60 * 1000);
-  return localDate.toString();
+  return newDate.toLocaleString('en-US', { timeZoneName: 'short' });
 };
 
 export function UpdatedTime({ date }: { date: string }) {
