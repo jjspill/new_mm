@@ -8,7 +8,11 @@ import {
 import { ScoreboardRow } from './components/ScoreboardRow';
 
 async function getData() {
-  const res = await fetch('http://localhost:3000/scoreboard/api', {
+  const res = await fetch('https://james-spillmann.com/leaderboard/api', {
+    headers: {
+      'Content-Type': 'application/json',
+      method: 'GET',
+    },
     cache: 'no-store', // To disable caching, use no-store or other caching options as per requirement
   });
 
