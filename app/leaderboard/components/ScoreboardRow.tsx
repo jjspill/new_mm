@@ -19,7 +19,7 @@ export const ScoreboardRow: React.FC<ScoreboardRowData> = ({
     <div className="flex flex-col justify-between py-4 m-2 px-2 rounded-2xl bg-gray-200">
       <div className="flex justify-between items-center">
         <p className="flex-grow text-left">{team_name}</p>
-        <p className="text-center w-80">{total_score}</p>
+        <p className="text-center w-10 md:w-80">{total_score}</p>
         <button
           onClick={togglePlayers}
           className="bg-blue-500 text-white py-1 px-3 rounded ml-4"
