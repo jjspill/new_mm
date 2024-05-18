@@ -1,11 +1,8 @@
 import scoreboard_config from './scoreboard_config.json';
 import temp_data from './temp_data.json';
-import {
-  assignScoresToTeams,
-  convertUTCDateToLocalDate,
-  getScores,
-} from './helpers';
+import { assignScoresToTeams, getScores } from './helpers';
 import { ScoreboardRow } from './components/ScoreboardRow';
+import { UpdatedTime } from './components/UpdatedTime';
 
 async function getData() {
   const res = await fetch('https://james-spillmann.com/leaderboard/api', {
@@ -32,10 +29,7 @@ async function scoreBoard() {
   if (!data?.results?.leaderboard) {
     return <div className="pt-20">No data available</div>;
   }
-  const updated = convertUTCDateToLocalDate(
-    data.results.tournament.live_details?.updated,
-  );
-  console.log('updated', updated);
+  const updated = data.results.tournament.live_details?.updated;
   const scores = getScores(data);
   const scoreboard_data = assignScoresToTeams(scoreboard_config, scores);
 
@@ -44,7 +38,7 @@ async function scoreBoard() {
       <div className="bg-white shadow-lg rounded-2xl overflow-hidden w-full max-w-4xl">
         <div className="text-center rounded-t-2xl py-4">
           <h1 className="text-2xl font-semibold">Scoreboard</h1>
-          <p className="text-sm">Last updated: {updated}</p>
+          <UpdatedTime date={updated} />
         </div>
         {scoreboard_data.map((row, index) => (
           <ScoreboardRow key={index} {...row} />
