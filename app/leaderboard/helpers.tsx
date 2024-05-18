@@ -30,7 +30,7 @@ function sortTeamsByScore(
 
 export function getScores(data: any): Scores {
   const scores = data.results.leaderboard.reduce((acc: any, item: any) => {
-    const key = `${item.first_name.toLowerCase()}_${item.last_name.toLowerCase()}`;
+    const key = `${item.first_name.toLowerCase()[0]}_${item.last_name.toLowerCase()}`;
     acc[key] = {
       first_name: item.first_name,
       last_name: item.last_name,
@@ -51,8 +51,12 @@ export function assignScoresToTeams(config: any, scores: Scores) {
   }
   const teams = config.teams.map((team: any) => {
     const teamScores = team.players.map((player: any) => {
-      const key = `${player.first_name.toLowerCase()}_${player.last_name.toLowerCase()}`;
+      const key = `${player.first_name.toLowerCase()[0]}_${player.last_name.toLowerCase()}`;
       const score = scores[key];
+      if (!score) {
+        console.log('No score found for', key);
+        return 0;
+      }
       if (score.status === 'cut') {
         score.score = highestScore.score;
       }

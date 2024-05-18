@@ -5,6 +5,7 @@ import { ScoreboardRow } from './components/ScoreboardRow';
 import { UpdatedTime } from './components/UpdatedTime';
 
 async function getData() {
+  // const res = await fetch('http://localhost:3000/leaderboard/api', {
   const res = await fetch('https://james-spillmann.com/leaderboard/api', {
     headers: {
       'Content-Type': 'application/json',
@@ -29,7 +30,7 @@ async function scoreBoard() {
   if (!data?.results?.leaderboard) {
     return <div className="pt-20">No data available</div>;
   }
-  const updated = data.results.tournament.live_details?.updated;
+  const updated = data.live_details?.updated;
   const scores = getScores(data);
   const scoreboard_data = assignScoresToTeams(scoreboard_config, scores);
 
