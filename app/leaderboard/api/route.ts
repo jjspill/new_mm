@@ -7,7 +7,7 @@ export async function GET() {
       headers: {
         'Content-Type': 'application/json',
       },
-      next: { revalidate: 60 },
+      next: { revalidate: 30 },
     },
   );
   const data = transformData(await res.json());
