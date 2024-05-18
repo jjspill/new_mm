@@ -1,0 +1,642 @@
+{
+  "teams": [
+    {
+      "team_name": "Will Friedman",
+      "players": [
+        {
+          "first_name": "Scottie",
+          "last_name": "Scheffler"
+        },
+        {
+          "first_name": "Xander",
+          "last_name": "Schauffele"
+        },
+        {
+          "first_name": "Patrick",
+          "last_name": "Cantlay"
+        },
+        {
+          "first_name": "Sahith",
+          "last_name": "Theegala"
+        },
+        {
+          "first_name": "Akshay",
+          "last_name": "Bhatia"
+        },
+        {
+          "first_name": "Alejandro",
+          "last_name": "Tosti"
+        }
+      ]
+    },
+    {
+      "team_name": "Jack Friedman",
+      "players": [
+        {
+          "first_name": "Scottie",
+          "last_name": "Scheffler"
+        },
+        {
+          "first_name": "Xander",
+          "last_name": "Schauffele"
+        },
+        {
+          "first_name": "Justin",
+          "last_name": "Thomas"
+        },
+        {
+          "first_name": "Jason",
+          "last_name": "Day"
+        },
+        {
+          "first_name": "Billy",
+          "last_name": "Horschel"
+        },
+        {
+          "first_name": "Robert",
+          "last_name": "MacIntyre"
+        }
+      ]
+    },
+    {
+      "team_name": "Spilly",
+      "players": [
+        {
+          "first_name": "Scottie",
+          "last_name": "Scheffler"
+        },
+        {
+          "first_name": "Xander",
+          "last_name": "Schauffele"
+        },
+        {
+          "first_name": "Tyrrell",
+          "last_name": "Hatton"
+        },
+        {
+          "first_name": "Jason",
+          "last_name": "Day"
+        },
+        {
+          "first_name": "Sahith",
+          "last_name": "Theegala"
+        },
+        {
+          "first_name": "Brendon",
+          "last_name": "Todd"
+        }
+      ]
+    },
+    {
+      "team_name": "Drew Schif",
+      "players": [
+        {
+          "first_name": "Scottie",
+          "last_name": "Scheffler"
+        },
+        {
+          "first_name": "Collin",
+          "last_name": "Morikawa"
+        },
+        {
+          "first_name": "Will",
+          "last_name": "Zalatoris"
+        },
+        {
+          "first_name": "Sahith",
+          "last_name": "Theegala"
+        },
+        {
+          "first_name": "Rasmus",
+          "last_name": "Højgaard"
+        },
+        {
+          "first_name": "Sebastian",
+          "last_name": "Soderberg"
+        }
+      ]
+    },
+    {
+      "team_name": "Jimmy Ward",
+      "players": [
+        {
+          "first_name": "Scottie",
+          "last_name": "Scheffler"
+        },
+        {
+          "first_name": "Collin",
+          "last_name": "Morikawa"
+        },
+        {
+          "first_name": "Cameron",
+          "last_name": "Young"
+        },
+        {
+          "first_name": "Min Woo",
+          "last_name": "Lee"
+        },
+        {
+          "first_name": "Akshay",
+          "last_name": "Bhatia"
+        },
+        {
+          "first_name": "Francesco",
+          "last_name": "Molinari"
+        }
+      ]
+    },
+    {
+      "team_name": "JD",
+      "players": [
+        {
+          "first_name": "Brooks",
+          "last_name": "Koepka"
+        },
+        {
+          "first_name": "Ludvig",
+          "last_name": "Åberg"
+        },
+        {
+          "first_name": "Justin",
+          "last_name": "Thomas"
+        },
+        {
+          "first_name": "Jason",
+          "last_name": "Day"
+        },
+        {
+          "first_name": "Tom",
+          "last_name": "Kim"
+        },
+        {
+          "first_name": "Maverick",
+          "last_name": "McNealy"
+        }
+      ]
+    },
+    {
+      "team_name": "Warks",
+      "players": [
+        {
+          "first_name": "Rory",
+          "last_name": "McIlroy"
+        },
+        {
+          "first_name": "Brooks",
+          "last_name": "Koepka"
+        },
+        {
+          "first_name": "Cameron",
+          "last_name": "Young"
+        },
+        {
+          "first_name": "Sahith",
+          "last_name": "Theegala"
+        },
+        {
+          "first_name": "Rasmus",
+          "last_name": "Højgaard"
+        },
+        {
+          "first_name": "Preston",
+          "last_name": "Cole"
+        }
+      ]
+    },
+    {
+      "team_name": "Nolan",
+      "players": [
+        {
+          "first_name": "Scottie",
+          "last_name": "Scheffler"
+        },
+        {
+          "first_name": "Rory",
+          "last_name": "McIlroy"
+        },
+        {
+          "first_name": "Jason",
+          "last_name": "Day"
+        },
+        {
+          "first_name": "Will",
+          "last_name": "Zalatoris"
+        },
+        {
+          "first_name": "Akshay",
+          "last_name": "Bhatia"
+        },
+        {
+          "first_name": "Gary",
+          "last_name": "Woodland"
+        }
+      ]
+    },
+    {
+      "team_name": "AJ",
+      "players": [
+        {
+          "first_name": "Jon",
+          "last_name": "Rahm"
+        },
+        {
+          "first_name": "Bryson",
+          "last_name": "DeChambeau"
+        },
+        {
+          "first_name": "Will",
+          "last_name": "Zalatoris"
+        },
+        {
+          "first_name": "Justin",
+          "last_name": "Thomas"
+        },
+        {
+          "first_name": "Jake",
+          "last_name": "Knapp"
+        },
+        {
+          "first_name": "Maverick",
+          "last_name": "McNealy"
+        }
+      ]
+    },
+    {
+      "team_name": "Adam Robinson",
+      "players": [
+        {
+          "first_name": "Rory",
+          "last_name": "McIlroy"
+        },
+        {
+          "first_name": "Scottie",
+          "last_name": "Scheffler"
+        },
+        {
+          "first_name": "Cameron",
+          "last_name": "Young"
+        },
+        {
+          "first_name": "Justin",
+          "last_name": "Thomas"
+        },
+        {
+          "first_name": "Patrick",
+          "last_name": "Reed"
+        },
+        {
+          "first_name": "Andrew",
+          "last_name": "Putnam"
+        }
+      ]
+    },
+    {
+      "team_name": "Otto",
+      "players": [
+        {
+          "first_name": "Scottie",
+          "last_name": "Scheffler"
+        },
+        {
+          "first_name": "Rory",
+          "last_name": "McIlroy"
+        },
+        {
+          "first_name": "Cameron",
+          "last_name": "Young"
+        },
+        {
+          "first_name": "Will",
+          "last_name": "Zalatoris"
+        },
+        {
+          "first_name": "Denny",
+          "last_name": "McCarthy"
+        },
+        {
+          "first_name": "Austin",
+          "last_name": "Eckroat"
+        }
+      ]
+    },
+    {
+      "team_name": "Chase",
+      "players": [
+        {
+          "first_name": "Scottie",
+          "last_name": "Scheffler"
+        },
+        {
+          "first_name": "Rory",
+          "last_name": "McIlroy"
+        },
+        {
+          "first_name": "Patrick",
+          "last_name": "Cantlay"
+        },
+        {
+          "first_name": "Cameron",
+          "last_name": "Young"
+        },
+        {
+          "first_name": "Tom",
+          "last_name": "Kim"
+        },
+        {
+          "first_name": "Robert",
+          "last_name": "MacIntyre"
+        }
+      ]
+    },
+    {
+      "team_name": "Sam Costa",
+      "players": [
+        {
+          "first_name": "Scottie",
+          "last_name": "Scheffler"
+        },
+        {
+          "first_name": "Viktor",
+          "last_name": "Hovland"
+        },
+        {
+          "first_name": "Justin",
+          "last_name": "Thomas"
+        },
+        {
+          "first_name": "Will",
+          "last_name": "Zalatoris"
+        },
+        {
+          "first_name": "Patrick",
+          "last_name": "Reed"
+        },
+        {
+          "first_name": "Victor",
+          "last_name": "Perez"
+        }
+      ]
+    },
+    {
+      "team_name": "George Perkins’s Dad",
+      "players": [
+        {
+          "first_name": "Scottie",
+          "last_name": "Scheffler"
+        },
+        {
+          "first_name": "Max",
+          "last_name": "Homa"
+        },
+        {
+          "first_name": "Tony",
+          "last_name": "Finau"
+        },
+        {
+          "first_name": "Jordan",
+          "last_name": "Spieth"
+        },
+        {
+          "first_name": "Keegan",
+          "last_name": "Bradley"
+        },
+        {
+          "first_name": "Phil",
+          "last_name": "Mickelson"
+        }
+      ]
+    },
+    {
+      "team_name": "George Perkins",
+      "players": [
+        {
+          "first_name": "Scottie",
+          "last_name": "Scheffler"
+        },
+        {
+          "first_name": "Jon",
+          "last_name": "Rahm"
+        },
+        {
+          "first_name": "Byeong Hun",
+          "last_name": "An"
+        },
+        {
+          "first_name": "Corey",
+          "last_name": "Conners"
+        },
+        {
+          "first_name": "Alex",
+          "last_name": "Noren"
+        },
+        {
+          "first_name": "Sebastian",
+          "last_name": "Soderberg"
+        }
+      ]
+    },
+    {
+      "team_name": "Webb",
+      "players": [
+        {
+          "first_name": "Bryson",
+          "last_name": "DeChambeau"
+        },
+        {
+          "first_name": "Brooks",
+          "last_name": "Koepka"
+        },
+        {
+          "first_name": "Matt",
+          "last_name": "Fitzpatrick"
+        },
+        {
+          "first_name": "Dustin",
+          "last_name": "Johnson"
+        },
+        {
+          "first_name": "Patrick",
+          "last_name": "Reed"
+        },
+        {
+          "first_name": "Sami",
+          "last_name": "Valimaki"
+        }
+      ]
+    },
+    {
+      "team_name": "Kolb",
+      "players": [
+        {
+          "first_name": "Scottie",
+          "last_name": "Scheffler"
+        },
+        {
+          "first_name": "Max",
+          "last_name": "Homa"
+        },
+        {
+          "first_name": "Patrick",
+          "last_name": "Cantlay"
+        },
+        {
+          "first_name": "Cameron",
+          "last_name": "Young"
+        },
+        {
+          "first_name": "Akshay",
+          "last_name": "Bhatia"
+        },
+        {
+          "first_name": "Rasmus",
+          "last_name": "Højgaard"
+        }
+      ]
+    },
+    {
+      "team_name": "Craig",
+      "players": [
+        {
+          "first_name": "Ludvig",
+          "last_name": "Åberg"
+        },
+        {
+          "first_name": "Bryson",
+          "last_name": "DeChambeau"
+        },
+        {
+          "first_name": "Patrick",
+          "last_name": "Cantlay"
+        },
+        {
+          "first_name": "Byeong Hun",
+          "last_name": "An"
+        },
+        {
+          "first_name": "Stephan",
+          "last_name": "Jaeger"
+        },
+        {
+          "first_name": "David",
+          "last_name": "Puig"
+        }
+      ]
+    },
+    {
+      "team_name": "Weiss",
+      "players": [
+        {
+          "first_name": "Rory",
+          "last_name": "McIlroy"
+        },
+        {
+          "first_name": "Max",
+          "last_name": "Homa"
+        },
+        {
+          "first_name": "Cameron",
+          "last_name": "Young"
+        },
+        {
+          "first_name": "Min Woo",
+          "last_name": "Lee"
+        },
+        {
+          "first_name": "Brian",
+          "last_name": "Harman"
+        },
+        {
+          "first_name": "Luke",
+          "last_name": "List"
+        }
+      ]
+    },
+    {
+      "team_name": "Jack Russell",
+      "players": [
+        {
+          "first_name": "Scottie",
+          "last_name": "Scheffler"
+        },
+        {
+          "first_name": "Jon",
+          "last_name": "Rahm"
+        },
+        {
+          "first_name": "Patrick",
+          "last_name": "Cantlay"
+        },
+        {
+          "first_name": "Matt",
+          "last_name": "Fitzpatrick"
+        },
+        {
+          "first_name": "Rasmus",
+          "last_name": "Højgaard"
+        },
+        {
+          "first_name": "Nick",
+          "last_name": "Dunlap"
+        }
+      ]
+    },
+    {
+      "team_name": "Ben Wilson",
+      "players": [
+        {
+          "first_name": "Scottie",
+          "last_name": "Scheffler"
+        },
+        {
+          "first_name": "Ludvig",
+          "last_name": "Åberg"
+        },
+        {
+          "first_name": "Jason",
+          "last_name": "Day"
+        },
+        {
+          "first_name": "Si Woo",
+          "last_name": "Kim"
+        },
+        {
+          "first_name": "Jake",
+          "last_name": "Knapp"
+        },
+        {
+          "first_name": "Luke",
+          "last_name": "List"
+        }
+      ]
+    },
+    {
+      "team_name": "Fanning",
+      "players": [
+        {
+          "first_name": "Rory",
+          "last_name": "McIlroy"
+        },
+        {
+          "first_name": "Jon",
+          "last_name": "Rahm"
+        },
+        {
+          "first_name": "Jordan",
+          "last_name": "Spieth"
+        },
+        {
+          "first_name": "Patrick",
+          "last_name": "Cantlay"
+        },
+        {
+          "first_name": "Keith",
+          "last_name": "Mitchell"
+        },
+        {
+          "first_name": "Emiliano",
+          "last_name": "Grillo"
+        }
+      ]
+    }
+  ]
+}
