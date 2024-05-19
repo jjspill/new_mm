@@ -1,13 +1,18 @@
-
 [
     {
-        "title": "Social Sphere",
-        "description": "A social media analytics tool that aggregates data across platforms to provide insights into user engagement and content performance.",
+        "title": "TruBlu",
+        "description": "Revolutionize your college tour experience with TruBlu, a platform that matches students with personalized tour guides based on interests and goals.",
         "link": "https://example.com/social-sphere",
-        "long_text": "Lorem ipsum dolor sit amet, sea illud apeirian efficiantur te, eos an velit vivendum voluptatibus, ex vim agam facilis consetetur. Nisl legimus adipisci id vix, ea impetus ceteros his. Ex quod sapientem per, mei nusquam suscipit forensibus te. Ut unum case euripidis mei. Sea ut semper gubergren, ei affert neglegentur eos.\n\nPorro invenire explicari pri an. Vis et brute sonet dissentiet. Putant singulis suavitate te mea. Et per vitae nostrum. Eam ut agam atqui maluisset, omnes dicant suscipit vis at. Ne mei mutat labore ornatus. \n\nDoming recteque concludaturque per ut, ne quo falli novum hendrerit. Ei exerci detraxit ocurreret nam, qui ne laoreet qualisque, accusam eleifend te sit. Eam falli primis euripidis cu, per cu quot senserit petentium, ex altera essent diceret qui. Ex laudem libris vim, at vide summo choro mel, ad purto illum suscipit ius. Constituam adversarium eos ea.",
-        "technologies": ["Python", "Django", "React", "Redux", "PostgreSQL", "AWS"]
-        
-
+        "long_text": "TruBlu is a groundbreaking web-based application that revolutionizes the traditional college campus tour into a transformative and insightful journey. Tailored specifically for prospective students, TruBlu offers a unique matching system that pairs individuals with tour guides based on shared interests, academic focuses, and extracurricular activities. This one-on-one approach ensures that each tour is personalized and deeply informative, providing a real sense of what life at the campus is like.",
+        "technologies": [
+            "Flask",
+            "SQLite",
+            "Python",
+            "HTML",
+            "CSS",
+            "hashlib",
+            "uuid"
+        ]
     },
     {
         "title": "EcoTrack",
@@ -60,7 +65,7 @@
     {
         "title": "Travel Trekker",
         "description": "A travel planning app that helps users discover and organize their next adventure with customized itineraries and recommendations.",
-        "link": "https://example.com/travel-trekker", 
+        "link": "https://example.com/travel-trekker",
         "long_text": "Lorem ipsum dolor sit amet, sea illud apeirian efficiantur te, eos an velit vivendum voluptatibus, ex vim agam facilis consetetur. Nisl legimus adipisci id vix, ea impetus ceteros his. Ex quod sapientem per, mei nusquam suscipit forensibus te. Ut unum case euripidis mei. Sea ut semper gubergren, ei affert neglegentur eos. \n\n Porro invenire explicari pri an. Vis et brute sonet dissentiet. Putant singulis suavitate te mea. Et per vitae nostrum. Eam ut agam atqui maluisset, omnes dicant suscipit vis at. Ne mei mutat labore ornatus. \n\nDoming recteque concludaturque per ut, ne quo falli novum hendrerit. Ei exerci detraxit ocurreret nam, qui ne laoreet qualisque, accusam eleifend te sit. Eam falli primis euripidis cu, per cu quot senserit petentium, ex altera essent diceret qui. Ex laudem libris vim, at vide summo choro mel, ad purto illum suscipit ius. Constituam adversarium eos ea."
     }
 ]
