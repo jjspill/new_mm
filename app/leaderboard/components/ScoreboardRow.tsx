@@ -14,6 +14,8 @@ export const ScoreboardRow: React.FC<ScoreboardRowData> = ({
     setShowPlayers(!showPlayers);
   };
 
+  const sortedPlayers = players?.sort((a, b) => a.score - b.score);
+
   return (
     <div className="flex flex-col justify-between py-4 m-2 px-2 rounded-2xl bg-gray-200">
       <div className="flex justify-between items-center">
@@ -45,8 +47,15 @@ export const ScoreboardRow: React.FC<ScoreboardRowData> = ({
       </div>
       {showPlayers && players && (
         <div className="mt-4">
-          {players.map((player, index) => (
-            <div key={index} className="mt-2 p-2 bg-white rounded shadow">
+          {sortedPlayers?.map((player, index) => (
+            <div
+              key={index}
+              className={`mt-2 p-2 rounded shadow ${
+                index === sortedPlayers.length - 1
+                  ? 'bg-red-100'
+                  : 'bg-green-100'
+              }`}
+            >
               <p>
                 {player.first_name} {player.last_name}
               </p>
