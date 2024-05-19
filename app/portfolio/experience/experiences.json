@@ -2,70 +2,43 @@
     {
         "title": "TruBlu",
         "description": "Revolutionize your college tour experience with TruBlu, a platform that matches students with personalized tour guides based on interests and goals.",
-        "link": "https://example.com/social-sphere",
         "long_text": "TruBlu is a groundbreaking web-based application that revolutionizes the traditional college campus tour into a transformative and insightful journey. Tailored specifically for prospective students, TruBlu offers a unique matching system that pairs individuals with tour guides based on shared interests, academic focuses, and extracurricular activities. This one-on-one approach ensures that each tour is personalized and deeply informative, providing a real sense of what life at the campus is like.",
+        "key_features": [
+            [
+                "User Authentication",
+                "Utilizes Python's Hashlib and UUID for secure password hashing and user authentication, ensuring a safe user experience with secure sign-up and login processes."
+            ],
+            [
+                "Profile Customization",
+                "Allows users to create detailed profiles using Flask's render_template for dynamic content delivery, enhancing the matching process with tour guides."
+            ],
+            [
+                "Advanced Search Functionality",
+                "Employs Flask to manage HTTP requests and responses efficiently. This enables users to search for guides based on various criteria, making it easy to find the perfect match."
+            ],
+            [
+                "Intelligent Recommendation Engine",
+                "Utilizes user preferences to suggest the most suitable guides, ensuring relevant and meaningful connections. This feature is enhanced by the backend technologies (Flask and SQLite), which handle data management and logic processing."
+            ],
+            [
+                "Session Management",
+                "Uses Flask sessions to maintain user states across the web application, ensuring a seamless user experience."
+            ],
+            [
+                "Front-End Development",
+                "Developed using HTML and CSS, it provides a clean and user-friendly interface. Flask's render_template supports this, helping to return HTML files dynamically based on user interactions."
+            ]
+        ],
+        "youtube_video": "https://www.youtube.com/embed/U9dl5rsrCug?si=5VxHEO0HmcPqHNEF",
         "technologies": [
             "Flask",
             "SQLite",
             "Python",
             "HTML",
             "CSS",
-            "hashlib",
-            "uuid"
-        ]
-    },
-    {
-        "title": "EcoTrack",
-        "description": "An app that tracks your carbon footprint based on daily activities and purchases, offering suggestions to reduce and offset your impact.",
-        "link": "https://example.com/ecotrack",
-        "long_text": "Lorem ipsum dolor sit amet, sea illud apeirian efficiantur te, eos an velit vivendum voluptatibus, ex vim agam facilis consetetur. Nisl legimus adipisci id vix, ea impetus ceteros his. Ex quod sapientem per, mei nusquam suscipit forensibus te. Ut unum case euripidis mei. Sea ut semper gubergren, ei affert neglegentur eos.\n\nPorro invenire explicari pri an. Vis et brute sonet dissentiet. Putant singulis suavitate te mea. Et per vitae nostrum. Eam ut agam atqui maluisset, omnes dicant suscipit vis at. Ne mei mutat labore ornatus. \n\nDoming recteque concludaturque per ut, ne quo falli novum hendrerit. Ei exerci detraxit ocurreret nam, qui ne laoreet qualisque, accusam eleifend te sit. Eam falli primis euripidis cu, per cu quot senserit petentium, ex altera essent diceret qui. Ex laudem libris vim, at vide summo choro mel, ad purto illum suscipit ius. Constituam adversarium eos ea."
-    },
-    {
-        "title": "Health Companion",
-        "description": "A personal health and fitness app that uses AI to customize workout and nutrition plans based on your goals and progress.",
-        "link": "https://example.com/health-companion",
-        "long_text": "Lorem ipsum dolor sit amet, sea illud apeirian efficiantur te, eos an velit vivendum voluptatibus, ex vim agam facilis consetetur. Nisl legimus adipisci id vix, ea impetus ceteros his. Ex quod sapientem per, mei nusquam suscipit forensibus te. Ut unum case euripidis mei. Sea ut semper gubergren, ei affert neglegentur eos.\n\nPorro invenire explicari pri an. Vis et brute sonet dissentiet. Putant singulis suavitate te mea. Et per vitae nostrum. Eam ut agam atqui maluisset, omnes dicant suscipit vis at. Ne mei mutat labore ornatus. \n\nDoming recteque concludaturque per ut, ne quo falli novum hendrerit. Ei exerci detraxit ocurreret nam, qui ne laoreet qualisque, accusam eleifend te sit. Eam falli primis euripidis cu, per cu quot senserit petentium, ex altera essent diceret qui. Ex laudem libris vim, at vide summo choro mel, ad purto illum suscipit ius. Constituam adversarium eos ea."
-    },
-    {
-        "title": "Budget Buddy",
-        "description": "An intuitive budgeting app that helps users manage their finances, track spending, and save money with smart insights and reminders.",
-        "link": "https://example.com/budget-buddy",
-        "long_text": "Lorem ipsum dolor sit amet, sea illud apeirian efficiantur te, eos an velit vivendum voluptatibus, ex vim agam facilis consetetur. Nisl legimus adipisci id vix, ea impetus ceteros his. Ex quod sapientem per, mei nusquam suscipit forensibus te. Ut unum case euripidis mei. Sea ut semper gubergren, ei affert neglegentur eos.\n\nPorro invenire explicari pri an. Vis et brute sonet dissentiet. Putant singulis suavitate te mea. Et per vitae nostrum. Eam ut agam atqui maluisset, omnes dicant suscipit vis at. Ne mei mutat labore ornatus. \n\nDoming recteque concludaturque per ut, ne quo falli novum hendrerit. Ei exerci detraxit ocurreret nam, qui ne laoreet qualisque, accusam eleifend te sit. Eam falli primis euripidis cu, per cu quot senserit petentium, ex altera essent diceret qui. Ex laudem libris vim, at vide summo choro mel, ad purto illum suscipit ius. Constituam adversarium eos ea."
-    },
-    {
-        "title": "Artificial Tutor",
-        "description": "An AI-driven tutoring platform that offers personalized learning experiences for students in various subjects.",
-        "link": "https://example.com/artificial-tutor",
-        "long_text": "Lorem ipsum dolor sit amet, sea illud apeirian efficiantur te, eos an velit vivendum voluptatibus, ex vim agam facilis consetetur. Nisl legimus adipisci id vix, ea impetus ceteros his. Ex quod sapientem per, mei nusquam suscipit forensibus te. Ut unum case euripidis mei. Sea ut semper gubergren, ei affert neglegentur eos.\n\nPorro invenire explicari pri an. Vis et brute sonet dissentiet. Putant singulis suavitate te mea. Et per vitae nostrum. Eam ut agam atqui maluisset, omnes dicant suscipit vis at. Ne mei mutat labore ornatus. \n\nDoming recteque concludaturque per ut, ne quo falli novum hendrerit. Ei exerci detraxit ocurreret nam, qui ne laoreet qualisque, accusam eleifend te sit. Eam falli primis euripidis cu, per cu quot senserit petentium, ex altera essent diceret qui. Ex laudem libris vim, at vide summo choro mel, ad purto illum suscipit ius. Constituam adversarium eos ea."
-    },
-    {
-        "title": "Safe Streets",
-        "description": "A community-driven app that allows users to report and view local safety incidents in real-time, promoting safer neighborhoods.",
-        "link": "https://example.com/safe-streets",
-        "long_text": "Lorem ipsum dolor sit amet, sea illud apeirian efficiantur te, eos an velit vivendum voluptatibus, ex vim agam facilis consetetur. Nisl legimus adipisci id vix, ea impetus ceteros his. Ex quod sapientem per, mei nusquam suscipit forensibus te. Ut unum case euripidis mei. Sea ut semper gubergren, ei affert neglegentur eos.\n\nPorro invenire explicari pri an. Vis et brute sonet dissentiet. Putant singulis suavitate te mea. Et per vitae nostrum. Eam ut agam atqui maluisset, omnes dicant suscipit vis at. Ne mei mutat labore ornatus. \n\nDoming recteque concludaturque per ut, ne quo falli novum hendrerit. Ei exerci detraxit ocurreret nam, qui ne laoreet qualisque, accusam eleifend te sit. Eam falli primis euripidis cu, per cu quot senserit petentium, ex altera essent diceret qui. Ex laudem libris vim, at vide summo choro mel, ad purto illum suscipit ius. Constituam adversarium eos ea."
-    },
-    {
-        "title": "Freelance Finder",
-        "description": "A platform connecting freelancers with projects that match their skills and preferences, streamlining the search and hiring process.",
-        "link": "https://example.com/freelance-finder",
-        "long_text": "Lorem ipsum dolor sit amet, sea illud apeirian efficiantur te, eos an velit vivendum voluptatibus, ex vim agam facilis consetetur. Nisl legimus adipisci id vix, ea impetus ceteros his. Ex quod sapientem per, mei nusquam suscipit forensibus te. Ut unum case euripidis mei. Sea ut semper gubergren, ei affert neglegentur eos.\n\nPorro invenire explicari pri an. Vis et brute sonet dissentiet. Putant singulis suavitate te mea. Et per vitae nostrum. Eam ut agam atqui maluisset, omnes dicant suscipit vis at. Ne mei mutat labore ornatus. \n\nDoming recteque concludaturque per ut, ne quo falli novum hendrerit. Ei exerci detraxit ocurreret nam, qui ne laoreet qualisque, accusam eleifend te sit. Eam falli primis euripidis cu, per cu quot senserit petentium, ex altera essent diceret qui. Ex laudem libris vim, at vide summo choro mel, ad purto illum suscipit ius. Constituam adversarium eos ea."
-    },
-    {
-        "title": "Mindful Moments",
-        "description": "A mindfulness and meditation app designed to help users reduce stress, improve focus, and find peace throughout their day.",
-        "link": "https://example.com/mindful-moments",
-        "long_text": "Lorem ipsum dolor sit amet, sea illud apeirian efficiantur te, eos an velit vivendum voluptatibus, ex vim agam facilis consetetur. Nisl legimus adipisci id vix, ea impetus ceteros his. Ex quod sapientem per, mei nusquam suscipit forensibus te. Ut unum case euripidis mei. Sea ut semper gubergren, ei affert neglegentur eos.\n\nPorro invenire explicari pri an. Vis et brute sonet dissentiet. Putant singulis suavitate te mea. Et per vitae nostrum. Eam ut agam atqui maluisset, omnes dicant suscipit vis at. Ne mei mutat labore ornatus. \n\nDoming recteque concludaturque per ut, ne quo falli novum hendrerit. Ei exerci detraxit ocurreret nam, qui ne laoreet qualisque, accusam eleifend te sit. Eam falli primis euripidis cu, per cu quot senserit petentium, ex altera essent diceret qui. Ex laudem libris vim, at vide summo choro mel, ad purto illum suscipit ius. Constituam adversarium eos ea."
-    },
-    {
-        "title": "Code Camp",
-        "description": "An interactive coding platform for beginners to learn programming through hands-on projects and challenges.",
-        "link": "https://example.com/code-camp",
-        "long_text": "Lorem ipsum dolor sit amet, sea illud apeirian efficiantur te, eos an velit vivendum voluptatibus, ex vim agam facilis consetetur. Nisl legimus adipisci id vix, ea impetus ceteros his. Ex quod sapientem per, mei nusquam suscipit forensibus te. Ut unum case euripidis mei. Sea ut semper gubergren, ei affert neglegentur eos.\n\nPorro invenire explicari pri an. Vis et brute sonet dissentiet. Putant singulis suavitate te mea. Et per vitae nostrum. Eam ut agam atqui maluisset, omnes dicant suscipit vis at. Ne mei mutat labore ornatus. \n\nDoming recteque concludaturque per ut, ne quo falli novum hendrerit. Ei exerci detraxit ocurreret nam, qui ne laoreet qualisque, accusam eleifend te sit. Eam falli primis euripidis cu, per cu quot senserit petentium, ex altera essent diceret qui. Ex laudem libris vim, at vide summo choro mel, ad purto illum suscipit ius. Constituam adversarium eos ea."
-    },
-    {
-        "title": "Travel Trekker",
-        "description": "A travel planning app that helps users discover and organize their next adventure with customized itineraries and recommendations.",
-        "link": "https://example.com/travel-trekker",
-        "long_text": "Lorem ipsum dolor sit amet, sea illud apeirian efficiantur te, eos an velit vivendum voluptatibus, ex vim agam facilis consetetur. Nisl legimus adipisci id vix, ea impetus ceteros his. Ex quod sapientem per, mei nusquam suscipit forensibus te. Ut unum case euripidis mei. Sea ut semper gubergren, ei affert neglegentur eos. \n\n Porro invenire explicari pri an. Vis et brute sonet dissentiet. Putant singulis suavitate te mea. Et per vitae nostrum. Eam ut agam atqui maluisset, omnes dicant suscipit vis at. Ne mei mutat labore ornatus. \n\nDoming recteque concludaturque per ut, ne quo falli novum hendrerit. Ei exerci detraxit ocurreret nam, qui ne laoreet qualisque, accusam eleifend te sit. Eam falli primis euripidis cu, per cu quot senserit petentium, ex altera essent diceret qui. Ex laudem libris vim, at vide summo choro mel, ad purto illum suscipit ius. Constituam adversarium eos ea."
+            "Hashlib",
+            "UUID"
+        ],
+        "link": "https://github.com/jjspill/truBlu/"
     }
 ]
