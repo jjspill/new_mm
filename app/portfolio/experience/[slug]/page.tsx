@@ -37,14 +37,17 @@ export default function ExperiencePage({
           {experience.youtube_video && (
             <div className="flex justify-center items-center">
               <EmbeddedYouTube
-                className="w-[80%] border-8 border-gray-200"
+                className="w-[80%] rounded-xl border-8 border-gray-200"
                 url={experience.youtube_video}
               />
             </div>
           )}
 
           {experience.key_features && (
-            <KeyFeatures keyFeatures={experience.key_features} />
+            <KeyFeatures
+              keyFeatures={experience.key_features}
+              company={experience?.company}
+            />
           )}
 
           {experience.technologies && (
@@ -52,7 +55,7 @@ export default function ExperiencePage({
               {experience.technologies.map((technology) => (
                 <div
                   key={technology}
-                  className="bg-gray-200 px-4 py-2 m-2 rounded-full"
+                  className="bg-gray-200 px-4 py-2 m-2 rounded-full text-center text-gray-800"
                 >
                   {technology}
                 </div>

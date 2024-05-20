@@ -3,16 +3,23 @@ import React from 'react';
 // Define the component props
 interface FeaturesProps {
   keyFeatures: string[][];
+  company?: string;
 }
 
 // The component
-const KeyFeatures: React.FC<FeaturesProps> = ({ keyFeatures }) => {
+const KeyFeatures: React.FC<FeaturesProps> = ({ keyFeatures, company }) => {
   return (
     <div className="px-4 pt-8">
       <div className="flex justify-center">
-        <h2 className="text-3xl text-gray-800 font-semibold pb-5">
-          Key Features
-        </h2>
+        {company ? (
+          <h2 className="text-3xl text-gray-800 font-semibold pb-5">
+            Contributions
+          </h2>
+        ) : (
+          <h2 className="text-3xl text-gray-800 font-semibold pb-5">
+            Key Features
+          </h2>
+        )}
       </div>
       {keyFeatures.map((feature, index) => (
         <div

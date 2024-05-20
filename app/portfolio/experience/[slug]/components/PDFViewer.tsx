@@ -9,7 +9,7 @@ const PDFViewer: React.FC<PDFViewerProps> = ({ pdfFiles }) => {
   return (
     <div className="overflow-hidden p-4 pb-8">
       <div className="flex overflow-x-auto">
-        <div className="flex flex-row space-x-4 min-w-full items-start justify-center">
+        <div className="flex flex-row space-x-4 min-w-full items-start justify-start md:justify-center">
           {pdfFiles.map((file, index) => (
             <ClickableDiv key={index} path={file.path}>
               <div
@@ -38,8 +38,8 @@ const PDFViewer: React.FC<PDFViewerProps> = ({ pdfFiles }) => {
                   style={{
                     width: '1em',
                     height: '1em',
-                    bottom: '0.5em', // Adjust as needed for spacing
-                    right: '0.5em', // Adjust as needed for spacing
+                    bottom: '0.5em',
+                    right: '0.5em',
                   }}
                 >
                   <path

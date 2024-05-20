@@ -7,4 +7,5 @@ export interface ExperienceProps {
   technologies?: string[];
   documents?: { title: string; path: string }[];
   link?: string;
+  company?: string;
 }
