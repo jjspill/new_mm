@@ -1,6 +1,9 @@
 import { ExperienceProps } from './../experienceProps';
 import experienceData from './../../experience/experiences.json';
-import Image from "next/image";
+import Image from 'next/image';
+import EmbeddedYouTube from './components/EmbeddedYoutube';
+import KeyFeatures from './components/KeyFeatures';
+import PDFViewer from './components/PDFViewer';
 
 const getExperienceByTitle = (title: string) => {
   return experienceData.find((experience) => experience.title === title);
@@ -31,6 +34,19 @@ export default function ExperiencePage({
             </p>
           </div>
 
+          {experience.youtube_video && (
+            <div className="flex justify-center items-center">
+              <EmbeddedYouTube
+                className="w-[80%] border-8 border-gray-200"
+                url={experience.youtube_video}
+              />
+            </div>
+          )}
+
+          {experience.key_features && (
+            <KeyFeatures keyFeatures={experience.key_features} />
+          )}
+
           {experience.technologies && (
             <div className="flex flex-wrap justify-center items-center p-4">
               {experience.technologies.map((technology) => (
@@ -42,6 +58,10 @@ export default function ExperiencePage({
                 </div>
               ))}
             </div>
+          )}
+
+          {experience.documents && (
+            <PDFViewer pdfFiles={experience.documents} />
           )}
 
           {experience.link && (
@@ -60,9 +80,10 @@ export default function ExperiencePage({
                     width={40}
                     height={40}
                     style={{
-                      maxWidth: "100%",
-                      height: "auto"
-                    }} />
+                      maxWidth: '100%',
+                      height: 'auto',
+                    }}
+                  />
                 </div>
               </a>
             </div>
