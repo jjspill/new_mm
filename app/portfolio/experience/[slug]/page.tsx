@@ -44,7 +44,10 @@ export default function ExperiencePage({
           )}
 
           {experience.key_features && (
-            <KeyFeatures keyFeatures={experience.key_features} />
+            <KeyFeatures
+              keyFeatures={experience.key_features}
+              company={experience?.company}
+            />
           )}
 
           {experience.technologies && (

@@ -38,8 +38,8 @@ const PDFViewer: React.FC<PDFViewerProps> = ({ pdfFiles }) => {
                   style={{
                     width: '1em',
                     height: '1em',
-                    bottom: '0.5em', // Adjust as needed for spacing
-                    right: '0.5em', // Adjust as needed for spacing
+                    bottom: '0.5em',
+                    right: '0.5em',
                   }}
                 >
                   <path
