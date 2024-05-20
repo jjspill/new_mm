@@ -3,6 +3,7 @@ import experienceData from './../../experience/experiences.json';
 import Image from 'next/image';
 import EmbeddedYouTube from './components/EmbeddedYoutube';
 import KeyFeatures from './components/KeyFeatures';
+import PDFViewer from './components/PDFViewer';
 
 const getExperienceByTitle = (title: string) => {
   return experienceData.find((experience) => experience.title === title);
@@ -57,6 +58,10 @@ export default function ExperiencePage({
                 </div>
               ))}
             </div>
+          )}
+
+          {experience.documents && (
+            <PDFViewer pdfFiles={experience.documents} />
           )}
 
           {experience.link && (

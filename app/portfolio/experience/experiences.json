@@ -39,6 +39,28 @@
             "Hashlib",
             "UUID"
         ],
+        "documents": [
+            {
+                "title": "Concept",
+                "path": "/pdf/truBlu/TruBlu-Concept.pdf"
+            },
+            {
+                "title": "User Requirements",
+                "path": "/pdf/truBlu/TruBlu-User-Requirements.pdf"
+            },
+            {
+                "title": "Project Planning",
+                "path": "/pdf/truBlu/TruBlu-Project-Planning.pdf"
+            },
+            {
+                "title": "Lo-Fi Prototype",
+                "path": "/pdf/truBlu/TruBlu-LoFi-Prototype.pdf"
+            },
+            {
+                "title": "Testing and Debugging Report",
+                "path": "/pdf/truBlu/TruBlu-Testing-and-Debugging-Report.pdf"
+            }
+        ],
         "link": "https://github.com/jjspill/truBlu/"
     }
 ]
