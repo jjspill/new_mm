@@ -46,7 +46,7 @@ export function getScores(data: any): Scores {
 export function assignScoresToTeams(config: any, scores: Scores) {
   const highestScore = getHighestActiveScore(scores);
   if (!highestScore) {
-    console.log('No active scores found');
+    console.error('No active scores found');
     return [];
   }
   const teams = config.teams.map((team: any) => {

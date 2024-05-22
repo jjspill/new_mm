@@ -1,6 +1,5 @@
 'use client';
 
-import { usePathname, useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 
 interface Document {
@@ -30,8 +29,6 @@ const ExperienceUploader: React.FC = () => {
 
     setOrigin(tempOrigin);
   }, []);
-
-  console.log(origin);
 
   const handleJsonChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     setJsonData(event.target.value);
@@ -91,8 +88,6 @@ const ExperienceUploader: React.FC = () => {
       };
 
       setIsUploading(true);
-
-      console.log('trying to fetch', `${origin}/admin/api`);
 
       const response = await fetch(`${origin}/admin/api`, {
         method: 'POST',

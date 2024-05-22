@@ -39,6 +39,7 @@
             "Hashlib",
             "UUID"
         ],
+        "link": "https://github.com/jjspill/truBlu/",
         "documents": [
             {
                 "title": "Concept",
@@ -60,8 +61,7 @@
                 "title": "Testing and Debugging Report",
                 "path": "/pdf/truBlu/TruBlu-Testing-and-Debugging-Report.pdf"
             }
-        ],
-        "link": "https://github.com/jjspill/truBlu/"
+        ]
     },
     {
         "title": "Economy Simulator",
