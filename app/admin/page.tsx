@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 interface Document {
   title: string;
@@ -20,6 +20,15 @@ const ExperienceUploader: React.FC = () => {
   const [isUploading, setIsUploading] = useState<boolean>(false);
   const [secretCode, setSecretCode] = useState<string>('');
   const expectedSecretCode = '0000';
+  const [origin, setOrigin] = useState<string>('');
+  useEffect(() => {
+    const tempOrigin =
+      typeof window !== 'undefined' && window.location.origin
+        ? window.location.origin
+        : '';
+
+    setOrigin(tempOrigin);
+  }, []);
 
   const handleJsonChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     setJsonData(event.target.value);
@@ -66,10 +75,10 @@ const ExperienceUploader: React.FC = () => {
       alert('Incorrect secret code.');
       return;
     }
-    if (!documents.length) {
-      alert('Please convert files to Base64 before submitting.');
-      return;
-    }
+    // if (!documents.length) {
+    //   alert('Please convert files to Base64 before submitting.');
+    //   return;
+    // }
 
     try {
       const additionalData = JSON.parse(jsonData);
@@ -79,7 +88,8 @@ const ExperienceUploader: React.FC = () => {
       };
 
       setIsUploading(true);
-      const response = await fetch('https://james-spillmann.com/admin/api', {
+
+      const response = await fetch(`${origin}/admin/api`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

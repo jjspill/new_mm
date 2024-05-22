@@ -1,17 +1,17 @@
 import { NextResponse } from 'next/server';
+import espn_data from '../temp_espn_data.json';
 
 export async function GET() {
-  const res = await fetch(
-    'https://site.api.espn.com/apis/site/v2/sports/golf/pga/scoreboard',
-    {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      next: { revalidate: 30 },
-    },
-  );
-  const data = transformData(await res.json());
-  // console.log(data.events[0].competitions[0].competitors[0]);
+  // const res = await fetch(
+  //   'https://site.api.espn.com/apis/site/v2/sports/golf/pga/scoreboard',
+  //   {
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //     },
+  //     next: { revalidate: 30 },
+  //   },
+  // );
+  const data = transformData(espn_data);
 
   if (!data?.results?.leaderboard) {
     console.error('No data available');
