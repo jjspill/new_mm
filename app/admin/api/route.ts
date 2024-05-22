@@ -1,3 +1,5 @@
+import { NextRequest, NextResponse } from 'next/server';
+
 export async function POST(request: Request) {
   const body = await request.json();
 
@@ -26,11 +28,14 @@ export async function POST(request: Request) {
   });
 }
 
-export async function OPTIONS(request: Request) {
-  return new Response(null, {
+export async function OPTIONS(request: NextRequest) {
+  const origin = request.headers.get('origin');
+
+  return new NextResponse(null, {
+    status: 204,
     headers: {
-      'Access-Control-Allow-Origin': '*',
-      'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+      'Access-Control-Allow-Origin': origin || '*',
+      'Access-Control-Allow-Methods': 'GET,OPTIONS,PATCH,DELETE,POST,PUT',
       'Access-Control-Allow-Headers': 'Content-Type, Authorization',
     },
   });
