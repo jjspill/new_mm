@@ -1,6 +1,7 @@
 'use client';
 
-import React, { useState } from 'react';
+import { usePathname, useRouter } from 'next/navigation';
+import React, { useEffect, useState } from 'react';
 
 interface Document {
   title: string;
@@ -20,6 +21,17 @@ const ExperienceUploader: React.FC = () => {
   const [isUploading, setIsUploading] = useState<boolean>(false);
   const [secretCode, setSecretCode] = useState<string>('');
   const expectedSecretCode = '0000';
+  const [origin, setOrigin] = useState<string>('');
+  useEffect(() => {
+    const tempOrigin =
+      typeof window !== 'undefined' && window.location.origin
+        ? window.location.origin
+        : '';
+
+    setOrigin(tempOrigin);
+  }, []);
+
+  console.log(origin);
 
   const handleJsonChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     setJsonData(event.target.value);
@@ -79,7 +91,10 @@ const ExperienceUploader: React.FC = () => {
       };
 
       setIsUploading(true);
-      const response = await fetch('https://james-spillmann.com/admin/api', {
+
+      console.log('trying to fetch', `${origin}/admin/api`);
+
+      const response = await fetch(`${origin}/admin/api`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
