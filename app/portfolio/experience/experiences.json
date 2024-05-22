@@ -95,6 +95,7 @@
             "Matplotlib",
             "NumPy"
         ],
+        "link": "https://github.com/jjspill/EconomySimulator",
         "documents": [
             {
                 "title": "Report",
@@ -108,8 +109,7 @@
                 "title": "Visual Analysis",
                 "path": "/pdf/economySimulator/Visual-Analysis.pdf"
             }
-        ],
-        "link": "https://github.com/jjspill/EconomySimulator"
+        ]
     },
     {
         "title": "ClothingCrawler",
