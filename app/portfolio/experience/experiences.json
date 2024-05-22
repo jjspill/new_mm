@@ -218,8 +218,7 @@
             "XML Pull Parser",
             "Tailwind CSS",
             "Hono"
-        ],
-        "company": "SPACInsider"
+        ]
     },
     {
         "title": "Intel",
@@ -248,8 +247,7 @@
             "NVMe",
             "CI/CD Pipeline",
             "FAST (Firmware Automation System Test)"
-        ],
-        "company": "Intel"
+        ]
     },
     {
         "title": "Solidigm",
@@ -277,7 +275,6 @@
             "NVMe",
             "CI/CD Pipeline",
             "FAST (Firmware Automation System Test)"
-        ],
-        "company": "Solidigm"
+        ]
     }
 ]

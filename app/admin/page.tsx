@@ -75,10 +75,10 @@ const ExperienceUploader: React.FC = () => {
       alert('Incorrect secret code.');
       return;
     }
-    if (!documents.length) {
-      alert('Please convert files to Base64 before submitting.');
-      return;
-    }
+    // if (!documents.length) {
+    //   alert('Please convert files to Base64 before submitting.');
+    //   return;
+    // }
 
     try {
       const additionalData = JSON.parse(jsonData);

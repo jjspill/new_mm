@@ -5,11 +5,13 @@ import { NextRequest, NextResponse } from 'next/server';
 export async function POST(request: Request) {
   console.log('Received POST request');
   const body = await request.json();
+  const documentData = body.documents;
+  body.documents = [];
 
   let res = null;
+  const api_url = getAPIUrl();
 
   try {
-    const api_url = getAPIUrl();
     // res = await fetch('https://preview.api.james-spillmann.com/experiences', {
     res = await fetch(`${api_url}/experiences`, {
       method: 'POST',
@@ -22,6 +24,40 @@ export async function POST(request: Request) {
     console.error('Failed to upload experience:', error);
     return new Response(
       JSON.stringify({ message: 'Failed to upload experience', error }),
+    );
+  }
+
+  try {
+    for (const document of documentData) {
+      console.log('Uploading document:', document.title);
+
+      const newDocument = {
+        title: document.title,
+        path: document.path,
+      };
+
+      console.log(newDocument.title);
+
+      console.log(`${api_url}/experiences/${body.title}`);
+
+      const documentRes = await fetch(`${api_url}/experiences/${body.title}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(newDocument),
+      });
+
+      const documentResult = await documentRes.json();
+      console.log('Document result:', documentResult);
+    }
+  } catch (error) {
+    console.error('Failed to upload experience:', error);
+    return new Response(
+      JSON.stringify({
+        message: 'Failed to upload experience documents',
+        error,
+      }),
     );
   }
 
