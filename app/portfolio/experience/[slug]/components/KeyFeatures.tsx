@@ -2,7 +2,10 @@ import React from 'react';
 
 // Define the component props
 interface FeaturesProps {
-  keyFeatures: string[][];
+  keyFeatures: {
+    feature: string;
+    description: string;
+  }[];
   company?: string;
 }
 
@@ -26,8 +29,10 @@ const KeyFeatures: React.FC<FeaturesProps> = ({ keyFeatures, company }) => {
           key={index}
           className="mb-4 border-l-4 border-gray-400 bg-gray-200 p-5 rounded-lg"
         >
-          <h3 className="text-gray-800 text-lg font-semibold">{feature[0]}</h3>{' '}
-          <p className="text-gray-600 mt-2">{feature[1]}</p>
+          <h3 className="text-gray-800 text-lg font-semibold">
+            {feature.feature}
+          </h3>
+          <p className="text-gray-600 mt-2">{feature.description}</p>
         </div>
       ))}
     </div>

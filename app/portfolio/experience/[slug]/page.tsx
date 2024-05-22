@@ -1,20 +1,15 @@
-import { ExperienceProps } from './../experienceProps';
-import experienceData from './../../experience/experiences.json';
+import {
+  ExperienceProps,
+  getAllExperiences,
+  getExperience,
+} from '../experienceHelpers';
 import Image from 'next/image';
 import EmbeddedYouTube from './components/EmbeddedYoutube';
 import KeyFeatures from './components/KeyFeatures';
 import PDFViewer from './components/PDFViewer';
 
-const getExperienceByTitle = (title: string) => {
-  return experienceData.find((experience) => experience.title === title);
-};
-
-export default function ExperiencePage({
-  params,
-}: {
-  params: { slug: string };
-}) {
-  const experience = getExperienceByTitle(decodeURIComponent(params.slug));
+export default async function ExperiencePage({ params }: { params: any }) {
+  const experience = await getExperience(params.slug);
   return (
     <div className="flex justify-center items-center pt-20 px-4 pb-4 ">
       {experience && (
@@ -44,10 +39,7 @@ export default function ExperiencePage({
           )}
 
           {experience.key_features && (
-            <KeyFeatures
-              keyFeatures={experience.key_features}
-              company={experience?.company}
-            />
+            <KeyFeatures keyFeatures={experience.key_features} />
           )}
 
           {experience.technologies && (
@@ -98,9 +90,9 @@ export default function ExperiencePage({
 }
 
 export async function generateStaticParams() {
-  const paths = experienceData;
+  const experiences = await getAllExperiences();
 
-  return paths.map((experience: ExperienceProps) => ({
-    experience: experience,
+  return experiences.map((experience: ExperienceProps) => ({
+    slug: experience.title,
   }));
 }
