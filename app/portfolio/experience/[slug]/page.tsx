@@ -39,10 +39,7 @@ export default async function ExperiencePage({ params }: { params: any }) {
           )}
 
           {experience.key_features && (
-            <KeyFeatures
-              keyFeatures={experience.key_features}
-              company={experience?.company}
-            />
+            <KeyFeatures keyFeatures={experience.key_features} />
           )}
 
           {experience.technologies && (

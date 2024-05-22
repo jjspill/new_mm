@@ -22,7 +22,7 @@ export async function getAllExperiences(): Promise<ExperienceProps[]> {
       headers: {
         'Content-Type': 'application/json',
       },
-      next: { revalidate: 300 },
+      next: { revalidate: 0 },
     },
   );
 
