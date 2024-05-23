@@ -268,6 +268,17 @@ export const Experiences: React.FC<{ experiences: ExperienceProps[] }> = ({
     undefined,
   );
 
+  const [sortedExperiences, setSortedExperiences] = useState<ExperienceProps[]>(
+    [],
+  );
+
+  useEffect(() => {
+    const sorted = experiences.sort((a, b) => a.priority - b.priority);
+    setSortedExperiences(sorted);
+  }, [experiences]);
+
+  console.log(sortedExperiences);
+
   useEffect(() => {
     // Ensure window object is available before attempting to access its properties
     if (typeof window !== 'undefined') {
@@ -309,7 +320,7 @@ export const Experiences: React.FC<{ experiences: ExperienceProps[] }> = ({
 
       <div className=" flex flex-col md:hidden pt-20 items-center">
         <div className="flex flex-col flex-grow px-4 py-2 mx-4 mb-4 lg:mx-80 bg-white shadow-lg rounded-2xl">
-          {experiences?.map((experience, index) => (
+          {sortedExperiences?.map((experience, index) => (
             <RecPageItem key={index} {...experience} />
           ))}
         </div>
@@ -319,7 +330,7 @@ export const Experiences: React.FC<{ experiences: ExperienceProps[] }> = ({
         <div className="flex justify-center items-center">
           <div className="flex flex-col px-4 pt-20 ">
             <div className="bg-white overflow-hidden shadow-lg rounded-2xl w-full max-w-4xl px-4 py-2 mx-4 mb-4 lg:mx-80">
-              {experiences.map((experience, index) => (
+              {sortedExperiences.map((experience, index) => (
                 <RecPageItemAnimation key={index} {...experience} />
               ))}
             </div>
