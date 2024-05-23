@@ -147,6 +147,7 @@ const Experience: React.FC<
   }
 
   useEffect(() => {
+    // Randomize scale duration
     const scaleDuration = Math.floor(Math.random() * (4000 - 1000 + 1)) + 1000;
     let startTime: number | null = null;
 
@@ -165,15 +166,16 @@ const Experience: React.FC<
     requestAnimationFrame(animateScale);
 
     const handleMouseMove = (event: MouseEvent) => {
-      const x = event.clientX;
-      const y = event.clientY;
-      const middleX = window.innerWidth / 2;
-      const middleY = window.innerHeight / 2;
-      const offsetX = ((x - middleX) / middleX) * 45;
-      const offsetY = ((y - middleY) / middleY) * 45;
+      if (elementRef.current) {
+        const rect = elementRef.current.getBoundingClientRect();
+        const centerX = rect.left + rect.width / 2;
+        const centerY = rect.top + rect.height / 2;
+        const offsetX = ((event.clientX - centerX) / window.innerWidth) * 60;
+        const offsetY = ((event.clientY - centerY) / window.innerHeight) * 60;
 
-      setRotateX(offsetX);
-      setRotateY(-1 * offsetY);
+        setRotateX(offsetX);
+        setRotateY(-1 * offsetY);
+      }
     };
 
     window.addEventListener('mousemove', handleMouseMove);
