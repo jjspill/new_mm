@@ -4,22 +4,18 @@ import {
   getAllExperiences,
 } from './portfolio/experience/experienceHelpers';
 
-interface SitemapParams {
-  titles: string[];
-}
-
-export default function sitemap({
-  params,
-}: {
-  params: SitemapParams;
-}): MetadataRoute.Sitemap {
+async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const domain = `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`;
 
-  const experiencePages = params.titles.map((param: any) => ({
-    url: `${domain}/portfolio/experience/${param.slug}`,
+  const experiences = await getAllExperiences();
+  const experienceTitles = experiences.map(
+    (experience: ExperienceProps) => experience.title,
+  );
+  const experiencePages = experienceTitles.map((title: string) => ({
+    url: `${domain}/portfolio/experience/${title}`,
     lastModified: new Date(),
     changeFrequency: 'monthly' as any,
-    priority: 0.8,
+    priority: 1,
   }));
 
   const staticPages = [
@@ -33,7 +29,7 @@ export default function sitemap({
       url: `${domain}/about`,
       lastModified: new Date(),
       changeFrequency: 'weekly',
-      priority: 0.5,
+      priority: 1,
     },
     {
       url: `${domain}/experience`,
@@ -45,25 +41,17 @@ export default function sitemap({
       url: `${domain}/portfolio/resume`,
       lastModified: new Date(),
       changeFrequency: 'monthly',
-      priority: 0.5,
+      priority: 1,
     },
     {
       url: `${domain}/leaderboard`,
       lastModified: new Date(),
       changeFrequency: 'weekly',
-      priority: 0.5,
+      priority: 1,
     },
   ];
 
   return [...staticPages, ...experiencePages];
 }
 
-export async function generateStaticParams() {
-  const experiences = await getAllExperiences();
-
-  const experienceTitles = experiences.map(
-    (experience: ExperienceProps) => experience.title,
-  );
-
-  return { titles: experienceTitles };
-}
+export default sitemap;
