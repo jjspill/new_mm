@@ -4,17 +4,21 @@ import {
   getAllExperiences,
 } from './portfolio/experience/experienceHelpers';
 
+interface SitemapParams {
+  titles: string[];
+}
+
 export default function sitemap({
   params,
 }: {
-  params: any;
+  params: SitemapParams;
 }): MetadataRoute.Sitemap {
-  const domain = 'https://james-spillmann.com';
+  const domain = `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`;
 
-  const experiencePages = params.map((param: any) => ({
+  const experiencePages = params.titles.map((param: any) => ({
     url: `${domain}/portfolio/experience/${param.slug}`,
     lastModified: new Date(),
-    changeFrequency: 'monthly',
+    changeFrequency: 'monthly' as any,
     priority: 0.8,
   }));
 
@@ -51,13 +55,15 @@ export default function sitemap({
     },
   ];
 
-  return [...experiencePages, ...staticPages];
+  return [...staticPages, ...experiencePages];
 }
 
 export async function generateStaticParams() {
   const experiences = await getAllExperiences();
 
-  return experiences.map((experience: ExperienceProps) => ({
-    slug: experience.title,
-  }));
+  const experienceTitles = experiences.map(
+    (experience: ExperienceProps) => experience.title,
+  );
+
+  return { titles: experienceTitles };
 }
