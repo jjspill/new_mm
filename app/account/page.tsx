@@ -1,9 +1,9 @@
-import React from 'react';
-import { UserProvider } from '../contexts/UserContext';
-import AccountContainer from './AccountContainer';
+import dynamic from 'next/dynamic';
 
-const App: React.FC = () => {
+const AccountContainer = dynamic(() => import('./AccountContainer'), {
+  ssr: false,
+});
+
+export default function Page() {
   return <AccountContainer />;
-};
-
-export default App;
+}

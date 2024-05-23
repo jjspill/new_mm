@@ -15,6 +15,9 @@ export interface Tokens {
 export interface User {
   username: string;
   tokens: Tokens;
+  sub: string;
+  session: string;
+  name?: string;
 }
 
 export interface UserContextType {
@@ -63,11 +66,13 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
 };
 
 export const createUser = (username: string, fetchData: any): User => {
-  console.log('Creating user:', username, fetchData);
   const tokens = {
     accessToken: fetchData?.accessToken,
     refreshToken: fetchData?.refreshToken,
     idToken: fetchData?.idToken,
   };
-  return { username, tokens };
+  const name = fetchData?.name;
+  const sub = fetchData?.sub;
+  const session = fetchData?.session;
+  return { username, tokens, sub, name, session };
 };

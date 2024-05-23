@@ -1,15 +1,24 @@
 'use client';
 
 import Link from 'next/link';
-import { redirect } from 'next/navigation';
 import React, { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { useUser } from '@/app/contexts/UserContext';
 
 function CreateAccountContainer() {
+  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [origin, setOrigin] = useState('');
-  const [failureMesage, setFailureMessage] = useState('');
+  const [failureMessage, setFailureMessage] = useState('');
+  const router = useRouter();
+
+  const user = useUser();
+
+  if (user.user) {
+    router.push('/account');
+  }
 
   React.useEffect(() => {
     setOrigin(typeof window !== 'undefined' ? window.location.origin : '');
@@ -26,9 +35,13 @@ function CreateAccountContainer() {
       email,
       username: email,
       password,
+      attributes: {
+        name,
+      },
     });
 
     try {
+      setFailureMessage('');
       const response = await fetch(`${origin}/login/create-account/api`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -37,12 +50,11 @@ function CreateAccountContainer() {
 
       const data = await response.json();
       if (!data.error) {
-        console.log('Account creation successful:', data);
-        redirect('/account');
+        router.push('/login');
       } else {
-        console.error('Account creation failed:', data.error);
+        console.error('Account creation failed:');
         setFailureMessage(
-          data.details.message || data.error.message || data.error,
+          data?.details?.message || data?.message || 'Account creation failed',
         );
       }
     } catch (error) {
@@ -51,13 +63,27 @@ function CreateAccountContainer() {
   };
 
   return (
-    <div className="flex items-center justify-center h-screen bg-gray-100">
+    <div className="flex items-center justify-center h-[80vh] bg-gray-100">
       <div className="p-6 max-w-sm w-full bg-white rounded shadow-md">
-        {failureMesage && (
-          <div className="text-red-500 text-center">{failureMesage}</div>
+        {failureMessage && (
+          <div className="text-red-500 text-center">{failureMessage}</div>
         )}
         <form onSubmit={handleCreateAccount}>
           <div>
+            <label
+              htmlFor="name"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Name
+            </label>
+            <input
+              type="name"
+              id="name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+              required
+            />
             <label
               htmlFor="email"
               className="block text-sm font-medium text-gray-700"
