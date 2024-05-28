@@ -267,6 +267,14 @@ export const Experiences: React.FC<{ experiences: ExperienceProps[] }> = ({
   const [screenHeight, setScreenHeight] = useState<number | undefined>(
     undefined,
   );
+  const [sortedExperiences, setSortedExperiences] = useState<ExperienceProps[]>(
+    [],
+  );
+
+  useEffect(() => {
+    const sorted = experiences.sort((a, b) => a.priority - b.priority);
+    setSortedExperiences(sorted);
+  }, [experiences]);
 
   useEffect(() => {
     // Ensure window object is available before attempting to access its properties
@@ -319,7 +327,7 @@ export const Experiences: React.FC<{ experiences: ExperienceProps[] }> = ({
         <div className="flex justify-center items-center">
           <div className="flex flex-col px-4 pt-20 ">
             <div className="bg-white overflow-hidden shadow-lg rounded-2xl w-full max-w-4xl px-4 py-2 mx-4 mb-4 lg:mx-80">
-              {experiences.map((experience, index) => (
+              {sortedExperiences.map((experience, index) => (
                 <RecPageItemAnimation key={index} {...experience} />
               ))}
             </div>
@@ -329,7 +337,7 @@ export const Experiences: React.FC<{ experiences: ExperienceProps[] }> = ({
 
       <div className="hidden md:flex justify-center items-center max-h-screen overflow-hidden">
         {isClient &&
-          experiences.map((experience, index) => {
+          sortedExperiences.map((experience, index) => {
             return (
               <div
                 key={index}

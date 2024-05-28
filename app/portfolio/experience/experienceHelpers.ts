@@ -15,6 +15,7 @@ export interface ExperienceProps {
     path: string;
   }[];
   link: string;
+  priority: number;
 }
 
 const apiURL = getAPIUrl();
