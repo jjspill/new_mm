@@ -1,11 +1,34 @@
-import React, { Suspense } from 'react';
+import React from 'react';
 import ClickableDiv from './ClickableDivComponent';
+import { ExperienceProps } from '../../experienceHelpers';
+import { getAPIUrl } from '../../../../../config/config';
 
 interface PDFViewerProps {
-  pdfFiles: { title: string; path: string }[];
+  experienceTitle: string;
 }
 
-const PDFViewer: React.FC<PDFViewerProps> = ({ pdfFiles }) => {
+async function getExperiencePDFs(
+  slug: string,
+): Promise<{ title: string; path: string }[]> {
+  const apiURL = getAPIUrl();
+  const res = await fetch(`${apiURL}/experiences/${slug}`, {
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    next: { revalidate: 0 },
+  });
+
+  const experienceData = await res.json();
+
+  if (!experienceData?.data) {
+    console.error('Unable to fetch data from the APIII.');
+  }
+
+  return experienceData?.data.documents;
+}
+
+export async function PDFViewer({ experienceTitle }: PDFViewerProps) {
+  const pdfFiles = await getExperiencePDFs(experienceTitle);
   return (
     <div className="overflow-hidden p-4 pb-8">
       <div className="flex overflow-x-auto">
@@ -60,6 +83,6 @@ const PDFViewer: React.FC<PDFViewerProps> = ({ pdfFiles }) => {
       </div>
     </div>
   );
-};
+}
 
 export default PDFViewer;

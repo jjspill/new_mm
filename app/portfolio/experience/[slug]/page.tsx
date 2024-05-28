@@ -56,7 +56,7 @@ export default async function ExperiencePage({ params }: { params: any }) {
           )}
 
           {experience.documents && (
-            <PDFViewer pdfFiles={experience.documents} />
+            <PDFViewer experienceTitle={experience.title} />
           )}
 
           {experience.link && (
