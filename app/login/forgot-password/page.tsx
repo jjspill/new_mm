@@ -86,7 +86,7 @@ const ForgotPasswordContainer: React.FC = () => {
 
   return (
     <PageContainer>
-      <div className="flex items-center justify-center h-[80vh] bg-gray-100">
+      <div className="flex items-center justify-center h-fit md:h-[80vh] bg-gray-100">
         <div className="p-6 max-w-sm w-full bg-white rounded shadow-md">
           {error && <div className="text-red-500 text-center">{error}</div>}
           {message && (
