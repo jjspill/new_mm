@@ -12,20 +12,18 @@ export default function portfolio() {
   return (
     <div className="flex justify-center items-start pt-20 px-4">
       <div className="bg-white shadow-lg rounded-2xl overflow-hidden w-full max-w-4xl mb-4 h-fit">
-        <div className="relative h-[40vh] md:h-[55vh] w-full">
+        <div className="relative h-[40vh] w-full">
           <div className="relative h-full w-full overflow-hidden">
             <Image
-              alt="James Spillmann Graduation"
+              alt="James Spillmann Graduation Photo"
               src={grad_stadium_smallest}
               sizes="100vw"
-              // style={{
-              //   width: '100%',
-              //   height: 'auto%',
-              // }}
-              // style={{
-              //   objectFit: 'cover',
-              //   // objectPosition: 'center',
-              // }}
+              style={{
+                objectFit: 'cover',
+                objectPosition: 'center',
+              }}
+              fill
+              priority
             />
           </div>
         </div>
