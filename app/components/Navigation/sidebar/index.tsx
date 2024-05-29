@@ -14,7 +14,7 @@ const Sidebar = ({
   console.log('clicked', clicked);
   return (
     <div
-      className={`fixed w-full h-full overflow-hidden justify-center grid pt-[120px] left-0 z-10 ${
+      className={`fixed w-full h-full overflow-hidden justify-center grid pt-[120px] left-0 z-10 md:hidden ${
         isOpen
           ? styles.splashAnimation
           : clicked
