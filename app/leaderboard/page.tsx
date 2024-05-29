@@ -35,7 +35,7 @@ async function scoreBoard() {
   const scoreboard_data = assignScoresToTeams(scoreboard_config, scores);
 
   return (
-    <div className="flex justify-center pt-20 pb-4">
+    <div className="flex justify-center pt-20 pb-4 px-4">
       <div className="bg-white shadow-lg rounded-2xl overflow-hidden w-full max-w-4xl">
         <div className="text-center rounded-t-2xl py-4">
           <h1 className="text-2xl font-semibold">Leaderboard</h1>

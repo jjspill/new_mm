@@ -6,14 +6,16 @@ import Sidebar from './sidebar';
 const Navigation = () => {
   // toggle sidebar
   const [isOpen, setIsOpen] = useState(false);
+  const [clicked, setClicked] = useState(false);
   const toggle = () => {
     setIsOpen(!isOpen);
+    setClicked(true);
   };
 
   return (
     <>
-      <Sidebar isOpen={isOpen} toggle={toggle} />
-      <Navbar isOpen={isOpen} toggle={toggle} />
+      <Sidebar isOpen={isOpen} clicked={clicked} toggle={toggle} />
+      <Navbar isOpen={isOpen} clicked={clicked} toggle={toggle} />
     </>
   );
 };

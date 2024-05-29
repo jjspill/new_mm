@@ -15,7 +15,6 @@ export const metadata: Metadata = {
   },
   description:
     'James Spillmann is a software engineer based in New York, specializing in building modern, responsive websites and applications using Next.js, React, and cutting-edge web technologies.',
-  viewport: 'width=device-width, initial-scale=1.0',
   robots: {
     index: true,
     follow: true,
@@ -25,7 +24,6 @@ export const metadata: Metadata = {
       follow: true,
     },
   },
-  themeColor: '#FFFFFF',
   openGraph: {
     title: 'James Spillmann - Software Engineer and Developer',
     type: 'website',
@@ -43,11 +41,13 @@ export const metadata: Metadata = {
   alternates: {
     canonical: 'https://www.jamesspillmann.com',
   },
+  metadataBase: new URL('https://www.jamesspillmann.com'),
 };
 
 export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
+  themeColor: '#FFFFFF',
 };
 
 export default function RootLayout({

@@ -5,9 +5,11 @@ import styles from './navbar.module.css';
 const Navbar = ({
   toggle,
   isOpen,
+  clicked,
 }: {
   toggle: () => void;
   isOpen: boolean;
+  clicked: boolean;
 }) => {
   return (
     <>
@@ -21,7 +23,7 @@ const Navbar = ({
               type="button"
               title="Toggle Menu"
               className={`inline-flex items-center md:hidden mr-2 ${
-                isOpen ? styles.rotateOpen : styles.rotateClose
+                isOpen ? styles.rotateOpen : clicked ? styles.rotateClose : ''
               }`}
               onClick={toggle}
             >
