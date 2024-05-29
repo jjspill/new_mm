@@ -55,8 +55,9 @@ function LoginContainer() {
       });
 
       const data = await response.json();
+      console.log('data', data);
 
-      if (response.ok && !data.error) {
+      if (response.ok && !data.error && data.accessToken) {
         if (data.message === 'New password required') {
           setUserSession(data.session);
         } else {
@@ -64,7 +65,7 @@ function LoginContainer() {
           setUser(userTemp);
         }
       } else {
-        console.error('Login failed:', data.error);
+        console.error('Login failed:', data?.error);
         setFailureMessage(
           data?.details?.message ||
             data?.error?.message ||
