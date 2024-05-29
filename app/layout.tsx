@@ -10,10 +10,39 @@ const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
   title: {
-    template: ' %s | James Spillmann',
-    default: 'James Spillmann',
+    template: '%s | James Spillmann',
+    default: 'James Spillmann - Software Engineer and Developer',
   },
-  description: 'James Spillmann Website and so much more',
+  description:
+    'James Spillmann is a software engineer based in New York, specializing in building modern, responsive websites and applications using Next.js, React, and cutting-edge web technologies.',
+  viewport: 'width=device-width, initial-scale=1.0',
+  robots: {
+    index: true,
+    follow: true,
+    nocache: true,
+    googleBot: {
+      index: true,
+      follow: true,
+    },
+  },
+  themeColor: '#FFFFFF',
+  openGraph: {
+    title: 'James Spillmann - Software Engineer and Developer',
+    type: 'website',
+    locale: 'en_US',
+    url: 'https://www.jamesspillmann.com',
+    siteName: 'James Spillmann',
+    description:
+      'Discover the professional world of James Spillmann, a New York-based software engineer specializing in Next.js and React.',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    description:
+      'Explore the projects and skills of James Spillmann, software engineer specialized in Next.js and React technologies.',
+  },
+  alternates: {
+    canonical: 'https://www.jamesspillmann.com',
+  },
 };
 
 export const viewport: Viewport = {
