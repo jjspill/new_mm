@@ -92,7 +92,11 @@ export default async function ExperiencePage({ params }: { params: any }) {
 export async function generateStaticParams() {
   const experiences = await getAllExperiences();
 
-  return experiences.map((experience: ExperienceProps) => ({
+  if (!experiences) {
+    return [];
+  }
+
+  return experiences?.map((experience: ExperienceProps) => ({
     slug: experience.title,
   }));
 }

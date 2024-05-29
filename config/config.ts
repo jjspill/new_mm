@@ -1,5 +1,5 @@
 export function getAPIUrl() {
-  const stage = process.env.STAGE || 'dev';
+  const stage = process.env.NEXT_PUBLIC_VERCEL_ENV || 'development';
 
   if (stage === 'development') {
     return 'http://localhost:3001';

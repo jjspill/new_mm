@@ -8,10 +8,10 @@ async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const domain = `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`;
 
   const experiences = await getAllExperiences();
-  const experienceTitles = experiences.map(
+  const experienceTitles = experiences?.map(
     (experience: ExperienceProps) => experience.title,
   );
-  const experiencePages = experienceTitles.map((title: string) => ({
+  const experiencePages = experienceTitles?.map((title: string) => ({
     url: `${domain}/portfolio/experience/${title}`,
     lastModified: new Date(),
     changeFrequency: 'monthly' as any,
@@ -51,7 +51,7 @@ async function sitemap(): Promise<MetadataRoute.Sitemap> {
     },
   ];
 
-  return [...staticPages, ...experiencePages];
+  return [...staticPages, ...(experiencePages ? experiencePages : [])];
 }
 
 export default sitemap;

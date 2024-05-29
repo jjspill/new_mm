@@ -14,6 +14,7 @@ async function getExperiencePDFs(
   const res = await fetch(`${apiURL}/experiences/${slug}`, {
     headers: {
       'Content-Type': 'application/json',
+      Authorization: `Bearer ${process.env.AUTH_TOKEN}`,
     },
     next: { revalidate: 0 },
   });
