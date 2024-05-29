@@ -31,7 +31,7 @@
 .splashAnimation {
     position: relative;
     overflow: hidden;
-    animation: splashEffect 0.5s ease-out forwards;
+    animation: splashEffect 0.3s ease-out forwards;
 }
 
 .splashAnimation::before {
@@ -52,11 +52,11 @@
 }
 
 .hideSplashAnimation {
-    animation: hideSplashEffect 0.5s ease-in forwards;
+    animation: hideSplashEffect 0.3s ease-in forwards;
 }
 
 .hideSplashAnimation::before {
-    animation: reverseGradientFade 0.5s ease-in forwards;
+    /* animation: reverseGradientFade 0.3s ease-in forwards; */
     content: "";
         position: absolute;
         top: 0;
