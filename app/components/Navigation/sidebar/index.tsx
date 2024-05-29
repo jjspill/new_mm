@@ -27,9 +27,11 @@ const Sidebar = ({
         }
       }
     >
-      <div className="absolute top-20 w-full flex- flex-col">
-        <NavItems toggle={toggle} />
-      </div>
+      {clicked && (
+        <div className="absolute top-20 w-full flex- flex-col">
+          <NavItems toggle={toggle} />
+        </div>
+      )}
     </div>
   );
 };
