@@ -4,6 +4,8 @@ import Link from 'next/link';
 import React, { useState } from 'react';
 import { createUser, useUser } from '../contexts/UserContext';
 import { useRouter } from 'next/navigation';
+import { InputField } from '../components/account/InputField';
+import { SubmitButton } from '../components/account/SubmitButton';
 
 function LoginContainer() {
   const [email, setEmail] = useState('');
@@ -82,73 +84,47 @@ function LoginContainer() {
           <div className="text-red-500 text-center">{failureMessage}</div>
         )}
         <form onSubmit={handleLogin}>
-          <div>
-            <label
-              htmlFor="email"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Email
-            </label>
-            <input
-              type="text"
-              id="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-              required
-            />
-          </div>
-          <div className="mt-4">
-            <label
-              htmlFor="password"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Password
-            </label>
-            <input
-              type="password"
-              id="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-              required
-            />
-          </div>
+          <InputField
+            id="email"
+            label="Email"
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required_prop={true}
+          />
+          <InputField
+            id="password"
+            label="Password"
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required_prop={true}
+          />
           {userSession && (
-            <div className="mt-4">
-              <label
-                htmlFor="newPassword"
-                className="block text-sm font-medium text-gray-700"
-              >
-                New Password
-              </label>
-              <input
-                type="password"
-                id="newPassword"
-                value={newPassword}
-                onChange={(e) => setNewPassword(e.target.value)}
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-                required
-              />
-            </div>
+            <InputField
+              id="newPassword"
+              label="New Password"
+              type="password"
+              value={newPassword}
+              onChange={(e) => setNewPassword(e.target.value)}
+              required_prop={true}
+            />
           )}
           <div className="mt-6">
-            <button
+            <SubmitButton
               type="submit"
-              className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-            >
-              {userSession ? 'Set New Password' : 'Log in'}
-            </button>
+              label={userSession ? 'Set New Password' : 'Log in'}
+            />
             <div className="mt-2 text-center">
               <Link href="/login/create-account">
-                <div className="text-sm text-indigo-600 hover:text-indigo-500">
+                <div className="text-sm text-gray-800 hover:text-gray-500">
                   Don&apos;t have an account? Create one
                 </div>
               </Link>
             </div>
             <div className="mt-2 text-center">
               <Link href="/login/forgot-password">
-                <div className="text-sm text-indigo-600 hover:text-indigo-500">
+                <div className="text-sm text-gray-800 hover:text-gray-500">
                   Forgot your password? Reset it
                 </div>
               </Link>

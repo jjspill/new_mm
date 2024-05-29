@@ -5,9 +5,11 @@ import { useRouter } from 'next/navigation';
 import { PageContainer } from '@/app/components/templates/PageContainer';
 import Link from 'next/link';
 import { createUser, useUser } from '@/app/contexts/UserContext';
+import { InputField } from '@/app/components/account/InputField';
+import { SubmitButton } from '@/app/components/account/SubmitButton';
 
 const ForgotPasswordContainer: React.FC = () => {
-  const [username, setUsername] = useState<string>('');
+  const [email, setEmail] = useState<string>('');
   const [newPassword, setNewPassword] = useState<string>('');
   const [confirmNewPassword, setConfirmNewPassword] = useState<string>('');
   const [code, setCode] = useState<string>('');
@@ -35,11 +37,11 @@ const ForgotPasswordContainer: React.FC = () => {
       const response = await fetch(`${origin}/login/forgot-password/api`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username }),
+        body: JSON.stringify({ username: email }),
       });
 
       const data = await response.json();
-      if (response.ok) {
+      if (!data.error) {
         setMessage('Please check your email to reset your password.');
         setError('');
         setShowResetForm(true);
@@ -64,17 +66,17 @@ const ForgotPasswordContainer: React.FC = () => {
       const response = await fetch(`${origin}/login/forgot-password/api`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username, code, newPassword }),
+        body: JSON.stringify({ username: email, code, newPassword }),
       });
 
       const data = await response.json();
       if (response.ok) {
         setMessage('Your password has been reset successfully.');
-        setUser(createUser(username, data));
-
+        setUser(null);
         router.push('/login');
       } else {
         setError(data.error || 'Failed to reset password');
+        setMessage('');
       }
     } catch (error) {
       console.error('Network error:', error);
@@ -92,94 +94,48 @@ const ForgotPasswordContainer: React.FC = () => {
           )}
           {!showResetForm ? (
             <form onSubmit={handleForgotPassword}>
-              <div>
-                <label
-                  htmlFor="username"
-                  className="block text-sm font-medium text-gray-700"
-                >
-                  Email
-                </label>
-                <input
-                  type="text"
-                  id="username"
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
-                  className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-                  required
-                />
-              </div>
-              <div className="mt-6">
-                <button
-                  type="submit"
-                  className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                >
-                  Send Reset Link
-                </button>
-              </div>
+              <InputField
+                id="email"
+                label="Email"
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required_prop={true}
+              />
+              <SubmitButton type="submit" label="Send Reset Link" />
             </form>
           ) : (
             <form onSubmit={handleChangePassword}>
-              <div>
-                <label
-                  htmlFor="code"
-                  className="block text-sm font-medium text-gray-700"
-                >
-                  Verification Code
-                </label>
-                <input
-                  type="text"
-                  id="code"
-                  value={code}
-                  onChange={(e) => setCode(e.target.value)}
-                  className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-                  required
-                />
-              </div>
-              <div className="mt-4">
-                <label
-                  htmlFor="newPassword"
-                  className="block text-sm font-medium text-gray-700"
-                >
-                  New Password
-                </label>
-                <input
-                  type="password"
-                  id="newPassword"
-                  value={newPassword}
-                  onChange={(e) => setNewPassword(e.target.value)}
-                  className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-                  required
-                />
-              </div>
-              <div className="mt-4">
-                <label
-                  htmlFor="confirmNewPassword"
-                  className="block text-sm font-medium text-gray-700"
-                >
-                  Confirm New Password
-                </label>
-                <input
-                  type="password"
-                  id="confirmNewPassword"
-                  value={confirmNewPassword}
-                  onChange={(e) => setConfirmNewPassword(e.target.value)}
-                  className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-                  required
-                />
-              </div>
-              <div className="mt-6">
-                <button
-                  type="submit"
-                  className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                >
-                  Reset Password
-                </button>
-              </div>
+              <InputField
+                id="code"
+                label="Verification Code"
+                type="text"
+                value={code}
+                onChange={(e) => setCode(e.target.value)}
+                required_prop={true}
+              />
+              <InputField
+                id="newPassword"
+                label="New Password"
+                type="password"
+                value={newPassword}
+                onChange={(e) => setNewPassword(e.target.value)}
+                required_prop={true}
+              />
+              <InputField
+                id="confirmNewPassword"
+                label="Confirm New Password"
+                type="password"
+                value={confirmNewPassword}
+                onChange={(e) => setConfirmNewPassword(e.target.value)}
+                required_prop={true}
+              />
+              <SubmitButton type="submit" label="Reset Password" />
             </form>
           )}
           <div className="mt-2 text-center">
             <Link href="/login">
-              <span className="text-sm text-indigo-600 hover:text-indigo-500">
+              <span className="text-sm text-gray-800 hover:text-gray-500">
                 Remembered your password? Log in
               </span>
             </Link>

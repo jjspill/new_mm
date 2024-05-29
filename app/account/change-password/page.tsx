@@ -4,6 +4,8 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useUser } from '@/app/contexts/UserContext';
 import { PageContainer } from '@/app/components/templates/PageContainer';
+import { InputField } from '@/app/components/account/InputField';
+import { SubmitButton } from '@/app/components/account/SubmitButton';
 
 function ChangePasswordContainer() {
   const [username, setUsername] = useState('');
@@ -12,11 +14,19 @@ function ChangePasswordContainer() {
   const [confirmNewPassword, setConfirmNewPassword] = useState('');
   const [failureMessage, setFailureMessage] = useState('');
   const router = useRouter();
+  const [origin, setOrigin] = useState<string>('');
 
   const { user, setUser } = useUser();
-  if (!user) {
-    router.push('/login'); // Redirect to login if user is not authenticated
-  }
+
+  React.useEffect(() => {
+    if (!user) {
+      router.push('/login');
+    }
+  }, [user, router]);
+
+  React.useEffect(() => {
+    setOrigin(typeof window !== 'undefined' ? window.location.origin : '');
+  }, []);
 
   const handleChangePassword = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -34,14 +44,11 @@ function ChangePasswordContainer() {
     });
 
     try {
-      const response = await fetch(
-        `${window.location.origin}/account/change-password/api`,
-        {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: body,
-        },
-      );
+      const response = await fetch(`${origin}/account/change-password/api`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: body,
+      });
 
       const data = await response.json();
       if (!data.error) {
@@ -67,79 +74,39 @@ function ChangePasswordContainer() {
             <div className="text-red-500 text-center">{failureMessage}</div>
           )}
           <form onSubmit={handleChangePassword}>
-            <div>
-              <label
-                htmlFor="email"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Email
-              </label>
-              <input
-                type="email"
-                id="email"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-                required
-              />
-            </div>
-
-            <div>
-              <label
-                htmlFor="currentPassword"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Current Password
-              </label>
-              <input
-                type="password"
-                id="currentPassword"
-                value={previousPassword}
-                onChange={(e) => setPreviousPassword(e.target.value)}
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-                required
-              />
-            </div>
-            <div>
-              <label
-                htmlFor="newPassword"
-                className="block text-sm font-medium text-gray-700"
-              >
-                New Password
-              </label>
-              <input
-                type="password"
-                id="newPassword"
-                value={newPassword}
-                onChange={(e) => setNewPassword(e.target.value)}
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-                required
-              />
-            </div>
-            <div>
-              <label
-                htmlFor="confirmNewPassword"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Confirm New Password
-              </label>
-              <input
-                type="password"
-                id="confirmNewPassword"
-                value={confirmNewPassword}
-                onChange={(e) => setConfirmNewPassword(e.target.value)}
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-                required
-              />
-            </div>
-            <div className="mt-6">
-              <button
-                type="submit"
-                className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-              >
-                Change Password
-              </button>
-            </div>
+            <InputField
+              id="email"
+              label="Email"
+              type="email"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              required_prop={true}
+            />
+            <InputField
+              id="currentPassword"
+              label="Current Password"
+              type="password"
+              value={previousPassword}
+              onChange={(e) => setPreviousPassword(e.target.value)}
+              required_prop={true}
+            />
+            <InputField
+              id="newPassword"
+              label="New Password"
+              type="password"
+              value={newPassword}
+              onChange={(e) => setNewPassword(e.target.value)}
+              required_prop={true}
+            />
+            <InputField
+              id="confirmNewPassword"
+              label="Confirm New Password"
+              type="password"
+              value={confirmNewPassword}
+              onChange={(e) => setConfirmNewPassword(e.target.value)}
+              required_prop={true}
+            />
+            <SubmitButton type="submit" label="Change Password" />
           </form>
         </div>
       </div>

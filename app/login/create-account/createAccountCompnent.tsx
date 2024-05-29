@@ -3,7 +3,9 @@
 import Link from 'next/link';
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { useUser } from '@/app/contexts/UserContext';
+import { createUser, useUser } from '@/app/contexts/UserContext';
+import { InputField } from '@/app/components/account/InputField';
+import { SubmitButton } from '@/app/components/account/SubmitButton';
 
 function CreateAccountContainer() {
   const [name, setName] = useState('');
@@ -14,11 +16,13 @@ function CreateAccountContainer() {
   const [failureMessage, setFailureMessage] = useState('');
   const router = useRouter();
 
-  const user = useUser();
+  const { user, setUser } = useUser();
 
-  if (user.user) {
-    router.push('/account');
-  }
+  React.useEffect(() => {
+    if (user) {
+      router.push('/account');
+    }
+  });
 
   React.useEffect(() => {
     setOrigin(typeof window !== 'undefined' ? window.location.origin : '');
@@ -50,6 +54,7 @@ function CreateAccountContainer() {
 
       const data = await response.json();
       if (!data.error) {
+        setUser(createUser(email, data));
         router.push('/login');
       } else {
         console.error('Account creation failed:');
@@ -69,80 +74,45 @@ function CreateAccountContainer() {
           <div className="text-red-500 text-center">{failureMessage}</div>
         )}
         <form onSubmit={handleCreateAccount}>
-          <div>
-            <label
-              htmlFor="name"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Name
-            </label>
-            <input
-              type="name"
-              id="name"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-              required
-            />
-            <label
-              htmlFor="email"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Email
-            </label>
-            <input
-              type="email"
-              id="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-              required
-            />
-          </div>
-          <div>
-            <label
-              htmlFor="password"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Password
-            </label>
-            <input
-              type="password"
-              id="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-              required
-            />
-          </div>
-          <div>
-            <label
-              htmlFor="confirmPassword"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Confirm Password
-            </label>
-            <input
-              type="password"
-              id="confirmPassword"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-              required
-            />
-          </div>
+          <InputField
+            id="name"
+            label="Name"
+            type="name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            required_prop={true}
+          />
+          <InputField
+            id="email"
+            label="Email"
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required_prop={true}
+          />
+          <InputField
+            id="password"
+            label="Password"
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required_prop={true}
+          />
+          <InputField
+            id="confirmPassword"
+            label="Confirm Password"
+            type="password"
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+            required_prop={true}
+          />
           <div className="mt-6">
-            <button
-              type="submit"
-              className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-            >
-              Create Account
-            </button>
+            <SubmitButton type="submit" label="Create Account" />
           </div>
         </form>
         <div className="mt-2 text-center">
           <Link href="/login">
-            <div className="text-sm text-indigo-600 hover:text-indigo-500">
+            <div className="text-sm text-gray-800 hover:text-gray-500">
               Already have an account? Log in
             </div>
           </Link>

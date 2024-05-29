@@ -1,11 +1,13 @@
+import { useUser } from '@/app/contexts/UserContext';
 import { navData } from '@/utils/parseConfig';
 import Link from 'next/link';
 
 const NavbarItems = (): JSX.Element => {
+  const user = useUser().user;
   return (
     <div className="flex justify-center items-center">
       <div className="absolute top-0 left-4 h-16 flex items-center justify-center">
-        <Link href="/account">
+        <Link href={user ? '/account' : '/login'}>
           <svg
             className="h-8 w-auto text-white"
             data-slot="icon"

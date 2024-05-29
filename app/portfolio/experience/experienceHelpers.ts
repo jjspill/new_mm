@@ -27,6 +27,7 @@ export async function getAllExperiences(): Promise<ExperienceProps[]> {
     {
       headers: {
         'Content-Type': 'application/json',
+        Authorization: `Bearer ${process.env.AUTH_TOKEN}`,
       },
       next: { revalidate: 60 },
     },
@@ -48,6 +49,7 @@ export async function getExperience(slug: string): Promise<ExperienceProps> {
     {
       headers: {
         'Content-Type': 'application/json',
+        Authorization: `Bearer ${process.env.AUTH_TOKEN}`,
       },
       next: { revalidate: 60 },
     },
