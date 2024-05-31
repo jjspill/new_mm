@@ -55,7 +55,6 @@ function LoginContainer() {
       });
 
       const data = await response.json();
-      console.log('data', data);
 
       if (response.ok && !data.error && data.accessToken) {
         if (data.message === 'New password required') {
