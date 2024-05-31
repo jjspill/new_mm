@@ -6,7 +6,7 @@ import {
   Spinner,
   UnknownTrainComponent,
   trainComponentMap,
-} from './SubwayComponents';
+} from './TrainComponents';
 
 interface Location {
   lat: number;
@@ -83,7 +83,7 @@ function sortStations(stations: Station[]): Station[] {
 const LOCATION_EXPIRY_TIME = 5 * 60 * 1000; // 5 minutes in milliseconds
 
 function getSavedLocation() {
-  const saved = localStorage.getItem('userLocation');
+  const saved = localStorage?.getItem('userLocation');
   if (saved) {
     const parsed = JSON.parse(saved);
     const isRecent =
@@ -103,10 +103,12 @@ function saveLocation(location: Location) {
   localStorage.setItem('userLocation', JSON.stringify(data));
 }
 
-const SubwayContainer: React.FC = () => {
+const TrainsContainer: React.FC = () => {
   const [location, setLocation] = useState<Location | null>(null);
   const [nearestStations, setNearestStations] = useState<Station[]>([]);
   const [timer, setTimer] = useState(30);
+  const [fetched, setFetched] = useState(false);
+  const [accessLocation, setAccessLocation] = useState(false);
 
   const findNearestStations = async () => {
     try {
@@ -114,7 +116,7 @@ const SubwayContainer: React.FC = () => {
         lat: location?.lat,
         long: location?.lng,
       });
-      const response = await fetch(`/subway/api`, {
+      const response = await fetch(`/trains/api`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body,
@@ -122,6 +124,7 @@ const SubwayContainer: React.FC = () => {
       const data: ApiResponse = await response.json();
       const stations = data.stops;
       setNearestStations(sortStations(removeMissedTrains(stations)));
+      setFetched(true);
     } catch (error) {
       console.error('Error finding nearest stations: ', error);
     }
@@ -142,6 +145,7 @@ const SubwayContainer: React.FC = () => {
           setLocation(newLocation);
         },
         (error) => {
+          setAccessLocation(true);
           console.error('Error getting location: ', error);
         },
       );
@@ -181,6 +185,11 @@ const SubwayContainer: React.FC = () => {
           transition: 'width 1s linear',
         }}
       />
+      {!location && accessLocation && (
+        <div className="flex justify-center items-center h-64">
+          Location not available. Please enable location services.
+        </div>
+      )}
       <div className="w-full p-4 pb-0">
         {/* {location && (
           <div>
@@ -194,14 +203,18 @@ const SubwayContainer: React.FC = () => {
             <div className="md:grid grid-cols-2 gap-x-4">
               {nearestStations.map((station, index) => (
                 <div key={index} className="mb-4">
-                  <div className="text-center text-xl font-semibold bg-gray-200 p-2 rounded-md">
+                  <div className="flex flex-col text-center text-xl font-semibold bg-gray-200 p-2 rounded-md">
                     {`${station.stopName} – ${station.stopId.endsWith('N') ? 'Northbound' : 'Southbound'}`}
+                    <span className="text-sm font-normal">
+                      {station.distance.toFixed(2)} miles
+                    </span>
                   </div>
                   {station.trains.slice(0, 5).map((train, index) => {
                     const TrainComponent =
                       trainComponentMap[train.routeId] || null;
 
-                    const isLastTrain = index === station.trains.length - 1;
+                    const isLastTrain =
+                      index === station.trains.length - 1 || index === 4;
                     return (
                       <div
                         key={index}
@@ -241,9 +254,15 @@ const SubwayContainer: React.FC = () => {
             </div>
           </div>
         )}
+
+        {nearestStations.length === 0 && fetched && (
+          <div className="flex justify-center items-center h-40 pb-4">
+            No trains nearby? Someones gotta move to New York!
+          </div>
+        )}
       </div>
     </div>
   );
 };
 
-export default SubwayContainer;
+export default TrainsContainer;
