@@ -132,6 +132,14 @@ export const SevenComponent: React.FC = () => (
   </div>
 );
 
+export const UnknownTrainComponent: React.FC<{ routeId: string }> = ({
+  routeId,
+}) => (
+  <div className="bg-slate-400 w-8 h-8 text-white rounded-full shadow-2xl flex justify-center items-center">
+    {routeId}
+  </div>
+);
+
 export const trainComponentMap: { [key: string]: React.FC } = {
   N: NComponent,
   Q: QComponent,

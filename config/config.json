@@ -7,6 +7,10 @@
     {
       "name": "Leaderboard",
       "href": "/leaderboard"
+    },
+    {
+      "name": "Trains",
+      "href": "/subway"
     }
   ]
 }

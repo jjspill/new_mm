@@ -1,13 +1,13 @@
 // pages/index.js
 import React from 'react';
-import LocationPrompt from './LocationPrompt';
 import { PageContainer } from '../components/templates/PageContainer';
+import SubwayContainer from './SubwayContainer';
 
 const Home = () => {
   return (
     <PageContainer>
       <div>
-        <LocationPrompt />
+        <SubwayContainer />
       </div>
     </PageContainer>
   );

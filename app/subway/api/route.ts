@@ -1,7 +1,5 @@
 // pages/api/subway.ts
 import { getAPIUrl } from 'config/config';
-import fs from 'fs';
-const API_KEY = process.env.GOOGLE_MAPS_API_KEY!;
 
 export async function POST(request: Request) {
   try {
@@ -15,7 +13,7 @@ export async function POST(request: Request) {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${process.env.AUTH_TOKEN}`,
       },
-      next: { revalidate: 0 },
+      next: { revalidate: 30 },
       body: JSON.stringify(body),
     });
 
