@@ -2,7 +2,7 @@ import RecPageItem from './components/pageItems/recPageItem';
 import { redirect } from 'next/navigation';
 
 export default async function HomePage() {
-  redirect('/portfolio');
+  redirect('/trains');
 }
 
 // export default function HomePage() {

@@ -10,8 +10,6 @@ const Sidebar = ({
   toggle: () => void;
   clicked: boolean;
 }): JSX.Element => {
-  console.log('isOpen', isOpen);
-  console.log('clicked', clicked);
   return (
     <div
       className={`fixed w-full h-full overflow-hidden justify-center grid pt-[120px] left-0 z-10 md:hidden ${
