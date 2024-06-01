@@ -188,14 +188,12 @@ export const TrainMenuBar: React.FC<
           <select
             value={radius}
             onChange={handleRadiusChange}
-            className="border rounded shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50 cursor-pointer"
+            className="border rounded shadow-sm cursor-pointer"
             title="Select a radius to search for trains within."
           >
+            <option value="0.25">0.25 miles</option>
             <option value="0.5">0.5 miles</option>
             <option value="1">1 mile</option>
-            <option value="1.5">1.5 miles</option>
-            <option value="2">2 miles</option>
-            <option value="5">5 miles</option>
             <option value="Demo">Demo</option>
           </select>
         </div>
@@ -203,7 +201,7 @@ export const TrainMenuBar: React.FC<
       {radius === 'Demo' && (
         <div className="text-sm text-gray-500 mt-2">
           Note: The demo location is set to Grand Central Terminal with a radius
-          of 0.5 miles.
+          of 0.25 miles.
         </div>
       )}
     </div>
