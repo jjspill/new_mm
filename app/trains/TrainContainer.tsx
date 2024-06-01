@@ -90,21 +90,37 @@ const TrainsContainer: React.FC = () => {
   const [fetched, setFetched] = useState(false);
   const [accessLocation, setAccessLocation] = useState(false);
   const [searchRadius, setSearchRadius] = useState<string | number>(0.5);
+  const [refreshCounter, setRefreshCounter] = useState(0);
 
   const refreshData = () => {
     if (location) {
-      findNearestStations();
+      setNearestStations([]);
+      setRefreshCounter(refreshCounter + 1);
     }
+  };
+
+  const updateSearchRadius = (radius: string | number) => {
+    setSearchRadius(radius);
+    setNearestStations([]);
+    setRefreshCounter(refreshCounter + 1);
+  };
+
+  const updateLocation = {
+    resetNearestStations: () => {
+      setNearestStations([]);
+    },
+    locations: (newLocation: Location) => {
+      saveLocation(newLocation);
+      setLocation(newLocation);
+    },
   };
 
   const findNearestStations = async () => {
     try {
-      setFetched(false);
-      setNearestStations([]);
       const body = JSON.stringify({
-        lat: location?.lat,
-        long: location?.lng,
-        distance: searchRadius === 'No limit' ? 3000 : searchRadius,
+        lat: searchRadius === 'Demo' ? '40.7534' : location?.lat,
+        long: searchRadius === 'Demo' ? '-73.977295' : location?.lng,
+        distance: searchRadius === 'Demo' ? 0.5 : searchRadius,
       });
       const response = await fetch(`/trains/api`, {
         method: 'POST',
@@ -145,18 +161,22 @@ const TrainsContainer: React.FC = () => {
   }, []);
 
   useEffect(() => {
+    // This effect runs when `location`, `fetched`, or `searchRadius` changes.
     if (location) {
+      findNearestStations(); // Fetch data immediately when any dependency changes.
+      setTimer(30); // Reset the timer whenever we fetch new data.
+
       const intervalId = setInterval(() => {
         findNearestStations();
-        setTimer(30);
+        setTimer(30); // Reset timer every interval.
       }, 30000);
 
-      findNearestStations();
-      return () => clearInterval(intervalId);
+      return () => clearInterval(intervalId); // Cleanup the interval on effect cleanup.
     }
-  }, [location, searchRadius]);
+  }, [location, refreshCounter]); // Depend on `searchRadius` to trigger new searches.
 
   useEffect(() => {
+    // This effect solely handles the countdown timer.
     const timerId =
       timer > 0 ? setTimeout(() => setTimer(timer - 1), 1000) : undefined;
     return () => clearTimeout(timerId);
@@ -177,12 +197,9 @@ const TrainsContainer: React.FC = () => {
       />
       <TrainMenuBar
         radius={searchRadius}
-        setRadius={setSearchRadius}
+        updateSearchRadius={updateSearchRadius}
         onRefresh={refreshData}
-        onLocationFetch={(newLocation) => {
-          saveLocation(newLocation);
-          setLocation(newLocation);
-        }}
+        onLocationFetch={updateLocation}
         onError={(error) => {
           console.error('Error getting location: ', error);
           setAccessLocation(true);
@@ -201,6 +218,8 @@ const TrainsContainer: React.FC = () => {
             stations={nearestStations}
             trainComponentMap={trainComponentMap}
           />
+        ) : refreshCounter > 0 ? (
+          <StationLoadingPlaceholder />
         ) : (
           <div className="flex justify-center items-center h-40 pb-4">
             No trains nearby? Someone&apos;s gotta move to New York!
