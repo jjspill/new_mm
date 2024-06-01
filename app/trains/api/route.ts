@@ -13,7 +13,7 @@ export async function POST(request: Request) {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${process.env.AUTH_TOKEN}`,
       },
-      next: { revalidate: 30 },
+      // next: { revalidate: 30 },
       body: JSON.stringify(body),
     });
 

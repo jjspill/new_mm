@@ -1,5 +1,210 @@
 import React from 'react';
 
+export interface Location {
+  lat: number;
+  lng: number;
+}
+
+export interface Train {
+  arrivalTime: string;
+  routeId: string;
+  tripId: string;
+  trainOrder: number;
+  stopId: string;
+}
+
+export interface Station {
+  stopName: string;
+  stopId: string;
+  distance: number;
+  trains: Train[];
+}
+
+export interface ApiResponse {
+  message: string;
+  stops: Station[];
+}
+
+export const StationLoadingPlaceholder = () => (
+  <div className="md:grid grid-cols-2 gap-x-4">
+    {Array.from(
+      { length: 6 },
+      (
+        _,
+        index, // Assuming you might show up to 6 stations in the grid
+      ) => (
+        <div
+          key={index}
+          className="mb-4 p-2 border rounded-md shadow bg-gray-200 animate-pulse"
+        >
+          <div className="flex flex-col items-center space-y-2">
+            <div className="w-full bg-gray-300 rounded h-6"></div>{' '}
+            {/* Placeholder for the station name */}
+            <div className="w-2/3 bg-gray-300 rounded h-4"></div>{' '}
+            {/* Placeholder for the distance */}
+            {Array.from({ length: 5 }, (_, index) => (
+              // Mimicking up to 5 trains per station
+              <div
+                key={index}
+                className="w-full flex justify-between items-center"
+              >
+                <div className="bg-gray-300 rounded-full h-8 w-8"></div>{' '}
+                {/* Placeholder for the train icon */}
+                <div className="bg-gray-300 rounded h-4 w-1/4"></div>{' '}
+                {/* Placeholder for the arrival time */}
+              </div>
+            ))}
+          </div>
+        </div>
+      ),
+    )}
+  </div>
+);
+
+interface StationComponentProps {
+  stations: Station[];
+  trainComponentMap: { [key: string]: React.FC };
+}
+
+export const StationsComponent: React.FC<StationComponentProps> = ({
+  stations,
+  trainComponentMap,
+}) => {
+  return (
+    <div className="md:grid grid-cols-2 gap-x-4">
+      {stations.map((station, index) => (
+        <div key={index}>
+          {station.trains.length > 0 && (
+            <div key={index} className="mb-4">
+              <div className="flex flex-col text-center text-xl font-semibold bg-gray-200 p-2 rounded-md">
+                {`${station.stopName} – ${station.stopId.endsWith('N') ? 'Northbound' : 'Southbound'}`}
+                <span className="text-sm font-normal">
+                  {station.distance.toFixed(2)} miles
+                </span>
+              </div>
+              {station.trains.slice(0, 5).map((train, index) => {
+                const TrainComponent = trainComponentMap[train.routeId] || null;
+
+                const isLastTrain =
+                  index === station.trains.length - 1 || index === 4;
+                return (
+                  <div
+                    key={index}
+                    className={`flex justify-between items-center ${!isLastTrain && 'border-b border-gray-300'} py-2`}
+                  >
+                    <div className="flex items-center pl-1">
+                      {TrainComponent && <TrainComponent />}
+                      {!TrainComponent && (
+                        <UnknownTrainComponent routeId={train.routeId} />
+                      )}
+                    </div>
+                    <div className="pr-1">
+                      <span
+                        className={`${
+                          train.arrivalTime === 'arriving'
+                            ? 'bg-red-100 text-red-800'
+                            : train.arrivalTime.includes('minute') &&
+                                parseInt(train.arrivalTime.split(' ')[0], 10) <
+                                  5
+                              ? 'bg-yellow-100 text-yellow-800'
+                              : 'bg-green-100 text-green-800'
+                        } py-1 px-3 rounded-full text-sm`}
+                      >
+                        {train.arrivalTime}
+                      </span>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          )}
+        </div>
+      ))}
+    </div>
+  );
+};
+
+interface LocationButtonProps {
+  onLocationFetch: (location: Location) => void;
+  onError: (error: GeolocationPositionError) => void;
+}
+
+const LocationButton: React.FC<LocationButtonProps> = ({
+  onLocationFetch,
+  onError,
+}) => {
+  const handleFetchLocation = () => {
+    if ('geolocation' in navigator) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const location = {
+            lat: position.coords.latitude,
+            lng: position.coords.longitude,
+          };
+          onLocationFetch(location);
+        },
+        (error) => {
+          onError(error);
+        },
+        { timeout: 10000 }, // Optional: Timeout after 10000 ms
+      );
+    } else {
+      alert('Geolocation is not supported by your browser.');
+    }
+  };
+
+  return (
+    <button
+      type="button"
+      onClick={handleFetchLocation}
+      className="p-2 bg-gray-300 rounded hover:bg-gray-400"
+    >
+      Update Location
+    </button>
+  );
+};
+
+interface TrainMenuBarProps {
+  radius: string | number;
+  setRadius: (radius: string | number) => void;
+  onRefresh: () => void;
+}
+
+export const TrainMenuBar: React.FC<
+  TrainMenuBarProps & LocationButtonProps
+> = ({ radius, setRadius, onLocationFetch, onError, onRefresh }) => {
+  const handleRadiusChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setRadius(event.target.value);
+  };
+
+  return (
+    <div className="flex justify-center w-full pt-2 ">
+      <div className="w-fit flex justify-center items-center bg-gray-200 rounded-md p-2 space-x-4">
+        <LocationButton onLocationFetch={onLocationFetch} onError={onError} />
+        <button
+          type="button"
+          onClick={onRefresh}
+          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+        >
+          Refresh Data
+        </button>
+        <select
+          value={radius}
+          onChange={handleRadiusChange}
+          className="p-2 border rounded shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50"
+          title="Select a radius to search for trains within."
+        >
+          <option value="0.5">0.5 miles</option>
+          <option value="1">1 mile</option>
+          <option value="1.5">1.5 miles</option>
+          <option value="2">2 miles</option>
+          <option value="No limit">No limit</option>
+        </select>
+      </div>
+    </div>
+  );
+};
+
 export const NComponent: React.FC = () => (
   <div className="flex items-center justify-center w-8 h-8 bg-yellow-400 cursor-pointer transition-all rounded-full">
     <div className="text-white text-2xl">N</div>
