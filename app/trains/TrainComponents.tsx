@@ -172,15 +172,15 @@ export const TrainMenuBar: React.FC<
 
   return (
     <div className="flex flex-col items-center w-full pt-2">
-      <div className="w-fit flex justify-center items-center bg-gray-200 rounded-md p-4 space-x-4">
-        <LocationButton onLocationFetch={onLocationFetch} onError={onError} />
-        <button
+      <div className="w-fit flex justify-center items-center bg-gray-200 rounded-md p-2 space-x-4">
+        {/* <LocationButton onLocationFetch={onLocationFetch} onError={onError} /> */}
+        {/* <button
           type="button"
           onClick={onRefresh}
           className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out"
         >
           Refresh Data
-        </button>
+        </button> */}
         <div className="flex items-center space-x-2">
           <span className="text-lg font-semibold text-gray-700">
             Search Radius:
@@ -188,7 +188,7 @@ export const TrainMenuBar: React.FC<
           <select
             value={radius}
             onChange={handleRadiusChange}
-            className="p-2 border rounded shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50 cursor-pointer"
+            className="border rounded shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50 cursor-pointer"
             title="Select a radius to search for trains within."
           >
             <option value="0.5">0.5 miles</option>

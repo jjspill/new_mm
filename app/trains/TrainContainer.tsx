@@ -22,6 +22,7 @@ function removeMissedTrains(stations: Station[]): Station[] {
       const timeDiffInSeconds = (arrivalTimeMillis - currentTimeMillis) / 1000;
 
       if (timeDiffInSeconds <= 0) {
+        console.log('Train missed:', train);
         return false;
       }
 
