@@ -1,6 +1,6 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
 
 /* @media (prefers-color-scheme: dark) {
   :root {
@@ -9,6 +9,10 @@
     --background-end-rgb: 0, 0, 0;
   }
 } */
+
+*:focus:not(:focus-visible) {
+  outline: none;
+}
 
 /* globals.css */
 body {

@@ -12,5 +12,14 @@ const config: Config = {
     },
   },
   plugins: [],
+  variants: {
+    extend: {
+      outline: ['focus-visible'],
+      borderColor: ['focus-visible'],
+      ringWidth: ['focus-visible'],
+      ringColor: ['focus-visible'],
+      ringOpacity: ['focus-visible'],
+    },
+  },
 };
 export default config;

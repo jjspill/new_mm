@@ -188,7 +188,7 @@ export const TrainMenuBar: React.FC<
           <select
             value={radius}
             onChange={handleRadiusChange}
-            className="border rounded shadow-sm cursor-pointer"
+            className="bg-gray-200 rounded focus:outline-none focus-visible:outline-none focus-visible:ring-none focus-visible:ring-none"
             title="Select a radius to search for trains within."
           >
             <option value="0.25">0.25 miles</option>
