@@ -12,18 +12,19 @@ const Sidebar = ({
 }): JSX.Element => {
   return (
     <div
-      className={`fixed w-full h-full overflow-hidden justify-center grid pt-[120px] left-0 z-10 md:hidden ${
+      className={`fixed w-full h-full overflow-hidden justify-center grid left-0 md:hidden ${
         isOpen
           ? styles.splashAnimation
           : clicked
             ? styles.hideSplashAnimation
             : ''
       }`}
-      style={
-        {
-          // top: isOpen ? '0' : '-100%',
-        }
-      }
+      style={{ top: isOpen || clicked ? '0' : '-100%' }}
+      // style={
+      //   {
+      //     // top: isOpen ? '0' : '-100%',
+      //   }
+      // }
     >
       {clicked && (
         <div className="absolute top-20 w-full flex- flex-col">

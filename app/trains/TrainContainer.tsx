@@ -4,34 +4,15 @@
 import React, { useState, useEffect } from 'react';
 import {
   Spinner,
+  Station,
+  TrainMenuBar,
   UnknownTrainComponent,
   trainComponentMap,
+  Location,
+  ApiResponse,
+  StationsComponent,
+  StationLoadingPlaceholder,
 } from './TrainComponents';
-
-interface Location {
-  lat: number;
-  lng: number;
-}
-
-interface Train {
-  arrivalTime: string;
-  routeId: string;
-  tripId: string;
-  trainOrder: number;
-  stopId: string;
-}
-
-interface Station {
-  stopName: string;
-  stopId: string;
-  distance: number;
-  trains: Train[];
-}
-
-interface ApiResponse {
-  message: string;
-  stops: Station[];
-}
 
 function removeMissedTrains(stations: Station[]): Station[] {
   stations.forEach((station) => {
@@ -41,7 +22,6 @@ function removeMissedTrains(stations: Station[]): Station[] {
       const timeDiffInSeconds = (arrivalTimeMillis - currentTimeMillis) / 1000;
 
       if (timeDiffInSeconds <= 0) {
-        // Train has departed
         return false;
       }
 
@@ -109,12 +89,39 @@ const TrainsContainer: React.FC = () => {
   const [timer, setTimer] = useState(30);
   const [fetched, setFetched] = useState(false);
   const [accessLocation, setAccessLocation] = useState(false);
+  const [searchRadius, setSearchRadius] = useState<string | number>(0.25);
+  const [refreshCounter, setRefreshCounter] = useState(0);
+
+  const refreshData = () => {
+    if (location) {
+      setNearestStations([]);
+      setRefreshCounter(refreshCounter + 1);
+    }
+  };
+
+  const updateSearchRadius = (radius: string | number) => {
+    setSearchRadius(radius);
+    setNearestStations([]);
+    setRefreshCounter(refreshCounter + 1);
+  };
+
+  const updateLocation = {
+    resetNearestStations: () => {
+      setNearestStations([]);
+    },
+    locations: (newLocation: Location) => {
+      saveLocation(newLocation);
+      setLocation(newLocation);
+    },
+  };
 
   const findNearestStations = async () => {
     try {
+      setFetched(false);
       const body = JSON.stringify({
-        lat: location?.lat,
-        long: location?.lng,
+        lat: searchRadius === 'Demo' ? '40.7534' : location?.lat,
+        long: searchRadius === 'Demo' ? '-73.977295' : location?.lng,
+        distance: searchRadius === 'Demo' ? 0.25 : searchRadius,
       });
       const response = await fetch(`/trains/api`, {
         method: 'POST',
@@ -156,15 +163,16 @@ const TrainsContainer: React.FC = () => {
 
   useEffect(() => {
     if (location) {
+      findNearestStations();
+
       const intervalId = setInterval(() => {
         findNearestStations();
         setTimer(30);
       }, 30000);
 
-      findNearestStations();
       return () => clearInterval(intervalId);
     }
-  }, [location]);
+  }, [location, refreshCounter]);
 
   useEffect(() => {
     const timerId =
@@ -185,79 +193,35 @@ const TrainsContainer: React.FC = () => {
           transition: 'width 1s linear',
         }}
       />
+      <TrainMenuBar
+        radius={searchRadius}
+        updateSearchRadius={updateSearchRadius}
+        onRefresh={refreshData}
+        onLocationFetch={updateLocation}
+        onError={(error) => {
+          console.error('Error getting location: ', error);
+          setAccessLocation(true);
+        }}
+      />
       {!location && accessLocation && (
         <div className="flex justify-center items-center h-64">
           Location not available. Please enable location services.
         </div>
       )}
       <div className="w-full p-4 pb-0">
-        {/* {location && (
-          <div>
-            <h2 className="text-lg font-bold">Your Location:</h2>
-            <p>Latitude: {location.lat}</p>
-            <p>Longitude: {location.lng}</p>
-          </div>
-        )} */}
-        {nearestStations && (
-          <div>
-            <div className="md:grid grid-cols-2 gap-x-4">
-              {nearestStations.map((station, index) => (
-                <div key={index} className="mb-4">
-                  <div className="flex flex-col text-center text-xl font-semibold bg-gray-200 p-2 rounded-md">
-                    {`${station.stopName} – ${station.stopId.endsWith('N') ? 'Northbound' : 'Southbound'}`}
-                    <span className="text-sm font-normal">
-                      {station.distance.toFixed(2)} miles
-                    </span>
-                  </div>
-                  {station.trains.slice(0, 5).map((train, index) => {
-                    const TrainComponent =
-                      trainComponentMap[train.routeId] || null;
-
-                    const isLastTrain =
-                      index === station.trains.length - 1 || index === 4;
-                    return (
-                      <div
-                        key={index}
-                        className={`flex justify-between items-center ${!isLastTrain && 'border-b border-gray-300'} py-2`}
-                      >
-                        <div className="flex items-center pl-1">
-                          {TrainComponent && <TrainComponent />}
-                          {!TrainComponent && (
-                            <UnknownTrainComponent routeId={train.routeId} />
-                          )}
-                        </div>
-                        <div>
-                          {/* <span className="text-gray-800 text-sm">
-                            {train.tripId}
-                          </span> */}
-                        </div>
-                        <div className="pr-1">
-                          <span
-                            className={`${
-                              train.arrivalTime === 'arriving'
-                                ? 'bg-red-100 text-red-800'
-                                : train.arrivalTime.includes('minute') &&
-                                    parseInt(train.arrivalTime.split(' ')[0]) <
-                                      5
-                                  ? 'bg-yellow-100 text-yellow-800'
-                                  : 'bg-green-100 text-green-800'
-                            } py-1 px-3 rounded-full text-sm`}
-                          >
-                            {train.arrivalTime}
-                          </span>
-                        </div>
-                      </div>
-                    );
-                  })}
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {nearestStations.length === 0 && fetched && (
-          <div className="flex justify-center items-center h-40 pb-4">
-            No trains nearby? Someones gotta move to New York!
+        {!fetched ? (
+          <StationLoadingPlaceholder />
+        ) : nearestStations.length > 0 ? (
+          <StationsComponent
+            stations={nearestStations}
+            trainComponentMap={trainComponentMap}
+          />
+        ) : (
+          // : refreshCounter > 0 ? (
+          //   <StationLoadingPlaceholder />
+          // )
+          <div className="flex justify-center items-center h-40 pb-4 text-center">
+            No trains nearby? Someone&apos;s gotta move to New York!
           </div>
         )}
       </div>
