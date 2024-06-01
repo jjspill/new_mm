@@ -199,9 +199,9 @@ export const TrainMenuBar: React.FC<
         </div>
       </div>
       {radius === 'Demo' && (
-        <div className="text-sm text-gray-500 mt-2">
-          Note: The demo location is set to Grand Central Terminal with a radius
-          of 0.25 miles.
+        <div className="text-sm text-gray-500 mt-2 text-center">
+          The demo location is set to Grand Central Terminal with a radius of
+          0.25 miles.
         </div>
       )}
     </div>

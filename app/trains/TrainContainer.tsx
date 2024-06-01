@@ -220,7 +220,7 @@ const TrainsContainer: React.FC = () => {
           // : refreshCounter > 0 ? (
           //   <StationLoadingPlaceholder />
           // )
-          <div className="flex justify-center items-center h-40 pb-4">
+          <div className="flex justify-center items-center h-40 pb-4 text-center">
             No trains nearby? Someone&apos;s gotta move to New York!
           </div>
         )}
