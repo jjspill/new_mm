@@ -18,7 +18,7 @@ interface Train {
 interface BackendResponse {
   stopId: string;
   southbound: { name: string; trains: Train[] };
-  northbound: { mame: string; trains: Train[] };
+  northbound: { name: string; trains: Train[] };
 }
 
 const LOCATION_EXPIRY_TIME = 5 * 60 * 1000; // 5 minutes in milliseconds

@@ -114,6 +114,7 @@ const TrainsContainer: React.FC = () => {
               stopId: stop.stopId + 'N',
               stopName: stopData.stopName,
               distance: stopData.distance,
+              headsign: stop.northbound.name,
               trains: [],
             };
             stop.northbound.trains.forEach((train) => {
@@ -130,6 +131,7 @@ const TrainsContainer: React.FC = () => {
               stopName: stopData.stopName,
               distance: stopData.distance,
               trains: [],
+              headsign: stop.southbound.name,
             };
             stop.southbound.trains.forEach((train) => {
               stationS.trains.push({

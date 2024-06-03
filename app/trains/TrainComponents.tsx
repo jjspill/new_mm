@@ -15,6 +15,7 @@ export interface Train {
 
 export interface Station {
   stopName: string;
+  headsign: string;
   stopId: string;
   distance: number;
   trains: Train[];
@@ -66,7 +67,10 @@ export const StationsComponent: React.FC<StationComponentProps> = ({
           {station.trains.length > 0 && (
             <div key={index} className="mb-4">
               <div className="flex flex-col text-center text-xl font-semibold bg-gray-200 p-2 rounded-md">
-                {`${station.stopName} – ${station.stopId.endsWith('N') ? 'Northbound' : 'Southbound'}`}
+                <div className="flex justify-center items-center space-x-2">
+                  <span>{station.stopName}</span>
+                  <span className="text-gray-400">{station.headsign}</span>
+                </div>
                 <span className="text-sm font-normal">
                   {station.distance.toFixed(2)} miles
                 </span>
