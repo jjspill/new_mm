@@ -8,7 +8,10 @@ export async function POST(request: Request) {
   try {
     const body = await request.json();
     const { lat, lon, distance } = body;
-    const stationInfo = readFileSync('public/csv/stops.csv', 'utf-8');
+    const stationInfo = readFileSync(
+      `${process.cwd()}/public/csv/stops.csv`,
+      'utf-8',
+    );
     const stops = parse(stationInfo, {
       columns: (header) =>
         header.map((column: any) => {

@@ -107,7 +107,7 @@ const TrainsContainer: React.FC = () => {
   const [accessLocation, setAccessLocation] = useState(false);
   const [searchRadius, setSearchRadius] = useState<string | number>(0.5);
   const [refreshCounter, setRefreshCounter] = useState(0);
-  const [trainData, setTrainData] = useState<BackendResponse[] | null>(null);
+  const [trainData, setTrainData] = useState<BackendResponse[] | null>([]);
   const [noTrainsFound, setNoTrainsFound] = useState(false);
 
   const refreshData = () => {
@@ -164,7 +164,7 @@ const TrainsContainer: React.FC = () => {
         if (!location || !searchRadius) {
           return;
         }
-        const response = await fetch('/trains/stops/api', {
+        const response = await fetch(`/trains/stops/api`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -177,6 +177,7 @@ const TrainsContainer: React.FC = () => {
         });
 
         const stopsList = await response.json();
+        console.log('stopsList', stopsList);
         setNearestStations(stopsList);
       } catch (error) {
         console.error('Error finding nearest stations: ', error);
