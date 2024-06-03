@@ -68,7 +68,8 @@ const TrainsContainer: React.FC = () => {
 
   // hooks
   const { timer, refreshCounter } = useContinuousCountdown();
-  const { location, setLocation, accessLocation } = useGeolocation();
+  const { location, setLocation, accessLocation, ipLocation } =
+    useGeolocation();
   const { nearestStations, noTrainsFound, setNoTrainsFound } =
     useNearestStations(location, searchRadius, setNearestStopsWithTrains);
   const trainData = useTrainData(nearestStations, refreshCounter);
@@ -177,6 +178,7 @@ const TrainsContainer: React.FC = () => {
       />
       <TrainMenuBar
         radius={searchRadius}
+        ipLocation={ipLocation}
         updateSearchRadius={updateSearchRadius}
         onRefresh={refreshData}
         onLocationFetch={updateLocation}
@@ -187,7 +189,7 @@ const TrainsContainer: React.FC = () => {
       />
       <div className="w-full p-4 pb-0">
         {!location && accessLocation ? (
-          <div className="flex justify-center items-center h-64">
+          <div className="flex flex-col justify-center items-center h-40 pb-4 text-center">
             Location not available. Please enable location services.
           </div>
         ) : (!noTrainsFound && nearestStopsWithTrains.length === 0) ||

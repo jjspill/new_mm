@@ -44,11 +44,24 @@ function saveLocation(location: Location) {
   localStorage.setItem('userLocation', JSON.stringify(data));
 }
 
+async function fetchIPGeolocation() {
+  try {
+    const response = await fetch('https://ipapi.co/json/');
+    const data = await response.json();
+    return { lat: data.latitude, lng: data.longitude };
+  } catch (error) {
+    console.error('Failed to get IP geolocation:', error);
+    return null;
+  }
+}
+
 export const useGeolocation = () => {
-  const [location, setLocation] = useState<Location | null>(GRAND_CENTRAL);
+  const [location, setLocation] = useState<Location | null>(null);
   const [accessLocation, setAccessLocation] = useState(false);
+  const [ipLocation, setIpLocation] = useState<boolean>(false);
 
   useEffect(() => {
+    setIpLocation(false);
     const cachedLocation = getSavedLocation();
     if (cachedLocation) {
       setLocation(cachedLocation);
@@ -59,10 +72,20 @@ export const useGeolocation = () => {
             lat: position.coords.latitude,
             lng: position.coords.longitude,
           };
-          saveLocation(newLocation);
           setLocation(newLocation);
+          saveLocation(newLocation);
         },
-        (error) => {
+        async (error) => {
+          await fetchIPGeolocation()
+            .then((location) => {
+              if (location) {
+                setLocation(location);
+                setIpLocation(true);
+              }
+            })
+            .catch((error) => {
+              console.error('Error getting location: ', error);
+            });
           setAccessLocation(true);
           console.error('Error getting location: ', error);
         },
@@ -72,7 +95,7 @@ export const useGeolocation = () => {
     }
   }, []);
 
-  return { location, setLocation, accessLocation };
+  return { location, setLocation, accessLocation, ipLocation };
 };
 
 export const useNearestStations = (
