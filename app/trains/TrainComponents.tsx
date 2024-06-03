@@ -9,7 +9,6 @@ export interface Train {
   arrivalTime: string;
   routeId: string;
   tripId: string;
-  trainOrder: number;
   stopId: string;
 }
 

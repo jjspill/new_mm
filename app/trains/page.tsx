@@ -2,6 +2,8 @@
 import React from 'react';
 import { PageContainer } from '../components/templates/PageContainer';
 import TrainsContainer from './TrainContainer';
+import { readFileSync } from 'fs';
+import { parse } from 'csv-parse/sync';
 
 export const metadata = {
   title: 'Train Times',
@@ -15,7 +17,7 @@ export const metadata = {
   },
 };
 
-const Home = () => {
+const Home = async () => {
   return (
     <PageContainer>
       <div>
