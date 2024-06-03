@@ -166,7 +166,7 @@ const TrainsContainer: React.FC = () => {
   return (
     <div>
       <div className="flex justify-center items-center w-full h-10 bg-gray-200 text-center text-4xl font-bold text-gray-800 py-12">
-        Nearest Trains
+        Nearby Trains
       </div>
       <div
         style={{
