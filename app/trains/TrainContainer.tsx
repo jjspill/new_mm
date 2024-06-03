@@ -25,6 +25,11 @@ function fixArrivalTime(stations: Station[]): Station[] {
       const currentTimeMillis = Date.now();
       const timeDiffInSeconds = (arrivalTimeMillis - currentTimeMillis) / 1000;
 
+      if (timeDiffInSeconds < -90) {
+        // console.log('Train already left', timeDiffInSeconds / 60, train);
+        return false;
+      }
+
       // Format the time to arrival
       train.arrivalTime =
         timeDiffInSeconds <= 0 || Math.floor(timeDiffInSeconds / 60) === 0

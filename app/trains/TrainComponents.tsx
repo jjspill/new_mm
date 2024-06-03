@@ -70,11 +70,11 @@ export const StationsComponent: React.FC<StationComponentProps> = ({
                   {station.distance.toFixed(2)} miles
                 </span>
               </div>
-              {station.trains.slice(0, 5).map((train, index) => {
+              {station.trains.slice(0, 4).map((train, index) => {
                 const TrainComponent = trainComponentMap[train.routeId] || null;
 
                 const isLastTrain =
-                  index === station.trains.length - 1 || index === 4;
+                  index === station.trains.length - 1 || index === 3;
                 return (
                   <div
                     key={index}
