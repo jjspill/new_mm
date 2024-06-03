@@ -10,6 +10,7 @@ export interface Train {
   routeId: string;
   tripId: string;
   stopId: string;
+  destination: string;
 }
 
 export interface Station {
@@ -85,6 +86,7 @@ export const StationsComponent: React.FC<StationComponentProps> = ({
                       {!TrainComponent && (
                         <UnknownTrainComponent routeId={train.routeId} />
                       )}
+                      <div className="pl-2 text-sm">{train.destination}</div>
                     </div>
                     <div className="pr-1">
                       <span

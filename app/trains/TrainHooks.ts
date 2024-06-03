@@ -12,6 +12,7 @@ interface Train {
   arrivalTime: string;
   tripId: string;
   routeId: string;
+  destination: string;
 }
 
 interface BackendResponse {
