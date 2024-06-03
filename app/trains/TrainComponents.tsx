@@ -205,7 +205,7 @@ export const TrainMenuBar: React.FC<
           </select>
         </div>
       </div>
-      {ipLocation && (
+      {ipLocation && radius !== 'Demo' && (
         <div className="text-sm text-gray-500 mt-2 text-center">
           Using IP location. Provide access to location services for more
           accurate results.
