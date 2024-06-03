@@ -3,16 +3,19 @@
 // components/LocationPrompt.tsx
 import React, { useState, useEffect } from 'react';
 import {
-  Spinner,
   Station,
   TrainMenuBar,
-  UnknownTrainComponent,
   trainComponentMap,
   Location,
-  ApiResponse,
   StationsComponent,
   StationLoadingPlaceholder,
 } from './TrainComponents';
+import {
+  useContinuousCountdown,
+  useGeolocation,
+  useNearestStations,
+  useTrainData,
+} from './TrainHooks';
 
 function fixArrivalTime(stations: Station[]): Station[] {
   stations.forEach((station) => {
@@ -56,70 +59,28 @@ function sortStations(stations: Station[]): Station[] {
   return stations;
 }
 
-const LOCATION_EXPIRY_TIME = 5 * 60 * 1000; // 5 minutes in milliseconds
-
-function getSavedLocation() {
-  const saved = localStorage?.getItem('userLocation');
-  if (saved) {
-    const parsed = JSON.parse(saved);
-    const isRecent =
-      new Date().getTime() - parsed.timestamp < LOCATION_EXPIRY_TIME;
-    if (isRecent) {
-      return parsed.location;
-    }
-  }
-  return null;
-}
-
-function saveLocation(location: Location) {
-  const data = {
-    location,
-    timestamp: new Date().getTime(),
-  };
-  localStorage.setItem('userLocation', JSON.stringify(data));
-}
-
-interface Stop {
-  stopId: string;
-  stopName: string;
-  distance: number;
-}
-
-interface Train {
-  arrivalTime: string;
-  tripId: string;
-  routeId: string;
-}
-
-interface BackendResponse {
-  stopId: string;
-  southbound: Train[];
-  northbound: Train[];
-}
-
 const TrainsContainer: React.FC = () => {
-  const [location, setLocation] = useState<Location | null>(null);
-  const [nearestStations, setNearestStations] = useState<Stop[]>([]);
   const [nearestStopsWithTrains, setNearestStopsWithTrains] = useState<
     Station[]
   >([]);
-  const [timer, setTimer] = useState(30);
-  const [accessLocation, setAccessLocation] = useState(false);
   const [searchRadius, setSearchRadius] = useState<string | number>(0.5);
-  const [refreshCounter, setRefreshCounter] = useState(0);
-  const [trainData, setTrainData] = useState<BackendResponse[] | null>([]);
-  const [noTrainsFound, setNoTrainsFound] = useState(false);
+
+  // hooks
+  const { timer, refreshCounter } = useContinuousCountdown();
+  const { location, accessLocation } = useGeolocation();
+  const { nearestStations, noTrainsFound, setNoTrainsFound } =
+    useNearestStations(location, searchRadius, setNearestStopsWithTrains);
+  const trainData = useTrainData(nearestStations, refreshCounter);
 
   const refreshData = () => {
-    if (location) {
-      setNearestStations([]);
-      setRefreshCounter(refreshCounter + 1);
-    }
+    // if (location) {
+    //   setNearestStations([]);
+    //   setRefreshCounter(refreshCounter + 1);
+    // }
   };
 
   const updateSearchRadius = (radius: string | number) => {
     setSearchRadius(radius);
-    setRefreshCounter(refreshCounter + 1);
   };
 
   const updateLocation = {
@@ -131,90 +92,6 @@ const TrainsContainer: React.FC = () => {
       // setLocation(newLocation);
     },
   };
-
-  // Get users location
-  useEffect(() => {
-    const cachedLocation = getSavedLocation();
-    if (cachedLocation) {
-      setLocation(cachedLocation);
-    } else if ('geolocation' in navigator) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          const newLocation = {
-            lat: position.coords.latitude,
-            lng: position.coords.longitude,
-          };
-          saveLocation(newLocation);
-          setLocation(newLocation);
-        },
-        (error) => {
-          setAccessLocation(true);
-          console.error('Error getting location: ', error);
-        },
-      );
-    } else {
-      console.error('Geolocation is not available.');
-    }
-  }, []);
-
-  // Fetch nearest stations
-  useEffect(() => {
-    const findNearestStations = async () => {
-      try {
-        if (!location || !searchRadius) {
-          return;
-        }
-        const response = await fetch(`/trains/stops/api`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            lat: location.lat,
-            lon: location.lng,
-            distance: searchRadius,
-          }),
-        });
-
-        const stopsList = await response.json();
-        console.log('stopsList', stopsList);
-        setNearestStations(stopsList);
-      } catch (error) {
-        console.error('Error finding nearest stations: ', error);
-      }
-    };
-
-    // setFetching(true);
-    setNearestStopsWithTrains([]);
-    findNearestStations();
-  }, [location, searchRadius]);
-
-  // Fetch train data
-  useEffect(() => {
-    const fetchData = async () => {
-      if (nearestStations) {
-        const stopIds = nearestStations.map((station) => station.stopId);
-        try {
-          const response = await fetch('/trains/api', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ stopIds }),
-          });
-          if (!response.ok) {
-            throw new Error('Network response was not ok');
-          }
-          const data = await response.json();
-          setTrainData(data);
-        } catch (error) {
-          console.error('Failed to fetch train data:', error);
-        }
-      }
-    };
-
-    fetchData();
-  }, [nearestStations]);
 
   // Combine nearest stations with train data
   useEffect(() => {
@@ -258,37 +135,17 @@ const TrainsContainer: React.FC = () => {
         }
       });
       setNearestStopsWithTrains(sortStations(fixArrivalTime(stopsWithTrains)));
-      if (stopsWithTrains.length === 0) {
-        setNoTrainsFound(true);
+      if (nearestStopsWithTrains.length === 0) {
+        const messageTimer = setTimeout(() => {
+          setNoTrainsFound(true);
+        }, 1000);
+
+        return () => clearTimeout(messageTimer);
       } else {
         setNoTrainsFound(false);
       }
     }
   }, [trainData]);
-
-  useEffect(() => {
-    if (location) {
-      const intervalId = setInterval(() => {
-        setTimer(30);
-      }, 30000);
-
-      return () => clearInterval(intervalId);
-    }
-  }, []);
-
-  useEffect(() => {
-    const timerId =
-      timer > 0 ? setTimeout(() => setTimer(timer - 1), 1000) : undefined;
-    return () => clearTimeout(timerId);
-  }, [timer]);
-
-  // useEffect(() => {
-  //   if (nearestStations.length > 0) {
-  //     setNoTrainsFound(false);
-  //   } else {
-  //     setNoTrainsFound(true);
-  //   }
-  // }, [nearestStations]);
 
   return (
     <div>
@@ -297,7 +154,7 @@ const TrainsContainer: React.FC = () => {
       </div>
       <div
         style={{
-          width: `${(timer / 30) * 100}%`,
+          width: `${(timer / 15) * 100}%`,
           height: '5px',
           backgroundColor: 'rgb(156 163 175)',
           transition: 'width 1s linear',
@@ -310,7 +167,7 @@ const TrainsContainer: React.FC = () => {
         onLocationFetch={updateLocation}
         onError={(error) => {
           console.error('Error getting location: ', error);
-          setAccessLocation(true);
+          // setAccessLocation(true);
         }}
       />
       {!location && accessLocation && (
@@ -328,13 +185,9 @@ const TrainsContainer: React.FC = () => {
             stations={nearestStopsWithTrains}
             trainComponentMap={trainComponentMap}
           />
-          // (
-          // : refreshCounter > 0 ? (
-          //   <StationLoadingPlaceholder />
-          // )
         )}
 
-        {noTrainsFound && (
+        {noTrainsFound && nearestStopsWithTrains.length === 0 && (
           <div className="flex justify-center items-center h-40 pb-4 text-center">
             No trains nearby? Someone&apos;s gotta move to New York!
           </div>
