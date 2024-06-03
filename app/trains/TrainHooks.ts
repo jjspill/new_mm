@@ -21,6 +21,7 @@ interface BackendResponse {
 }
 
 const LOCATION_EXPIRY_TIME = 5 * 60 * 1000; // 5 minutes in milliseconds
+export const GRAND_CENTRAL = { lat: 40.7527, lng: -73.9772 };
 
 function getSavedLocation() {
   const saved = localStorage?.getItem('userLocation');
@@ -44,7 +45,7 @@ function saveLocation(location: Location) {
 }
 
 export const useGeolocation = () => {
-  const [location, setLocation] = useState<Location | null>(null);
+  const [location, setLocation] = useState<Location | null>(GRAND_CENTRAL);
   const [accessLocation, setAccessLocation] = useState(false);
 
   useEffect(() => {
@@ -71,7 +72,7 @@ export const useGeolocation = () => {
     }
   }, []);
 
-  return { location, accessLocation };
+  return { location, setLocation, accessLocation };
 };
 
 export const useNearestStations = (

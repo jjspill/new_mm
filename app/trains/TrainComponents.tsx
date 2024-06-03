@@ -181,7 +181,7 @@ export const TrainMenuBar: React.FC<
           Refresh Data
         </button> */}
         <div className="flex items-center space-x-2">
-          <span className="text-lg font-semibold text-gray-700">
+          <span className="text-lg font-semibold text-gray-800">
             Search Radius:
           </span>
           <select
