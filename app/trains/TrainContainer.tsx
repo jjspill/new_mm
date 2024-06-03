@@ -88,6 +88,8 @@ const TrainsContainer: React.FC = () => {
         lat: GRAND_CENTRAL.lat,
         lng: GRAND_CENTRAL.lng,
       });
+    } else {
+      setSearchRadius(radius);
     }
   };
 
