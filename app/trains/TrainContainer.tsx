@@ -170,27 +170,25 @@ const TrainsContainer: React.FC = () => {
           // setAccessLocation(true);
         }}
       />
-      {!location && accessLocation && (
-        <div className="flex justify-center items-center h-64">
-          Location not available. Please enable location services.
-        </div>
-      )}
       <div className="w-full p-4 pb-0">
-        {!noTrainsFound && nearestStopsWithTrains.length === 0 && (
+        {!location && accessLocation ? (
+          <div className="flex justify-center items-center h-64">
+            Location not available. Please enable location services.
+          </div>
+        ) : (!noTrainsFound && nearestStopsWithTrains.length === 0) ||
+          (!location && !accessLocation) ? (
           <StationLoadingPlaceholder />
-        )}
-
-        {nearestStopsWithTrains && (
+        ) : nearestStopsWithTrains.length > 0 ? (
           <StationsComponent
             stations={nearestStopsWithTrains}
             trainComponentMap={trainComponentMap}
           />
-        )}
-
-        {noTrainsFound && nearestStopsWithTrains.length === 0 && (
+        ) : noTrainsFound ? (
           <div className="flex justify-center items-center h-40 pb-4 text-center">
             No trains nearby? Someone&apos;s gotta move to New York!
           </div>
+        ) : (
+          <StationLoadingPlaceholder />
         )}
       </div>
     </div>
