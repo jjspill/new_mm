@@ -106,6 +106,11 @@ export const useNearestStations = (
   const [nearestStations, setNearestStations] = useState<Stop[]>([]);
   const [noTrainsFound, setNoTrainsFound] = useState(false);
 
+  if (searchRadius === 'Demo') {
+    location = GRAND_CENTRAL;
+    searchRadius = 0.25;
+  }
+
   useEffect(() => {
     const findNearestStations = async () => {
       if (!location || !searchRadius) return;

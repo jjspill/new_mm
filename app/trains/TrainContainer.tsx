@@ -83,13 +83,12 @@ const TrainsContainer: React.FC = () => {
 
   const updateSearchRadius = (radius: string | number) => {
     if (radius === 'Demo') {
+      setSearchRadius('Demo');
       setLocation({
         lat: GRAND_CENTRAL.lat,
         lng: GRAND_CENTRAL.lng,
       });
-      radius = 0.25;
     }
-    setSearchRadius(radius);
   };
 
   const updateLocation = {
