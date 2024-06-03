@@ -11,6 +11,7 @@ import {
   StationLoadingPlaceholder,
 } from './TrainComponents';
 import {
+  GRAND_CENTRAL,
   useContinuousCountdown,
   useGeolocation,
   useNearestStations,
@@ -67,7 +68,8 @@ const TrainsContainer: React.FC = () => {
 
   // hooks
   const { timer, refreshCounter } = useContinuousCountdown();
-  const { location, accessLocation } = useGeolocation();
+  const { location, setLocation, accessLocation, ipLocation } =
+    useGeolocation();
   const { nearestStations, noTrainsFound, setNoTrainsFound } =
     useNearestStations(location, searchRadius, setNearestStopsWithTrains);
   const trainData = useTrainData(nearestStations, refreshCounter);
@@ -80,7 +82,13 @@ const TrainsContainer: React.FC = () => {
   };
 
   const updateSearchRadius = (radius: string | number) => {
-    setSearchRadius(radius);
+    if (radius === 'Demo') {
+      setSearchRadius('Demo');
+      setLocation({
+        lat: GRAND_CENTRAL.lat,
+        lng: GRAND_CENTRAL.lng,
+      });
+    }
   };
 
   const updateLocation = {
@@ -135,8 +143,15 @@ const TrainsContainer: React.FC = () => {
         }
       });
       setNearestStopsWithTrains(sortStations(fixArrivalTime(stopsWithTrains)));
-      if (nearestStopsWithTrains.length === 0) {
+      if (nearestStopsWithTrains.length === 0 && nearestStations.length === 0) {
         const messageTimer = setTimeout(() => {
+          console.log('No trains found');
+          console.log('nearestStopsWithTrains', nearestStopsWithTrains);
+          console.log('nearestStations', nearestStations);
+          console.log('trainData', trainData);
+          console.log('noTrainsFound', noTrainsFound);
+          console.log('location', location);
+          console.log('accessLocation', accessLocation);
           setNoTrainsFound(true);
         }, 1000);
 
@@ -162,6 +177,7 @@ const TrainsContainer: React.FC = () => {
       />
       <TrainMenuBar
         radius={searchRadius}
+        ipLocation={ipLocation}
         updateSearchRadius={updateSearchRadius}
         onRefresh={refreshData}
         onLocationFetch={updateLocation}
@@ -170,27 +186,31 @@ const TrainsContainer: React.FC = () => {
           // setAccessLocation(true);
         }}
       />
-      {!location && accessLocation && (
-        <div className="flex justify-center items-center h-64">
-          Location not available. Please enable location services.
-        </div>
-      )}
       <div className="w-full p-4 pb-0">
-        {!noTrainsFound && nearestStopsWithTrains.length === 0 && (
+        {!location && accessLocation ? (
+          <div className="flex flex-col justify-center items-center h-40 pb-4 text-center">
+            Location not available. Please enable location services.
+          </div>
+        ) : (!noTrainsFound && nearestStopsWithTrains.length === 0) ||
+          (!location && !accessLocation) ? (
           <StationLoadingPlaceholder />
-        )}
-
-        {nearestStopsWithTrains && (
+        ) : nearestStopsWithTrains.length > 0 ? (
           <StationsComponent
             stations={nearestStopsWithTrains}
             trainComponentMap={trainComponentMap}
           />
-        )}
-
-        {noTrainsFound && nearestStopsWithTrains.length === 0 && (
-          <div className="flex justify-center items-center h-40 pb-4 text-center">
+        ) : noTrainsFound && location ? (
+          <div className="flex flex-col justify-center items-center h-40 pb-4 text-center">
             No trains nearby? Someone&apos;s gotta move to New York!
+            <button
+              onClick={() => updateSearchRadius('Demo')}
+              className="mt-4 bg-gray-300 hover:bg-gray-700 text-gray-800 hover:text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out"
+            >
+              Try Demo Location
+            </button>
           </div>
+        ) : (
+          <StationLoadingPlaceholder />
         )}
       </div>
     </div>

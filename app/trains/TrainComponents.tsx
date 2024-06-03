@@ -157,6 +157,7 @@ const LocationButton: React.FC<LocationButtonProps> = ({
 };
 
 interface TrainMenuBarProps {
+  ipLocation: boolean;
   radius: string | number;
   updateSearchRadius: (radius: string | number) => void;
   onRefresh: () => void;
@@ -164,7 +165,14 @@ interface TrainMenuBarProps {
 
 export const TrainMenuBar: React.FC<
   TrainMenuBarProps & LocationButtonProps
-> = ({ radius, updateSearchRadius, onLocationFetch, onError, onRefresh }) => {
+> = ({
+  ipLocation,
+  radius,
+  updateSearchRadius,
+  onLocationFetch,
+  onError,
+  onRefresh,
+}) => {
   const handleRadiusChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     updateSearchRadius(event.target.value);
   };
@@ -181,7 +189,7 @@ export const TrainMenuBar: React.FC<
           Refresh Data
         </button> */}
         <div className="flex items-center space-x-2">
-          <span className="text-lg font-semibold text-gray-700">
+          <span className="text-lg font-semibold text-gray-800">
             Search Radius:
           </span>
           <select
@@ -197,6 +205,12 @@ export const TrainMenuBar: React.FC<
           </select>
         </div>
       </div>
+      {ipLocation && (
+        <div className="text-sm text-gray-500 mt-2 text-center">
+          Using IP location. Provide access to location services for more
+          accurate results.
+        </div>
+      )}
       {radius === 'Demo' && (
         <div className="text-sm text-gray-500 mt-2 text-center">
           The demo location is set to Grand Central Terminal with a radius of
