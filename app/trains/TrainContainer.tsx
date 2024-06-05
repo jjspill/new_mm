@@ -25,7 +25,7 @@ function fixArrivalTime(stations: Station[]): Station[] {
       const currentTimeMillis = Date.now();
       const timeDiffInSeconds = (arrivalTimeMillis - currentTimeMillis) / 1000;
 
-      if (timeDiffInSeconds < -90) {
+      if (timeDiffInSeconds < -30) {
         // console.log('Train already left', timeDiffInSeconds / 60, train);
         return false;
       }
@@ -188,7 +188,16 @@ const TrainsContainer: React.FC = () => {
         }}
       />
       <div className="w-full p-4 pb-0">
-        {!location && accessLocation ? (
+        {nearestStopsWithTrains.length > 0 ? (
+          <StationsComponent
+            stations={nearestStopsWithTrains}
+            trainComponentMap={trainComponentMap}
+          />
+        ) : (
+          <StationLoadingPlaceholder />
+        )}
+
+        {/* {!location && accessLocation ? (
           <div className="flex flex-col justify-center items-center h-40 pb-4 text-center">
             Location not available. Please enable location services.
           </div>
@@ -212,7 +221,7 @@ const TrainsContainer: React.FC = () => {
           </div>
         ) : (
           <StationLoadingPlaceholder />
-        )}
+        )} */}
       </div>
     </div>
   );
