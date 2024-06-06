@@ -31,11 +31,8 @@ function processTrains(trains: Train[]) {
 }
 
 export const fixArrivalTime = (station: Station) => {
-  console.log('station before processing', station);
   station.n_trains = processTrains(station.n_trains);
   station.s_trains = processTrains(station.s_trains);
-
-  console.log('station after processing', station);
 };
 
 function getDirection(tripId: string): string {
