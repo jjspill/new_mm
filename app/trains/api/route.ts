@@ -38,7 +38,7 @@ function buildTrainData(trains: Train[], stations: Station[]) {
 }
 
 const pgPool = new pg.Pool({
-  connectionString: process.env.POSTGRES_CONNECTION_STRING,
+  connectionString: process.env.DATABASE_URL,
 });
 
 export async function POST(request: Request) {
