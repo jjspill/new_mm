@@ -554,6 +554,36 @@ export const TrainSymbolsDisplay = ({
 };
 
 export const TrainCarousel: React.FC = () => {
+  const carouselRef = useRef<HTMLDivElement>(null);
+
+  // Load and set the scroll position from localStorage
+  useEffect(() => {
+    const savedPosition = localStorage.getItem('carouselScrollPosition');
+
+    if (carouselRef.current && savedPosition) {
+      const position = parseFloat(savedPosition);
+      carouselRef.current.style.transform = `translateX(${position}px)`;
+    }
+
+    const saveCarouselState = () => {
+      if (carouselRef.current) {
+        const transformMatrix = window.getComputedStyle(
+          carouselRef.current,
+        ).transform;
+        const matrixValues = transformMatrix.match(/matrix.*\((.+)\)/);
+        const xPosition = matrixValues
+          ? parseFloat(matrixValues[1].split(', ')[4])
+          : 0;
+        localStorage.setItem('carouselScrollPosition', xPosition.toString());
+      }
+    };
+
+    window.addEventListener('beforeunload', saveCarouselState);
+    return () => {
+      window.removeEventListener('beforeunload', saveCarouselState);
+    };
+  }, []);
+
   const TrainComponents = [
     NComponent,
     QComponent,
@@ -579,44 +609,20 @@ export const TrainCarousel: React.FC = () => {
     SevenComponent,
   ];
 
-  const carouselRef = useRef<HTMLDivElement>(null);
-
-  // Save the current position to localStorage
-  const saveScrollPosition = () => {
-    if (carouselRef.current) {
-      const scrollPosition = carouselRef.current.getBoundingClientRect().x;
-      localStorage.setItem('carouselScrollPosition', scrollPosition.toString());
-    }
-  };
-
-  // Restore the scroll position from localStorage
-  useEffect(() => {
-    const savedPosition = localStorage.getItem('carouselScrollPosition');
-    if (carouselRef.current && savedPosition) {
-      const position = parseFloat(savedPosition);
-      carouselRef.current.style.transform = `translateX(${position}px)`;
-    }
-
-    window.addEventListener('beforeunload', saveScrollPosition);
-    return () => {
-      window.removeEventListener('beforeunload', saveScrollPosition);
-    };
-  }, []);
-
   return (
     <>
       <style>
         {`
           @keyframes scroll {
-            from { transform: translateX(0); }
-            to { transform: translateX(-100%); }
+            from { transform: translateX(80%); }
+            to { transform: translateX(-80%); }
           }
         `}
       </style>
       <div className="overflow-hidden pt-1">
         <div
           ref={carouselRef}
-          className="flex space-x-4 whitespace-nowrap animate-scroll"
+          className="flex space-x-4 whitespace-nowrap right-0"
           style={{ animation: 'scroll 30s linear infinite' }}
         >
           {TrainComponents.map((Component, index) => (
