@@ -11,7 +11,8 @@ const pgPool = new pg.Pool({
 export async function POST(request: Request) {
   const body = await request.json();
   const { stops } = body;
-  const stopIds = stops.map((station: any) => station.stopId);
+  // console.log('Received stops:', stops); // Log received stops
+  const stopIds = stops?.map((station: any) => station.stopId);
 
   // console.log('Received stop IDs:', stopIds); // Log received stop IDs
 
@@ -20,7 +21,9 @@ export async function POST(request: Request) {
     const queryText = 'SELECT * FROM arrivals WHERE stop_id = ANY($1)';
     const res = await client.query(queryText, [stopIds]);
     const newTrainData = buildTrainData(res.rows, stops);
-    const stringify = JSON.stringify(newTrainData, null, 2);
+    const stringify = JSON.stringify(newTrainData[0], null, 2);
+
+    // console.log('Returning train data:', stringify); // Log returned train data
 
     return new Response(stringify);
   } catch (err: any) {

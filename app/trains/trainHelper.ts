@@ -6,34 +6,16 @@ import { parseISO, differenceInSeconds } from 'date-fns';
 import { toZonedTime, format } from 'date-fns-tz';
 
 function processTrains(trains: Train[]) {
-  // Filter out trains that have already departed more than 30 seconds ago
-  const timeZone = 'America/New_York';
+  if (!trains) return [];
   const currentZonedTime = new Date();
-  console.log('trains', trains);
-  console.log(
-    'New York current time:',
-    format(currentZonedTime, 'yyyy-MM-dd HH:mm:ssXXX', { timeZone }),
-  );
 
   return trains
     .map((train) => {
-      console.log("train's arrival time:", train.arrival_time);
-      console.log(
-        'differenceInSeconds:',
-        differenceInSeconds(train.arrival_time, currentZonedTime),
-      );
       const arrivalTimeZoned = parseISO(train.arrival_time); // Already in Eastern Time
-      console.log(
-        'Stored arrival time:',
-        format(arrivalTimeZoned, 'yyyy-MM-dd HH:mm:ssXXX', { timeZone }),
-      );
-
       const timeDiffInSeconds = differenceInSeconds(
         arrivalTimeZoned,
         currentZonedTime,
       );
-      console.log('timeDiffInSeconds:', timeDiffInSeconds);
-      console.log('timeDiffInSeconds:', timeDiffInSeconds);
       return {
         ...train,
         timeDiffInSeconds,
@@ -48,12 +30,12 @@ function processTrains(trains: Train[]) {
       } else {
         train.arrival_time = `${minutes} ${minutes === 1 ? 'minute' : 'minutes'}`;
       }
-      console.log('mapping train', train);
       return train;
     });
 }
 
 export const fixArrivalTime = (station: Station) => {
+  console.log('station before processing', station);
   station.n_trains = processTrains(station.n_trains);
   station.s_trains = processTrains(station.s_trains);
 
@@ -74,13 +56,13 @@ function getDirection(tripId: string): string {
 }
 
 export function buildTrainData(trains: Train[], stations: Station[]) {
-  const newTrainData = stations.map((station) => {
-    const northStationTrains = trains.filter(
+  const newTrainData = stations?.map((station) => {
+    const northStationTrains = trains?.filter(
       (train) =>
         train.stop_id === station.stopId && getDirection(train.trip_id) === 'N',
     );
 
-    const southStationTrains = trains.filter(
+    const southStationTrains = trains?.filter(
       (train) =>
         train.stop_id === station.stopId && getDirection(train.trip_id) === 'S',
     );
@@ -99,7 +81,7 @@ export const findClosestStations = (
   lon: number,
   maxDistance: number = 0.5, // Default max distance in miles
   stops: any,
-): Promise<Stop[]> => {
+): Promise<Station[]> => {
   try {
     const filteredStops = stops
       .map((stop: any) => {

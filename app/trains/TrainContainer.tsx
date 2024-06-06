@@ -72,7 +72,7 @@ const TrainsContainer: React.FC = () => {
     useGeolocation();
   const { nearestStations, noTrainsFound, setNoTrainsFound } =
     useNearestStations(location, searchRadius);
-  const trainData = useTrainData(nearestStations, refreshCounter);
+  // const trainData = useTrainData(nearestStations, refreshCounter);
 
   const refreshData = () => {
     // if (location) {
@@ -130,10 +130,10 @@ const TrainsContainer: React.FC = () => {
         }}
       />
       <div className="w-full p-4 pb-0">
-        {nearestStations && trainData ? (
+        {nearestStations ? (
           <StationsComponent
-            stations={trainData}
-            trainSymbolMap={trainSymbolMap}
+            stations={nearestStations}
+            refreshCounter={refreshCounter}
           />
         ) : (
           <StationLoadingPlaceholder />

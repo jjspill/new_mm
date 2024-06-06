@@ -165,6 +165,33 @@ export const useTrainData = (
   return trainData;
 };
 
+export const useStation = (station: Station, refreshCounter: number) => {
+  const [stop, setStop] = useState<Station>();
+
+  useEffect(() => {
+    const fetchStop = async () => {
+      if (!station) return;
+      try {
+        const response = await fetch(`/trains/api`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ stops: [station] }),
+        });
+        if (!response.ok) throw new Error('Network response was not ok');
+        const data = await response.json();
+        fixArrivalTime(data);
+        setStop(data);
+      } catch (error) {
+        console.error('Failed to fetch stop:', error);
+      }
+    };
+
+    fetchStop();
+  }, [station, refreshCounter]);
+
+  return stop;
+};
+
 export const useContinuousCountdown = () => {
   const duration = 15;
   const [timer, setTimer] = useState(duration);

@@ -1,4 +1,5 @@
 import React from 'react';
+import { useStation } from './TrainHooks';
 
 export interface Location {
   lat: number;
@@ -53,7 +54,55 @@ export const StationLoadingPlaceholder = () => (
   </div>
 );
 
-export const asyncTrainComponent = (station: Station) => {};
+interface StationProps {
+  stationIn: Station;
+  refreshCounter: number;
+}
+
+export const AsyncStationComponent: React.FC<StationProps> = ({
+  stationIn,
+  refreshCounter,
+}) => {
+  const station = useStation(stationIn, refreshCounter);
+
+  if (station === undefined) {
+    return <StationLoadingPlaceholder />;
+  }
+
+  return (
+    <div className="mb-4">
+      <div className="flex flex-col text-center text-xl font-semibold bg-gray-200 p-2 rounded-md">
+        <div className="flex flex-col justify-center items-center space-x-2">
+          <span>{station.stopName}</span>
+          <div className="grid grid-cols-2 gap-x-4 w-full">
+            <div className="flex items-center justify-center space-x-2">
+              <span className="text-gray-500">N:</span>
+              <span>{station.n_headsign}</span>
+            </div>
+            <div className="flex items-center justify-center space-x-2">
+              <span className="text-gray-500">S:</span>
+              <span>{station.s_headsign}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div className="md:grid grid-cols-2 gap-x-4">
+        <div className="col-span-1">
+          <TrainComponent
+            trains={station.n_trains}
+            trainSymbolMap={trainSymbolMap}
+          />
+        </div>
+        <div className="col-span-1">
+          <TrainComponent
+            trains={station.s_trains}
+            trainSymbolMap={trainSymbolMap}
+          />
+        </div>
+      </div>
+    </div>
+  );
+};
 
 interface TrainComponentProps {
   trains: Train[];
@@ -101,49 +150,54 @@ export const TrainComponent: React.FC<TrainComponentProps> = ({
 
 interface StationComponentProps {
   stations: Station[];
-  trainSymbolMap: { [key: string]: React.FC };
+  refreshCounter: number;
 }
 
 export const StationsComponent: React.FC<StationComponentProps> = ({
   stations,
-  trainSymbolMap,
+  refreshCounter,
 }) => {
   console.log('stations:', stations);
   return (
     <div className="">
       {stations &&
         stations.map((station, index) => (
-          <div key={index} className="mb-4">
-            <div className="flex flex-col text-center text-xl font-semibold bg-gray-200 p-2 rounded-md">
-              <div className="flex flex-col justify-center items-center space-x-2">
-                <span>{station.stopName}</span>
-                <div className="grid grid-cols-2 gap-x-4 w-full">
-                  <div className="flex items-center justify-center space-x-2">
-                    <span className="text-gray-500">N:</span>
-                    <span>{station.n_headsign}</span>
-                  </div>
-                  <div className="flex items-center justify-center space-x-2">
-                    <span className="text-gray-500">S:</span>
-                    <span>{station.s_headsign}</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div key={index} className="md:grid grid-cols-2 gap-x-4">
-              <div className="col-span-1">
-                <TrainComponent
-                  trains={station.n_trains}
-                  trainSymbolMap={trainSymbolMap}
-                />
-              </div>
-              <div className="col-span-1">
-                <TrainComponent
-                  trains={station.s_trains}
-                  trainSymbolMap={trainSymbolMap}
-                />
-              </div>
-            </div>
-          </div>
+          <AsyncStationComponent
+            key={index}
+            stationIn={station}
+            refreshCounter={refreshCounter}
+          />
+          // <div key={index} className="mb-4">
+          //   <div className="flex flex-col text-center text-xl font-semibold bg-gray-200 p-2 rounded-md">
+          //     <div className="flex flex-col justify-center items-center space-x-2">
+          //       <span>{station.stopName}</span>
+          //       <div className="grid grid-cols-2 gap-x-4 w-full">
+          //         <div className="flex items-center justify-center space-x-2">
+          //           <span className="text-gray-500">N:</span>
+          //           <span>{station.n_headsign}</span>
+          //         </div>
+          //         <div className="flex items-center justify-center space-x-2">
+          //           <span className="text-gray-500">S:</span>
+          //           <span>{station.s_headsign}</span>
+          //         </div>
+          //       </div>
+          //     </div>
+          //   </div>
+          //   <div key={index} className="md:grid grid-cols-2 gap-x-4">
+          //     <div className="col-span-1">
+          //       <TrainComponent
+          //         trains={station.n_trains}
+          //         trainSymbolMap={trainSymbolMap}
+          //       />
+          //     </div>
+          //     <div className="col-span-1">
+          //       <TrainComponent
+          //         trains={station.s_trains}
+          //         trainSymbolMap={trainSymbolMap}
+          //       />
+          //     </div>
+          //   </div>
+          // </div>
         ))}
     </div>
   );
