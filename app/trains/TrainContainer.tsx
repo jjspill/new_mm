@@ -1,6 +1,6 @@
+// components/LocationPrompt.tsx
 'use client';
 
-// components/LocationPrompt.tsx
 import React, { useState, useEffect } from 'react';
 import {
   TrainMenuBar,
@@ -16,10 +16,20 @@ import {
   useNearestStations,
   useTrainData,
 } from './TrainHooks';
-import styles from './Train.module.css';
 
 const TrainsContainer: React.FC = () => {
   const [searchRadius, setSearchRadius] = useState<string | number>(0.5);
+  const [showNothingFound, setShowNothingFound] = useState<boolean>(false);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setShowNothingFound(true);
+    }, 15000);
+
+    return () => {
+      clearInterval(timer);
+    };
+  });
 
   // hooks
   const { timer, refreshCounter } = useContinuousCountdown();
@@ -87,9 +97,16 @@ const TrainsContainer: React.FC = () => {
           />
         )}
         {!location &&
+          !showNothingFound &&
           Array.from({ length: 4 }, (_, index) => (
             <StationLoadingPlaceholder key={index} />
           ))}
+
+        {!location && showNothingFound && (
+          <div className="text-center text-gray-500">
+            Location not found. Please enable location services.
+          </div>
+        )}
       </div>
     </div>
   );

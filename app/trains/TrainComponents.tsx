@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useStation } from './TrainHooks';
 
 export interface Location {
@@ -230,7 +230,7 @@ export const StationsComponent: React.FC<StationComponentProps> = ({
   refreshCounter,
 }) => {
   return (
-    <div className="">
+    <div>
       {stations &&
         stations.map((station, index) => (
           <AsyncStationComponent
@@ -239,6 +239,7 @@ export const StationsComponent: React.FC<StationComponentProps> = ({
             refreshCounter={refreshCounter}
           />
         ))}
+      {!stations && <div>No nearby stations found</div>}
     </div>
   );
 };
@@ -578,19 +579,44 @@ export const TrainCarousel: React.FC = () => {
     SevenComponent,
   ];
 
+  const carouselRef = useRef<HTMLDivElement>(null);
+
+  // Save the current position to localStorage
+  const saveScrollPosition = () => {
+    if (carouselRef.current) {
+      const scrollPosition = carouselRef.current.getBoundingClientRect().x;
+      localStorage.setItem('carouselScrollPosition', scrollPosition.toString());
+    }
+  };
+
+  // Restore the scroll position from localStorage
+  useEffect(() => {
+    const savedPosition = localStorage.getItem('carouselScrollPosition');
+    if (carouselRef.current && savedPosition) {
+      const position = parseFloat(savedPosition);
+      carouselRef.current.style.transform = `translateX(${position}px)`;
+    }
+
+    window.addEventListener('beforeunload', saveScrollPosition);
+    return () => {
+      window.removeEventListener('beforeunload', saveScrollPosition);
+    };
+  }, []);
+
   return (
     <>
       <style>
         {`
           @keyframes scroll {
-            from { transform: translateX(100%); }
+            from { transform: translateX(0); }
             to { transform: translateX(-100%); }
           }
         `}
       </style>
       <div className="overflow-hidden pt-1">
         <div
-          className="flex space-x-4 whitespace-nowrap"
+          ref={carouselRef}
+          className="flex space-x-4 whitespace-nowrap animate-scroll"
           style={{ animation: 'scroll 30s linear infinite' }}
         >
           {TrainComponents.map((Component, index) => (
