@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useStation } from './TrainHooks';
 
 export interface Location {
@@ -29,9 +29,10 @@ export interface ApiResponse {
   stops: Station[];
 }
 
+// suspense for stations
 export const StationLoadingPlaceholder = () => (
   <div className="md:grid grid-cols-2 gap-x-4">
-    {Array.from({ length: 6 }, (_, index) => (
+    {Array.from({ length: 2 }, (_, index) => (
       <div
         key={index}
         className="mb-4 p-2 border rounded-md shadow bg-gray-200 animate-pulse"
@@ -54,19 +55,19 @@ export const StationLoadingPlaceholder = () => (
   </div>
 );
 
+// conjoined station header, for desktop view when stations are grouped horizontally
 export const ConjoinedStationDetails = ({ station }: { station: Station }) => {
   return (
-    <div className="mb-4">
-      <div className="flex flex-col text-center text-xl font-semibold bg-gray-200 p-2 rounded-md">
+    <div className="mb-2">
+      <div className="flex flex-col text-center text-xl font-semibold bg-black text-white p-2 rounded-md">
         <div className="flex flex-col justify-center items-center space-x-2">
-          <span>{station.stopName}</span>
+          <div className="h-[2px] w-full bg-white"></div>
+          <span>{station.stopName} Station</span>
           <div className="grid grid-cols-2 gap-x-4 w-full">
             <div className="flex items-center justify-center space-x-2">
-              <span className="text-gray-500">N:</span>
               <span>{station.n_headsign}</span>
             </div>
             <div className="flex items-center justify-center space-x-2">
-              <span className="text-gray-500">S:</span>
               <span>{station.s_headsign}</span>
             </div>
           </div>
@@ -76,6 +77,7 @@ export const ConjoinedStationDetails = ({ station }: { station: Station }) => {
   );
 };
 
+// station header for mobile, north and southbound stations are isolated
 const StationDetailsComponent = ({
   stopName,
   headsign,
@@ -83,7 +85,8 @@ const StationDetailsComponent = ({
   stopName: string;
   headsign: string;
 }) => (
-  <div className="flex flex-col text-center text-xl font-semibold bg-gray-200 p-2 rounded-md">
+  <div className="flex flex-col text-center text-xl font-semibold bg-black text-white p-2 rounded-md">
+    <div className="h-[2px] w-full bg-white"></div>
     <span>{stopName}</span>
     <div className="flex items-center justify-center space-x-2">
       <span>{headsign}</span>
@@ -96,19 +99,54 @@ interface StationProps {
   refreshCounter: number;
 }
 
+// async station component, fetches train data for a single station
 export const AsyncStationComponent: React.FC<StationProps> = ({
   stationIn,
   refreshCounter,
 }) => {
   const station = useStation(stationIn, refreshCounter);
 
-  if (station === undefined) {
+  const [showPlaceholder, setShowPlaceholder] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowPlaceholder(false);
+    }, 10000);
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (
+    showPlaceholder &&
+    (station === undefined ||
+      (station?.n_trains.length === 0 && station?.s_trains.length === 0))
+  ) {
     return <StationLoadingPlaceholder />;
+  } else if (
+    !showPlaceholder &&
+    (station === undefined ||
+      (station?.n_trains.length === 0 && station?.s_trains.length === 0))
+  ) {
+    return (
+      <div className="flex flex-col text-center text-xl font-semibold bg-black text-white p-2 rounded-md mb-2">
+        <div className="h-[2px] w-full bg-white"></div>
+        <span>{stationIn.stopName}</span>
+        <div className="flex items-center justify-center space-x-2">
+          <span>No trains available</span>
+        </div>
+      </div>
+    );
+  }
+  // } else if (station.n_trains.length === 0 && station.s_trains.length === 0) {
+  //   return;
+  // }
+
+  if (!station) {
+    return <div>Error station not found</div>;
   }
 
   return (
-    <div className="mb-4">
-      <div className="block md:hidden gap-x-4">
+    <div className="font-sans">
+      <div className="block md:hidden">
         <div>
           <StationDetailsComponent
             stopName={station.stopName}
@@ -144,6 +182,7 @@ interface TrainComponentProps {
   // trainSymbolMap: { [key: string]: React.FC };
 }
 
+// train component, displays train data for a single station
 export const TrainComponent: React.FC<TrainComponentProps> = ({ trains }) => {
   return trains.slice(0, 4).map((train, index) => {
     const TrainComponent = trainSymbolMap[train.route_id] || null;
@@ -152,7 +191,7 @@ export const TrainComponent: React.FC<TrainComponentProps> = ({ trains }) => {
     return (
       <div
         key={index}
-        className={`flex justify-between items-center ${!isLastTrain && 'border-b border-gray-300'} py-2`}
+        className={`flex justify-between items-center ${!isLastTrain && 'border-b border-black'} ${isLastTrain && 'pb-4'} py-2`}
       >
         <div className="flex items-center pl-1">
           {TrainComponent && <TrainComponent />}
@@ -165,11 +204,11 @@ export const TrainComponent: React.FC<TrainComponentProps> = ({ trains }) => {
           <span
             className={`${
               train.arrival_time === 'arriving'
-                ? 'bg-red-100 text-red-800'
+                ? 'text-black' // Deeper red with white text
                 : train.arrival_time.includes('minute') &&
                     parseInt(train.arrival_time.split(' ')[0], 10) < 5
-                  ? 'bg-yellow-100 text-yellow-800'
-                  : 'bg-green-100 text-green-800'
+                  ? 'text-black' // Changed to a darker orange for visibility
+                  : 'text-black' // A dark teal for general cases
             } py-1 px-3 rounded-full text-sm`}
           >
             {train.arrival_time}
@@ -185,6 +224,7 @@ interface StationComponentProps {
   refreshCounter: number;
 }
 
+// maps all stations to async station components
 export const StationsComponent: React.FC<StationComponentProps> = ({
   stations,
   refreshCounter,
@@ -269,16 +309,18 @@ export const TrainMenuBar: React.FC<
   };
 
   return (
-    <div className="flex flex-col items-center w-full pt-2">
-      <div className="w-fit flex justify-center items-center bg-gray-200 rounded-md p-2 space-x-4">
-        {/* <LocationButton onLocationFetch={onLocationFetch} onError={onError} /> */}
-        {/* <button
+    <div className="flex flex-col items-center w-full">
+      {' '}
+      {/* pt-2 */}
+      {/* <div className="w-fit flex justify-center items-center bg-gray-200 rounded-md p-2 space-x-4">
+        <LocationButton onLocationFetch={onLocationFetch} onError={onError} />
+        <button
           type="button"
           onClick={onRefresh}
           className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out"
         >
           Refresh Data
-        </button> */}
+        </button>
         <div className="flex items-center space-x-2">
           <span className="text-lg font-semibold text-gray-800">
             Search Radius:
@@ -295,7 +337,7 @@ export const TrainMenuBar: React.FC<
             <option value="Demo">Demo</option>
           </select>
         </div>
-      </div>
+      </div> */}
       {ipLocation && radius !== 'Demo' && (
         <div className="text-sm text-gray-500 mt-2 text-center">
           Using IP location. Provide access to location services for more
@@ -313,133 +355,133 @@ export const TrainMenuBar: React.FC<
 };
 
 export const NComponent: React.FC = () => (
-  <div className="flex items-center justify-center w-8 h-8 bg-yellow-400 cursor-pointer transition-all rounded-full">
+  <div className="flex items-center justify-center w-8 h-8 bg-yellow-400  transition-all rounded-full">
     <div className="text-white text-2xl">N</div>
   </div>
 );
 
 export const QComponent: React.FC = () => (
-  <div className="flex items-center justify-center w-8 h-8 bg-yellow-400 cursor-pointer transition-all rounded-full">
-    <div className="text-white text-2xl">R</div>
+  <div className="flex items-center justify-center w-8 h-8 bg-yellow-400  transition-all rounded-full">
+    <div className="text-white text-2xl">Q</div>
   </div>
 );
 
 export const RComponent: React.FC = () => (
-  <div className="flex items-center justify-center w-8 h-8 bg-yellow-400 cursor-pointer transition-all rounded-full">
+  <div className="flex items-center justify-center w-8 h-8 bg-yellow-400  transition-all rounded-full">
     <div className="text-white text-2xl">R</div>
   </div>
 );
 
 export const WComponent: React.FC = () => (
-  <div className="flex items-center justify-center w-8 h-8 bg-yellow-400 cursor-pointer transition-all rounded-full">
+  <div className="flex items-center justify-center w-8 h-8 bg-yellow-400  transition-all rounded-full">
     <div className="text-white text-2xl">W</div>
   </div>
 );
 
 export const BComponent: React.FC = () => (
-  <div className="flex items-center justify-center  w-8 h-8 bg-orange-400 cursor-pointer transition-all rounded-full">
+  <div className="flex items-center justify-center  w-8 h-8 bg-orange-400  transition-all rounded-full">
     <div className="text-white text-2xl">B</div>
   </div>
 );
 
 export const DComponent: React.FC = () => (
-  <div className="flex items-center justify-center w-8 h-8 bg-orange-400 cursor-pointer transition-all rounded-full">
+  <div className="flex items-center justify-center w-8 h-8 bg-orange-400  transition-all rounded-full">
     <div className="text-white text-2xl">D</div>
   </div>
 );
 
 export const FComponent: React.FC = () => (
-  <div className="flex items-center justify-center w-8 h-8 bg-orange-400 cursor-pointer transition-all rounded-full">
+  <div className="flex items-center justify-center w-8 h-8 bg-orange-400  transition-all rounded-full">
     <div className="text-white text-2xl">F</div>
   </div>
 );
 
 export const MComponent: React.FC = () => (
-  <div className="flex items-center justify-center w-8 h-8 bg-orange-400 cursor-pointer transition-all rounded-full">
+  <div className="flex items-center justify-center w-8 h-8 bg-orange-400  transition-all rounded-full">
     <div className="text-white text-2xl">M</div>
   </div>
 );
 
 export const OneComponent: React.FC = () => (
-  <div className="flex items-center justify-center w-8 h-8 bg-red-500 cursor-pointer transition-all rounded-full">
+  <div className="flex items-center justify-center w-8 h-8 bg-red-500  transition-all rounded-full">
     <div className="text-white text-2xl">1</div>
   </div>
 );
 
 export const TwoComponent: React.FC = () => (
-  <div className="flex items-center justify-center w-8 h-8 bg-red-500 cursor-pointer transition-all rounded-full">
+  <div className="flex items-center justify-center w-8 h-8 bg-red-500  transition-all rounded-full">
     <div className="text-white text-2xl">2</div>
   </div>
 );
 
 export const ThreeComponent: React.FC = () => (
-  <div className="flex items-center justify-center w-8 h-8 bg-red-500 cursor-pointer transition-all rounded-full">
+  <div className="flex items-center justify-center w-8 h-8 bg-red-500  transition-all rounded-full">
     <div className="text-white text-2xl">3</div>
   </div>
 );
 
 export const FourComponent: React.FC = () => (
-  <div className="flex items-center justify-center w-8 h-8 bg-green-600 cursor-pointer transition-all rounded-full">
+  <div className="flex items-center justify-center w-8 h-8 bg-green-600  transition-all rounded-full">
     <div className="text-white text-2xl">4</div>
   </div>
 );
 
 export const FiveComponent: React.FC = () => (
-  <div className="flex items-center justify-center w-8 h-8 bg-green-600 cursor-pointer transition-all rounded-full">
+  <div className="flex items-center justify-center w-8 h-8 bg-green-600  transition-all rounded-full">
     <div className="text-white text-2xl">5</div>
   </div>
 );
 
 export const SixComponent: React.FC = () => (
-  <div className="flex items-center justify-center w-8 h-8 bg-green-600 cursor-pointer transition-all rounded-full">
+  <div className="flex items-center justify-center w-8 h-8 bg-green-600  transition-all rounded-full">
     <div className="text-white text-2xl">6</div>
   </div>
 );
 
 export const AComponent: React.FC = () => (
-  <div className="flex items-center justify-center w-8 h-8 bg-cyan-400 cursor-pointer transition-all rounded-full">
+  <div className="flex items-center justify-center w-8 h-8 bg-cyan-400  transition-all rounded-full">
     <div className="text-white text-2xl">A</div>
   </div>
 );
 
 export const CComponent: React.FC = () => (
-  <div className="flex items-center justify-center w-8 h-8 bg-cyan-400 cursor-pointer transition-all rounded-full">
+  <div className="flex items-center justify-center w-8 h-8 bg-cyan-400  transition-all rounded-full">
     <div className="text-white text-2xl">C</div>
   </div>
 );
 
 export const EComponent: React.FC = () => (
-  <div className="flex items-center justify-center w-8 h-8 bg-cyan-400 cursor-pointer transition-all rounded-full">
+  <div className="flex items-center justify-center w-8 h-8 bg-cyan-400  transition-all rounded-full">
     <div className="text-white text-2xl">E</div>
   </div>
 );
 
 export const JComponent: React.FC = () => (
-  <div className="flex items-center justify-center w-8 h-8 bg-yellow-800 cursor-pointer transition-all rounded-full">
+  <div className="flex items-center justify-center w-8 h-8 bg-yellow-800  transition-all rounded-full">
     <div className="text-white text-2xl">J</div>
   </div>
 );
 
 export const ZComponent: React.FC = () => (
-  <div className="flex items-center justify-center w-8 h-8 bg-yellow-800 cursor-pointer transition-all rounded-full">
+  <div className="flex items-center justify-center w-8 h-8 bg-yellow-800  transition-all rounded-full">
     <div className="text-white text-2xl">Z</div>
   </div>
 );
 
 export const LComponent: React.FC = () => (
-  <div className="flex items-center justify-center w-8 h-8 bg-slate-400 cursor-pointer transition-all rounded-full">
+  <div className="flex items-center justify-center w-8 h-8 bg-slate-400  transition-all rounded-full">
     <div className="text-white text-2xl">L</div>
   </div>
 );
 
 export const SComponent: React.FC = () => (
-  <div className="flex items-center justify-center w-8 h-8 bg-slate-400 cursor-pointer transition-all rounded-full">
+  <div className="flex items-center justify-center w-8 h-8 bg-slate-400  transition-all rounded-full">
     <div className="text-white text-2xl">S</div>
   </div>
 );
 
 export const SevenComponent: React.FC = () => (
-  <div className="flex items-center justify-center w-8 h-8 bg-violet-400 cursor-pointer transition-all rounded-full">
+  <div className="flex items-center justify-center w-8 h-8 bg-violet-400  transition-all rounded-full">
     <div className="text-white text-2xl">7</div>
   </div>
 );
@@ -452,6 +494,7 @@ export const UnknownTrainComponent: React.FC<{ routeId: string }> = ({
   </div>
 );
 
+// map of train symbols to components
 export const trainSymbolMap: { [key: string]: React.FC } = {
   N: NComponent,
   Q: QComponent,
@@ -477,8 +520,84 @@ export const trainSymbolMap: { [key: string]: React.FC } = {
   '7': SevenComponent,
 };
 
-export const Spinner = () => (
-  <div className="flex justify-center items-center h-full">
-    <div className="animate-spin rounded-full border-t-4 border-b-4 border-blue-500 h-16 w-16"></div>
-  </div>
-);
+export const TrainSymbolsDisplay = ({
+  side,
+}: {
+  side?: string | undefined;
+}) => {
+  const keys = Object.keys(trainSymbolMap);
+  const middleIndex = Math.ceil(keys.length / 2);
+
+  const LeftLogos = keys.slice(0, middleIndex).map((key) => {
+    const TrainLogo = trainSymbolMap[key];
+    return <TrainLogo key={key} />;
+  });
+
+  const RightLogos = keys.slice(middleIndex).map((key) => {
+    const TrainLogo = trainSymbolMap[key];
+    return <TrainLogo key={key} />;
+  });
+
+  if (side === 'left') {
+    return <div className="flex items-center">{LeftLogos}</div>;
+  } else if (side === 'right') {
+    return <div className="flex items-center">{RightLogos}</div>;
+  } else {
+    return (
+      <div className="flex space-x-1">
+        <div className="flex items-center space-x-1">{LeftLogos}</div>
+        <div className="flex items-center space-x-1">{RightLogos}</div>
+      </div>
+    );
+  }
+};
+
+export const TrainCarousel: React.FC = () => {
+  const TrainComponents = [
+    NComponent,
+    QComponent,
+    RComponent,
+    WComponent,
+    BComponent,
+    DComponent,
+    FComponent,
+    MComponent,
+    OneComponent,
+    TwoComponent,
+    ThreeComponent,
+    FourComponent,
+    FiveComponent,
+    SixComponent,
+    AComponent,
+    CComponent,
+    EComponent,
+    JComponent,
+    ZComponent,
+    LComponent,
+    SComponent,
+    SevenComponent,
+  ];
+
+  return (
+    <>
+      <style>
+        {`
+          @keyframes scroll {
+            from { transform: translateX(100%); }
+            to { transform: translateX(-100%); }
+          }
+        `}
+      </style>
+      <div className="overflow-hidden pt-1">
+        <div
+          className="flex space-x-4 whitespace-nowrap"
+          style={{ animation: 'scroll 30s linear infinite' }}
+        >
+          {TrainComponents.map((Component, index) => (
+            <Component key={index} />
+          ))}
+        </div>
+      </div>
+    </>
+  );
+};

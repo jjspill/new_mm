@@ -5,7 +5,7 @@ const SidebarNavItems = ({ toggle }: { toggle: () => void }): JSX.Element => {
   return (
     <ul className="text-center leading-relaxed text-xl">
       {navData.map((item, index) => (
-        <li key={index}>
+        <li key={index} className="">
           <Link href={item.href} onClick={toggle}>
             {item.name}
           </Link>

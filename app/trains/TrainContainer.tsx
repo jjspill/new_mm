@@ -2,13 +2,21 @@
 
 // components/LocationPrompt.tsx
 import React, { useState, useEffect } from 'react';
-import { TrainMenuBar, Location, StationsComponent } from './TrainComponents';
+import {
+  TrainMenuBar,
+  Location,
+  StationsComponent,
+  StationLoadingPlaceholder,
+  TrainSymbolsDisplay,
+  TrainCarousel,
+} from './TrainComponents';
 import {
   useContinuousCountdown,
   useGeolocation,
   useNearestStations,
   useTrainData,
 } from './TrainHooks';
+import styles from './Train.module.css';
 
 const TrainsContainer: React.FC = () => {
   const [searchRadius, setSearchRadius] = useState<string | number>(0.5);
@@ -41,8 +49,17 @@ const TrainsContainer: React.FC = () => {
 
   return (
     <div>
-      <div className="flex justify-center items-center w-full h-10 bg-gray-200 text-center text-4xl font-bold text-gray-800 py-12">
-        Nearby Trains
+      <div className="flex flex-col justify-center items-center w-full min-h-20 h-fit bg-black text-center font-bold text-white py-2 font-sans">
+        <div className="min-h-[2px] w-[90%] md:w-[80%] bg-white"></div>
+        <div className="flex">
+          <div className="text-4xl px-4">Subway</div>
+        </div>
+        <div className="block md:hidden">
+          <TrainCarousel />
+        </div>
+        <div className="hidden md:block">
+          <TrainSymbolsDisplay />
+        </div>
       </div>
       <div
         style={{
@@ -63,10 +80,16 @@ const TrainsContainer: React.FC = () => {
         }}
       />
       <div className="w-full p-4 pb-0">
-        <StationsComponent
-          stations={nearestStations}
-          refreshCounter={refreshCounter}
-        />
+        {location && (
+          <StationsComponent
+            stations={nearestStations}
+            refreshCounter={refreshCounter}
+          />
+        )}
+        {!location &&
+          Array.from({ length: 4 }, (_, index) => (
+            <StationLoadingPlaceholder key={index} />
+          ))}
       </div>
     </div>
   );

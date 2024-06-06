@@ -4,6 +4,7 @@ import { PageContainer } from '../components/templates/PageContainer';
 import TrainsContainer from './TrainContainer';
 import { readFileSync } from 'fs';
 import { parse } from 'csv-parse/sync';
+import styles from './Train.module.css';
 
 export const metadata = {
   title: 'Train Times',
@@ -19,7 +20,7 @@ export const metadata = {
 
 const Home = async () => {
   return (
-    <PageContainer>
+    <PageContainer className="bg-[#FFEDD5]">
       <div>
         <TrainsContainer />
       </div>

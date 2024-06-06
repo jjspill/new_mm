@@ -22,7 +22,7 @@ const Navbar = ({
             <button
               type="button"
               title="Toggle Menu"
-              className={`inline-flex items-center md:hidden mr-2 ${
+              className={`inline-flex items-center md:hidden mr-2 z-10 ${
                 isOpen ? styles.rotateOpen : clicked ? styles.rotateClose : ''
               }`}
               onClick={toggle}
