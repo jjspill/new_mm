@@ -145,8 +145,10 @@ export const useTrainData = (
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ stops: nearestStations }),
           });
+          console.log('response', response);
           if (!response.ok) throw new Error('Network response was not ok');
           const data = await response.json();
+          console.log('data', data);
           data.forEach((station: Station) => {
             fixArrivalTime(station);
           });
