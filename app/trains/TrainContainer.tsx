@@ -86,7 +86,10 @@ const TrainsContainer: React.FC = () => {
             refreshCounter={refreshCounter}
           />
         )}
-        {!location && <StationLoadingPlaceholder />}
+        {!location &&
+          Array.from({ length: 4 }, (_, index) => (
+            <StationLoadingPlaceholder key={index} />
+          ))}
       </div>
     </div>
   );

@@ -185,8 +185,8 @@ export const useStation = (station: Station, refreshCounter: number) => {
         if (!response.ok) throw new Error('Network response was not ok');
         const data = await response.json();
         fixArrivalTime(data);
-        console.log('setting stop data for station: ', station.stopName);
         setStop(data);
+        console.log('setting stop data for station: ', station.stopName);
       } catch (error) {
         console.error('Failed to fetch stop:', error);
       }

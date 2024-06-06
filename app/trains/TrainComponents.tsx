@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useStation } from './TrainHooks';
 
 export interface Location {
@@ -32,7 +32,7 @@ export interface ApiResponse {
 // suspense for stations
 export const StationLoadingPlaceholder = () => (
   <div className="md:grid grid-cols-2 gap-x-4">
-    {Array.from({ length: 6 }, (_, index) => (
+    {Array.from({ length: 2 }, (_, index) => (
       <div
         key={index}
         className="mb-4 p-2 border rounded-md shadow bg-gray-200 animate-pulse"
@@ -58,7 +58,7 @@ export const StationLoadingPlaceholder = () => (
 // conjoined station header, for desktop view when stations are grouped horizontally
 export const ConjoinedStationDetails = ({ station }: { station: Station }) => {
   return (
-    <div className="mb-4">
+    <div className="mb-2">
       <div className="flex flex-col text-center text-xl font-semibold bg-black text-white p-2 rounded-md">
         <div className="flex flex-col justify-center items-center space-x-2">
           <div className="h-[2px] w-full bg-white"></div>
@@ -106,15 +106,48 @@ export const AsyncStationComponent: React.FC<StationProps> = ({
 }) => {
   const station = useStation(stationIn, refreshCounter);
 
+  const [showPlaceholder, setShowPlaceholder] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowPlaceholder(false);
+    }, 10000);
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (!showPlaceholder) {
+    console.log('showPlaceholder', showPlaceholder);
+    console.log('station', station);
+  }
+
   if (
-    station === undefined ||
-    (station?.n_trains.length === 0 && station?.s_trains.length === 0)
+    showPlaceholder &&
+    (station === undefined ||
+      (station?.n_trains.length === 0 && station?.s_trains.length === 0))
   ) {
     return <StationLoadingPlaceholder />;
+  } else if (
+    !showPlaceholder &&
+    (station === undefined ||
+      (station?.n_trains.length === 0 && station?.s_trains.length === 0))
+  ) {
+    return (
+      <div className="flex flex-col text-center text-xl font-semibold bg-black text-white p-2 rounded-md mb-2">
+        <div className="h-[2px] w-full bg-white"></div>
+        <span>{stationIn.stopName}</span>
+        <div className="flex items-center justify-center space-x-2">
+          <span>No trains available</span>
+        </div>
+      </div>
+    );
   }
   // } else if (station.n_trains.length === 0 && station.s_trains.length === 0) {
   //   return;
   // }
+
+  if (!station) {
+    return <div>Error station not found</div>;
+  }
 
   return (
     <div className="font-sans">
@@ -176,11 +209,11 @@ export const TrainComponent: React.FC<TrainComponentProps> = ({ trains }) => {
           <span
             className={`${
               train.arrival_time === 'arriving'
-                ? 'bg-red-100 text-red-800'
+                ? 'bg-red-400 text-white' // Deeper red with white text
                 : train.arrival_time.includes('minute') &&
                     parseInt(train.arrival_time.split(' ')[0], 10) < 5
-                  ? 'bg-yellow-100 text-yellow-800'
-                  : 'bg-green-100 text-green-800'
+                  ? 'bg-orange-200 text-white' // Changed to a darker orange for visibility
+                  : 'bg-teal-700 text-white' // A dark teal for general cases
             } py-1 px-3 rounded-full text-sm`}
           >
             {train.arrival_time}
@@ -524,14 +557,6 @@ export const TrainSymbolsDisplay = ({
   }
 };
 
-const animationStyle = {
-  animation: 'scroll 30s linear infinite',
-  '@keyframes scroll': {
-    from: { transform: 'translateX(100%)' },
-    to: { transform: 'translateX(-100%)' },
-  },
-};
-
 export const TrainCarousel: React.FC = () => {
   const TrainComponents = [
     NComponent,
@@ -568,7 +593,7 @@ export const TrainCarousel: React.FC = () => {
           }
         `}
       </style>
-      <div className="overflow-hidden">
+      <div className="overflow-hidden pt-1">
         <div
           className="flex space-x-4 whitespace-nowrap"
           style={{ animation: 'scroll 30s linear infinite' }}
