@@ -48,7 +48,6 @@ async function fetchIPGeolocation() {
 
 export const useGeolocation = () => {
   const [location, setLocation] = useState<Location | null>(null);
-  const [accessLocation, setAccessLocation] = useState(false);
   const [ipLocation, setIpLocation] = useState<boolean>(false);
 
   useEffect(() => {
@@ -77,7 +76,6 @@ export const useGeolocation = () => {
             .catch((error) => {
               console.error('Error getting location: ', error);
             });
-          setAccessLocation(true);
           console.error('Error getting location: ', error);
         },
       );
@@ -86,7 +84,7 @@ export const useGeolocation = () => {
     }
   }, []);
 
-  return { location, setLocation, accessLocation, ipLocation };
+  return { location, ipLocation };
 };
 
 export const useNearestStations = (
@@ -94,7 +92,6 @@ export const useNearestStations = (
   searchRadius: string | number,
 ) => {
   const [nearestStations, setNearestStations] = useState<Station[]>([]);
-  const [noTrainsFound, setNoTrainsFound] = useState(false);
 
   if (searchRadius === 'Demo') {
     location = GRAND_CENTRAL;
@@ -122,11 +119,10 @@ export const useNearestStations = (
       }
     };
 
-    setNoTrainsFound(false);
     findNearestStations();
   }, [location, searchRadius]);
 
-  return { nearestStations, noTrainsFound, setNoTrainsFound };
+  return { nearestStations };
 };
 
 export const useTrainData = (

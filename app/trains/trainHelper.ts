@@ -1,9 +1,5 @@
-import { readFileSync } from 'fs';
-import { parse } from 'csv-parse/sync';
-import { Stop } from './TrainHooks';
 import { Station, Train } from './TrainComponents';
 import { parseISO, differenceInSeconds } from 'date-fns';
-import { toZonedTime, format } from 'date-fns-tz';
 
 function processTrains(trains: Train[]) {
   if (!trains) return [];
