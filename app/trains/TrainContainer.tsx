@@ -2,7 +2,13 @@
 
 // components/LocationPrompt.tsx
 import React, { useState, useEffect } from 'react';
-import { TrainMenuBar, Location, StationsComponent } from './TrainComponents';
+import {
+  TrainMenuBar,
+  Location,
+  StationsComponent,
+  StationLoadingPlaceholder,
+  TrainSymbolsDisplay,
+} from './TrainComponents';
 import {
   useContinuousCountdown,
   useGeolocation,
@@ -41,8 +47,14 @@ const TrainsContainer: React.FC = () => {
 
   return (
     <div>
-      <div className="flex justify-center items-center w-full h-10 bg-gray-200 text-center text-4xl font-bold text-gray-800 py-12">
-        Nearby Trains
+      <div className="flex flex-col justify-center items-center w-full h-20 bg-black text-center font-bold text-white py-12 font-sans">
+        <div className="min-h-[2px] w-[80%] bg-white"></div>
+        <div className="flex">
+          {/* <TrainSymbolsDisplay side="left" /> */}
+          <div className="text-4xl px-4">Subway</div>
+          {/* <TrainSymbolsDisplay side="right" /> */}
+        </div>
+        <TrainSymbolsDisplay />
       </div>
       <div
         style={{
@@ -63,10 +75,13 @@ const TrainsContainer: React.FC = () => {
         }}
       />
       <div className="w-full p-4 pb-0">
-        <StationsComponent
-          stations={nearestStations}
-          refreshCounter={refreshCounter}
-        />
+        {location && (
+          <StationsComponent
+            stations={nearestStations}
+            refreshCounter={refreshCounter}
+          />
+        )}
+        {!location && <StationLoadingPlaceholder />}
       </div>
     </div>
   );

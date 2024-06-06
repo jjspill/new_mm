@@ -52,8 +52,10 @@ export const useGeolocation = () => {
 
   useEffect(() => {
     setIpLocation(false);
+    console.log('start useGeolocation');
     const cachedLocation = getSavedLocation();
     if (cachedLocation) {
+      console.log('setting cached location');
       setLocation(cachedLocation);
     } else if ('geolocation' in navigator) {
       navigator.geolocation.getCurrentPosition(
@@ -62,6 +64,7 @@ export const useGeolocation = () => {
             lat: position.coords.latitude,
             lng: position.coords.longitude,
           };
+          console.log('setting new location');
           setLocation(newLocation);
           saveLocation(newLocation);
         },
@@ -102,6 +105,7 @@ export const useNearestStations = (
     const findNearestStations = async () => {
       if (!location || !searchRadius) return;
       try {
+        console.log('fetching nearest stations');
         const response = await fetch(`/trains/stops/api`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -113,6 +117,7 @@ export const useNearestStations = (
         });
 
         const stopsList = await response.json();
+        console.log('setting nearest stations');
         setNearestStations(stopsList);
       } catch (error) {
         console.error('Error finding nearest stations: ', error);
@@ -168,14 +173,19 @@ export const useStation = (station: Station, refreshCounter: number) => {
     const fetchStop = async () => {
       if (!station) return;
       try {
+        console.log('fetching stop data for station: ', station.stopName);
         const response = await fetch(`/trains/api`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ stops: [station] }),
+          next: {
+            revalidate: 30,
+          },
         });
         if (!response.ok) throw new Error('Network response was not ok');
         const data = await response.json();
         fixArrivalTime(data);
+        console.log('setting stop data for station: ', station.stopName);
         setStop(data);
       } catch (error) {
         console.error('Failed to fetch stop:', error);

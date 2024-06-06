@@ -9,6 +9,7 @@ const pgPool = new pg.Pool({
 });
 
 export async function POST(request: Request) {
+  let startTime = 0;
   const body = await request.json();
   const { stops } = body;
   // console.log('Received stops:', stops); // Log received stops
@@ -18,6 +19,8 @@ export async function POST(request: Request) {
 
   const client = await pgPool.connect();
   try {
+    console.log('Connected to database'); // Log database connection
+    startTime = new Date().getTime();
     const queryText = 'SELECT * FROM arrivals WHERE stop_id = ANY($1)';
     const res = await client.query(queryText, [stopIds]);
     const newTrainData = buildTrainData(res.rows, stops);
@@ -37,6 +40,11 @@ export async function POST(request: Request) {
     );
   } finally {
     client.release();
+    console.log('Released database connection'); // Log database connection release
+    console.log(
+      'time taken in seconds: ',
+      (new Date().getTime() - startTime) / 1000,
+    );
   }
 }
 
