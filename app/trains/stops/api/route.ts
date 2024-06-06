@@ -13,18 +13,7 @@ export async function POST(request: Request) {
       'utf-8',
     );
     const stops = parse(stationInfo, {
-      columns: (header) =>
-        header.map((column: any) => {
-          if (
-            column === 'stop_id' ||
-            column === 'stop_name' ||
-            column === 'stop_lat' ||
-            column === 'stop_lon'
-          ) {
-            return column;
-          }
-          return null;
-        }),
+      columns: true,
       skip_empty_lines: true,
     });
 

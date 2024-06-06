@@ -5,10 +5,11 @@ import React, { useState, useEffect } from 'react';
 import {
   Station,
   TrainMenuBar,
-  trainComponentMap,
+  trainSymbolMap,
   Location,
   StationsComponent,
   StationLoadingPlaceholder,
+  Train,
 } from './TrainComponents';
 import {
   GRAND_CENTRAL,
@@ -18,29 +19,26 @@ import {
   useTrainData,
 } from './TrainHooks';
 
-function fixArrivalTime(stations: Station[]): Station[] {
-  stations.forEach((station) => {
-    station.trains = station.trains.filter((train) => {
-      const arrivalTimeMillis = new Date(train.arrivalTime).getTime();
-      const currentTimeMillis = Date.now();
-      const timeDiffInSeconds = (arrivalTimeMillis - currentTimeMillis) / 1000;
+function fixArrivalTime(train: Train) {
+  console.log('time', train.arrival_time);
+  const arrivalTimeMillis = new Date(train.arrival_time).getTime();
+  const currentTimeMillis = Date.now();
+  const timeDiffInSeconds = (arrivalTimeMillis - currentTimeMillis) / 1000;
 
-      if (timeDiffInSeconds < -30) {
-        // console.log('Train already left', timeDiffInSeconds / 60, train);
-        return false;
-      }
+  if (timeDiffInSeconds < -30) {
+    // Train departed more than 30 seconds ago
+    train.arrival_time = 'departed';
+  } else if (timeDiffInSeconds <= 0) {
+    // Train is arriving now or has just arrived
+    train.arrival_time = 'arriving';
+  } else {
+    // Train is yet to arrive; calculate minutes and seconds until arrival
+    const minutes = Math.floor(timeDiffInSeconds / 60);
+    const seconds = Math.floor(timeDiffInSeconds % 60);
+    train.arrival_time = `${minutes} ${minutes === 1 ? 'minute' : 'minutes'} and ${seconds} ${seconds === 1 ? 'second' : 'seconds'}`;
+  }
 
-      // Format the time to arrival
-      train.arrivalTime =
-        timeDiffInSeconds <= 0 || Math.floor(timeDiffInSeconds / 60) === 0
-          ? 'arriving'
-          : `${Math.floor(timeDiffInSeconds / 60)} ${Math.floor(timeDiffInSeconds / 60) === 1 ? 'minute' : 'minutes'}`;
-
-      return true;
-    });
-  });
-
-  return stations;
+  return train;
 }
 
 function sortStations(stations: Station[]): Station[] {
@@ -66,9 +64,6 @@ function sortStations(stations: Station[]): Station[] {
 }
 
 const TrainsContainer: React.FC = () => {
-  const [nearestStopsWithTrains, setNearestStopsWithTrains] = useState<
-    Station[]
-  >([]);
   const [searchRadius, setSearchRadius] = useState<string | number>(0.5);
 
   // hooks
@@ -76,7 +71,7 @@ const TrainsContainer: React.FC = () => {
   const { location, setLocation, accessLocation, ipLocation } =
     useGeolocation();
   const { nearestStations, noTrainsFound, setNoTrainsFound } =
-    useNearestStations(location, searchRadius, setNearestStopsWithTrains);
+    useNearestStations(location, searchRadius);
   const trainData = useTrainData(nearestStations, refreshCounter);
 
   const refreshData = () => {
@@ -100,68 +95,15 @@ const TrainsContainer: React.FC = () => {
     },
   };
 
-  // Combine nearest stations with train data
-  useEffect(() => {
-    if (trainData) {
-      const stopsWithTrains: Station[] = [];
-      trainData.forEach((stop) => {
-        const stopData = nearestStations.find(
-          (station) => station.stopId === stop.stopId,
-        );
-        if (stopData) {
-          if (stop.northbound) {
-            const stationN: Station = {
-              stopId: stop.stopId + 'N',
-              stopName: stopData.stopName,
-              distance: stopData.distance,
-              headsign: stop.northbound.name,
-              trains: [],
-            };
-            stop.northbound.trains.forEach((train) => {
-              stationN.trains.push({
-                ...train,
-                stopId: stop.stopId + 'N',
-              });
-            });
-            stopsWithTrains.push(stationN);
-          }
-          if (stop.southbound) {
-            const stationS: Station = {
-              stopId: stop.stopId + 'S',
-              stopName: stopData.stopName,
-              distance: stopData.distance,
-              trains: [],
-              headsign: stop.southbound.name,
-            };
-            stop.southbound.trains.forEach((train) => {
-              stationS.trains.push({
-                ...train,
-                stopId: stop.stopId + 'S',
-              });
-            });
-            stopsWithTrains.push(stationS);
-          }
-        }
-      });
-      setNearestStopsWithTrains(sortStations(fixArrivalTime(stopsWithTrains)));
-      if (nearestStopsWithTrains.length === 0 && nearestStations.length === 0) {
-        const messageTimer = setTimeout(() => {
-          console.log('No trains found');
-          console.log('nearestStopsWithTrains', nearestStopsWithTrains);
-          console.log('nearestStations', nearestStations);
-          console.log('trainData', trainData);
-          console.log('noTrainsFound', noTrainsFound);
-          console.log('location', location);
-          console.log('accessLocation', accessLocation);
-          setNoTrainsFound(true);
-        }, 1000);
-
-        return () => clearTimeout(messageTimer);
-      } else {
-        setNoTrainsFound(false);
-      }
-    }
-  }, [trainData]);
+  // trainData?.forEach((station) => {
+  //   station.s_trains.forEach((train) => {
+  //     fixArrivalTime(train);
+  //   });
+  // });
+  //   station.s_trains.forEach((train) => {
+  //     fixArrivalTime(train);
+  //   });
+  // });
 
   return (
     <div>
@@ -188,10 +130,10 @@ const TrainsContainer: React.FC = () => {
         }}
       />
       <div className="w-full p-4 pb-0">
-        {nearestStopsWithTrains.length > 0 ? (
+        {nearestStations && trainData ? (
           <StationsComponent
-            stations={nearestStopsWithTrains}
-            trainComponentMap={trainComponentMap}
+            stations={trainData}
+            trainSymbolMap={trainSymbolMap}
           />
         ) : (
           <StationLoadingPlaceholder />

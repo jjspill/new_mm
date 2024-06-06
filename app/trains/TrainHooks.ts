@@ -1,24 +1,14 @@
 import { useState, useEffect } from 'react';
 
-import { Location, Station } from './TrainComponents';
+import { Location, Station, Train } from './TrainComponents';
+import { fixArrivalTime } from './trainHelper';
 
-interface Stop {
+export interface Stop {
   stopId: string;
   stopName: string;
   distance: number;
-}
-
-interface Train {
-  arrivalTime: string;
-  tripId: string;
-  routeId: string;
-  destination: string;
-}
-
-interface BackendResponse {
-  stopId: string;
-  southbound: { name: string; trains: Train[] };
-  northbound: { name: string; trains: Train[] };
+  n_headsign: string;
+  s_headsign: string;
 }
 
 const LOCATION_EXPIRY_TIME = 5 * 60 * 1000; // 5 minutes in milliseconds
@@ -102,7 +92,6 @@ export const useGeolocation = () => {
 export const useNearestStations = (
   location: Location | null,
   searchRadius: string | number,
-  setNearestStopsWithTrains: (stops: Station[]) => void,
 ) => {
   const [nearestStations, setNearestStations] = useState<Stop[]>([]);
   const [noTrainsFound, setNoTrainsFound] = useState(false);
@@ -133,7 +122,6 @@ export const useNearestStations = (
       }
     };
 
-    setNearestStopsWithTrains([]);
     setNoTrainsFound(false);
     findNearestStations();
   }, [location, searchRadius]);
@@ -145,20 +133,23 @@ export const useTrainData = (
   nearestStations: Stop[],
   refreshCounter: number,
 ) => {
-  const [trainData, setTrainData] = useState<BackendResponse[] | null>(null);
+  const [trainData, setTrainData] = useState<Station[] | null>(null);
 
   useEffect(() => {
     const fetchData = async () => {
       if (nearestStations.length > 0) {
-        const stopIds = nearestStations.map((station) => station.stopId);
+        // const stopIds = nearestStations.map((station) => station.stopId);
         try {
           const response = await fetch('/trains/api', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ stopIds }),
+            body: JSON.stringify({ stops: nearestStations }),
           });
           if (!response.ok) throw new Error('Network response was not ok');
           const data = await response.json();
+          data.forEach((station: Station) => {
+            fixArrivalTime(station);
+          });
           setTrainData(data);
         } catch (error) {
           console.error('Failed to fetch train data:', error);

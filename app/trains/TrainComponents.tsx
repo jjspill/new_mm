@@ -6,19 +6,21 @@ export interface Location {
 }
 
 export interface Train {
-  arrivalTime: string;
-  routeId: string;
-  tripId: string;
-  stopId: string;
+  arrival_time: string;
+  route_id: string;
+  trip_id: string;
+  stop_id: string;
   destination: string;
 }
 
 export interface Station {
   stopName: string;
-  headsign: string;
+  n_headsign: string;
+  s_headsign: string;
   stopId: string;
   distance: number;
-  trains: Train[];
+  n_trains: Train[];
+  s_trains: Train[];
 }
 
 export interface ApiResponse {
@@ -51,67 +53,92 @@ export const StationLoadingPlaceholder = () => (
   </div>
 );
 
+interface TrainComponentProps {
+  trains: Train[];
+  trainSymbolMap: { [key: string]: React.FC };
+}
+
+export const TrainComponent: React.FC<TrainComponentProps> = ({
+  trains,
+  trainSymbolMap,
+}) => {
+  return trains.slice(0, 4).map((train, index) => {
+    const TrainComponent = trainSymbolMap[train.route_id] || null;
+
+    const isLastTrain = index === trains.length - 1 || index === 3;
+    return (
+      <div
+        key={index}
+        className={`flex justify-between items-center ${!isLastTrain && 'border-b border-gray-300'} py-2`}
+      >
+        <div className="flex items-center pl-1">
+          {TrainComponent && <TrainComponent />}
+          {!TrainComponent && (
+            <UnknownTrainComponent routeId={train.route_id} />
+          )}
+          <div className="pl-2 text-sm">{train.destination}</div>
+        </div>
+        <div className="pr-1">
+          <span
+            className={`${
+              train.arrival_time === 'arriving'
+                ? 'bg-red-100 text-red-800'
+                : train.arrival_time.includes('minute') &&
+                    parseInt(train.arrival_time.split(' ')[0], 10) < 5
+                  ? 'bg-yellow-100 text-yellow-800'
+                  : 'bg-green-100 text-green-800'
+            } py-1 px-3 rounded-full text-sm`}
+          >
+            {train.arrival_time}
+          </span>
+        </div>
+      </div>
+    );
+  });
+};
+
 interface StationComponentProps {
   stations: Station[];
-  trainComponentMap: { [key: string]: React.FC };
+  trainSymbolMap: { [key: string]: React.FC };
 }
 
 export const StationsComponent: React.FC<StationComponentProps> = ({
   stations,
-  trainComponentMap,
+  trainSymbolMap,
 }) => {
   return (
-    <div className="md:grid grid-cols-2 gap-x-4">
+    <div className="">
       {stations.map((station, index) => (
-        <div key={index}>
-          {station.trains.length > 0 && (
-            <div key={index} className="mb-4">
-              <div className="flex flex-col text-center text-xl font-semibold bg-gray-200 p-2 rounded-md">
-                <div className="flex justify-center items-center space-x-2">
-                  <span>{station.stopName}</span>
-                  <span className="text-gray-400">{station.headsign}</span>
+        <div key={index} className="mb-4">
+          <div className="flex flex-col text-center text-xl font-semibold bg-gray-200 p-2 rounded-md">
+            <div className="flex flex-col justify-center items-center space-x-2">
+              <span>{station.stopName}</span>
+              <div className="grid grid-cols-2 gap-x-4 w-full">
+                <div className="flex items-center justify-center space-x-2">
+                  <span className="text-gray-500">N:</span>
+                  <span>{station.n_headsign}</span>
                 </div>
-                <span className="text-sm font-normal">
-                  {station.distance.toFixed(2)} miles
-                </span>
+                <div className="flex items-center justify-center space-x-2">
+                  <span className="text-gray-500">S:</span>
+                  <span>{station.s_headsign}</span>
+                </div>
               </div>
-              {station.trains.slice(0, 4).map((train, index) => {
-                const TrainComponent = trainComponentMap[train.routeId] || null;
-
-                const isLastTrain =
-                  index === station.trains.length - 1 || index === 3;
-                return (
-                  <div
-                    key={index}
-                    className={`flex justify-between items-center ${!isLastTrain && 'border-b border-gray-300'} py-2`}
-                  >
-                    <div className="flex items-center pl-1">
-                      {TrainComponent && <TrainComponent />}
-                      {!TrainComponent && (
-                        <UnknownTrainComponent routeId={train.routeId} />
-                      )}
-                      <div className="pl-2 text-sm">{train.destination}</div>
-                    </div>
-                    <div className="pr-1">
-                      <span
-                        className={`${
-                          train.arrivalTime === 'arriving'
-                            ? 'bg-red-100 text-red-800'
-                            : train.arrivalTime.includes('minute') &&
-                                parseInt(train.arrivalTime.split(' ')[0], 10) <
-                                  5
-                              ? 'bg-yellow-100 text-yellow-800'
-                              : 'bg-green-100 text-green-800'
-                        } py-1 px-3 rounded-full text-sm`}
-                      >
-                        {train.arrivalTime}
-                      </span>
-                    </div>
-                  </div>
-                );
-              })}
             </div>
-          )}
+          </div>
+          <div key={index} className="md:grid grid-cols-2 gap-x-4">
+            <div className="col-span-1">
+              <TrainComponent
+                trains={station.n_trains}
+                trainSymbolMap={trainSymbolMap}
+              />
+            </div>
+            <div className="col-span-1">
+              <TrainComponent
+                trains={station.s_trains}
+                trainSymbolMap={trainSymbolMap}
+              />
+            </div>
+          </div>
         </div>
       ))}
     </div>
@@ -252,7 +279,7 @@ export const WComponent: React.FC = () => (
 );
 
 export const BComponent: React.FC = () => (
-  <div className="flex items-center justify-center w-8 h-8 bg-orange-400 cursor-pointer transition-all rounded-full">
+  <div className="flex items-center justify-center  w-8 h-8 bg-orange-400 cursor-pointer transition-all rounded-full">
     <div className="text-white text-2xl">B</div>
   </div>
 );
@@ -367,7 +394,7 @@ export const UnknownTrainComponent: React.FC<{ routeId: string }> = ({
   </div>
 );
 
-export const trainComponentMap: { [key: string]: React.FC } = {
+export const trainSymbolMap: { [key: string]: React.FC } = {
   N: NComponent,
   Q: QComponent,
   R: RComponent,
