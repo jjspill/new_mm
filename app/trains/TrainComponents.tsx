@@ -53,6 +53,8 @@ export const StationLoadingPlaceholder = () => (
   </div>
 );
 
+export const asyncTrainComponent = (station: Station) => {};
+
 interface TrainComponentProps {
   trains: Train[];
   trainSymbolMap: { [key: string]: React.FC };
@@ -106,41 +108,43 @@ export const StationsComponent: React.FC<StationComponentProps> = ({
   stations,
   trainSymbolMap,
 }) => {
+  console.log('stations:', stations);
   return (
     <div className="">
-      {stations.map((station, index) => (
-        <div key={index} className="mb-4">
-          <div className="flex flex-col text-center text-xl font-semibold bg-gray-200 p-2 rounded-md">
-            <div className="flex flex-col justify-center items-center space-x-2">
-              <span>{station.stopName}</span>
-              <div className="grid grid-cols-2 gap-x-4 w-full">
-                <div className="flex items-center justify-center space-x-2">
-                  <span className="text-gray-500">N:</span>
-                  <span>{station.n_headsign}</span>
-                </div>
-                <div className="flex items-center justify-center space-x-2">
-                  <span className="text-gray-500">S:</span>
-                  <span>{station.s_headsign}</span>
+      {stations &&
+        stations.map((station, index) => (
+          <div key={index} className="mb-4">
+            <div className="flex flex-col text-center text-xl font-semibold bg-gray-200 p-2 rounded-md">
+              <div className="flex flex-col justify-center items-center space-x-2">
+                <span>{station.stopName}</span>
+                <div className="grid grid-cols-2 gap-x-4 w-full">
+                  <div className="flex items-center justify-center space-x-2">
+                    <span className="text-gray-500">N:</span>
+                    <span>{station.n_headsign}</span>
+                  </div>
+                  <div className="flex items-center justify-center space-x-2">
+                    <span className="text-gray-500">S:</span>
+                    <span>{station.s_headsign}</span>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-          <div key={index} className="md:grid grid-cols-2 gap-x-4">
-            <div className="col-span-1">
-              <TrainComponent
-                trains={station.n_trains}
-                trainSymbolMap={trainSymbolMap}
-              />
+            <div key={index} className="md:grid grid-cols-2 gap-x-4">
+              <div className="col-span-1">
+                <TrainComponent
+                  trains={station.n_trains}
+                  trainSymbolMap={trainSymbolMap}
+                />
+              </div>
+              <div className="col-span-1">
+                <TrainComponent
+                  trains={station.s_trains}
+                  trainSymbolMap={trainSymbolMap}
+                />
+              </div>
             </div>
-            <div className="col-span-1">
-              <TrainComponent
-                trains={station.s_trains}
-                trainSymbolMap={trainSymbolMap}
-              />
-            </div>
           </div>
-        </div>
-      ))}
+        ))}
     </div>
   );
 };

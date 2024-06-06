@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 
 import { Location, Station, Train } from './TrainComponents';
-import { fixArrivalTime } from './trainHelper';
+import { buildTrainData, fixArrivalTime } from './trainHelper';
 
 export interface Stop {
   stopId: string;
@@ -93,7 +93,7 @@ export const useNearestStations = (
   location: Location | null,
   searchRadius: string | number,
 ) => {
-  const [nearestStations, setNearestStations] = useState<Stop[]>([]);
+  const [nearestStations, setNearestStations] = useState<Station[]>([]);
   const [noTrainsFound, setNoTrainsFound] = useState(false);
 
   if (searchRadius === 'Demo') {
@@ -130,7 +130,7 @@ export const useNearestStations = (
 };
 
 export const useTrainData = (
-  nearestStations: Stop[],
+  nearestStations: Station[],
   refreshCounter: number,
 ) => {
   const [trainData, setTrainData] = useState<Station[] | null>(null);
@@ -138,7 +138,6 @@ export const useTrainData = (
   useEffect(() => {
     const fetchData = async () => {
       if (nearestStations.length > 0) {
-        // const stopIds = nearestStations.map((station) => station.stopId);
         try {
           const response = await fetch('/trains/api', {
             method: 'POST',
@@ -147,9 +146,10 @@ export const useTrainData = (
           });
           if (!response.ok) throw new Error('Network response was not ok');
           const data = await response.json();
-          data.forEach((station: Station) => {
+          data?.forEach((station: Station) => {
             fixArrivalTime(station);
           });
+
           setTrainData(data);
         } catch (error) {
           console.error('Failed to fetch train data:', error);
