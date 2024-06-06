@@ -115,11 +115,6 @@ export const AsyncStationComponent: React.FC<StationProps> = ({
     return () => clearTimeout(timer);
   }, []);
 
-  if (!showPlaceholder) {
-    console.log('showPlaceholder', showPlaceholder);
-    console.log('station', station);
-  }
-
   if (
     showPlaceholder &&
     (station === undefined ||
@@ -209,11 +204,11 @@ export const TrainComponent: React.FC<TrainComponentProps> = ({ trains }) => {
           <span
             className={`${
               train.arrival_time === 'arriving'
-                ? 'bg-red-400 text-white' // Deeper red with white text
+                ? 'text-black' // Deeper red with white text
                 : train.arrival_time.includes('minute') &&
                     parseInt(train.arrival_time.split(' ')[0], 10) < 5
-                  ? 'bg-orange-200 text-white' // Changed to a darker orange for visibility
-                  : 'bg-teal-700 text-white' // A dark teal for general cases
+                  ? 'text-black' // Changed to a darker orange for visibility
+                  : 'text-black' // A dark teal for general cases
             } py-1 px-3 rounded-full text-sm`}
           >
             {train.arrival_time}
