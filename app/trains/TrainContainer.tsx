@@ -8,6 +8,7 @@ import {
   StationsComponent,
   StationLoadingPlaceholder,
   TrainSymbolsDisplay,
+  TrainCarousel,
 } from './TrainComponents';
 import {
   useContinuousCountdown,
@@ -15,6 +16,7 @@ import {
   useNearestStations,
   useTrainData,
 } from './TrainHooks';
+import styles from './Train.module.css';
 
 const TrainsContainer: React.FC = () => {
   const [searchRadius, setSearchRadius] = useState<string | number>(0.5);
@@ -47,14 +49,17 @@ const TrainsContainer: React.FC = () => {
 
   return (
     <div>
-      <div className="flex flex-col justify-center items-center w-full h-20 bg-black text-center font-bold text-white py-12 font-sans">
-        <div className="min-h-[2px] w-[80%] bg-white"></div>
+      <div className="flex flex-col justify-center items-center w-full min-h-20 h-fit bg-black text-center font-bold text-white py-2 font-sans">
+        <div className="min-h-[2px] w-[90%] md:w-[80%] bg-white"></div>
         <div className="flex">
-          {/* <TrainSymbolsDisplay side="left" /> */}
           <div className="text-4xl px-4">Subway</div>
-          {/* <TrainSymbolsDisplay side="right" /> */}
         </div>
-        <TrainSymbolsDisplay />
+        <div className="block md:hidden">
+          <TrainCarousel />
+        </div>
+        <div className="hidden md:block">
+          <TrainSymbolsDisplay />
+        </div>
       </div>
       <div
         style={{

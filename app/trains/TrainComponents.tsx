@@ -85,7 +85,8 @@ const StationDetailsComponent = ({
   stopName: string;
   headsign: string;
 }) => (
-  <div className="flex flex-col text-center text-xl font-semibold bg-black p-2 rounded-md">
+  <div className="flex flex-col text-center text-xl font-semibold bg-black text-white p-2 rounded-md">
+    <div className="h-[2px] w-full bg-white"></div>
     <span>{stopName}</span>
     <div className="flex items-center justify-center space-x-2">
       <span>{headsign}</span>
@@ -116,8 +117,8 @@ export const AsyncStationComponent: React.FC<StationProps> = ({
   // }
 
   return (
-    <div className="mb-4 font-sans">
-      <div className="block md:hidden gap-x-4">
+    <div className="font-sans">
+      <div className="block md:hidden">
         <div>
           <StationDetailsComponent
             stopName={station.stopName}
@@ -162,7 +163,7 @@ export const TrainComponent: React.FC<TrainComponentProps> = ({ trains }) => {
     return (
       <div
         key={index}
-        className={`flex justify-between items-center ${!isLastTrain && 'border-b border-gray-300'} py-2`}
+        className={`flex justify-between items-center ${!isLastTrain && 'border-b border-black'} ${isLastTrain && 'pb-4'} py-2`}
       >
         <div className="flex items-center pl-1">
           {TrainComponent && <TrainComponent />}
@@ -280,16 +281,18 @@ export const TrainMenuBar: React.FC<
   };
 
   return (
-    <div className="flex flex-col items-center w-full pt-2">
-      <div className="w-fit flex justify-center items-center bg-gray-200 rounded-md p-2 space-x-4">
-        {/* <LocationButton onLocationFetch={onLocationFetch} onError={onError} /> */}
-        {/* <button
+    <div className="flex flex-col items-center w-full">
+      {' '}
+      {/* pt-2 */}
+      {/* <div className="w-fit flex justify-center items-center bg-gray-200 rounded-md p-2 space-x-4">
+        <LocationButton onLocationFetch={onLocationFetch} onError={onError} />
+        <button
           type="button"
           onClick={onRefresh}
           className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out"
         >
           Refresh Data
-        </button> */}
+        </button>
         <div className="flex items-center space-x-2">
           <span className="text-lg font-semibold text-gray-800">
             Search Radius:
@@ -306,7 +309,7 @@ export const TrainMenuBar: React.FC<
             <option value="Demo">Demo</option>
           </select>
         </div>
-      </div>
+      </div> */}
       {ipLocation && radius !== 'Demo' && (
         <div className="text-sm text-gray-500 mt-2 text-center">
           Using IP location. Provide access to location services for more
@@ -519,4 +522,62 @@ export const TrainSymbolsDisplay = ({
       </div>
     );
   }
+};
+
+const animationStyle = {
+  animation: 'scroll 30s linear infinite',
+  '@keyframes scroll': {
+    from: { transform: 'translateX(100%)' },
+    to: { transform: 'translateX(-100%)' },
+  },
+};
+
+export const TrainCarousel: React.FC = () => {
+  const TrainComponents = [
+    NComponent,
+    QComponent,
+    RComponent,
+    WComponent,
+    BComponent,
+    DComponent,
+    FComponent,
+    MComponent,
+    OneComponent,
+    TwoComponent,
+    ThreeComponent,
+    FourComponent,
+    FiveComponent,
+    SixComponent,
+    AComponent,
+    CComponent,
+    EComponent,
+    JComponent,
+    ZComponent,
+    LComponent,
+    SComponent,
+    SevenComponent,
+  ];
+
+  return (
+    <>
+      <style>
+        {`
+          @keyframes scroll {
+            from { transform: translateX(100%); }
+            to { transform: translateX(-100%); }
+          }
+        `}
+      </style>
+      <div className="overflow-hidden">
+        <div
+          className="flex space-x-4 whitespace-nowrap"
+          style={{ animation: 'scroll 30s linear infinite' }}
+        >
+          {TrainComponents.map((Component, index) => (
+            <Component key={index} />
+          ))}
+        </div>
+      </div>
+    </>
+  );
 };
