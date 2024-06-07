@@ -50,7 +50,7 @@ const TrainsContainer: React.FC = () => {
               Acquiring location, please hold on...
             </div>
           )}
-          {locationStatus === 'NOT_FOUND' && (
+          {locationStatus === 'NOT_FOUND' && searchRadius !== 'Demo' && (
             <div className="flex flex-col items-center justify-center">
               <div className="text-center text-gray-500">
                 Location not found. Please enable location services.
@@ -65,30 +65,31 @@ const TrainsContainer: React.FC = () => {
               </button>
             </div>
           )}
-          {locationStatus === 'FOUND' && nearestStations.length > 0 && (
-            <>
-              {nearestStations.map((station, index) => (
-                <AsyncStationComponent
-                  key={index}
-                  stationIn={station}
-                  refreshCounter={refreshCounter}
-                />
-              ))}
-              <div className="flex flex items-center justify-center">
-                <button
-                  type="button"
-                  title="Search within 1 mile radius"
-                  onClick={() => setSearchRadius(1)}
-                  className="p-2 bg-black text-white rounded-md my-2 w-fit"
-                  style={{
-                    visibility: searchRadius === 0.5 ? 'visible' : 'hidden',
-                  }}
-                >
-                  Expand Search Radius to 1 Mile
-                </button>
-              </div>
-            </>
-          )}
+          {(locationStatus === 'FOUND' || searchRadius === 'Demo') &&
+            nearestStations.length > 0 && (
+              <>
+                {nearestStations.map((station, index) => (
+                  <AsyncStationComponent
+                    key={index}
+                    stationIn={station}
+                    refreshCounter={refreshCounter}
+                  />
+                ))}
+                <div className="flex flex items-center justify-center">
+                  <button
+                    type="button"
+                    title="Search within 1 mile radius"
+                    onClick={() => setSearchRadius(1)}
+                    className="p-2 bg-black text-white rounded-md my-2 w-fit"
+                    style={{
+                      visibility: searchRadius === 0.5 ? 'visible' : 'hidden',
+                    }}
+                  >
+                    Expand Search Radius to 1 Mile
+                  </button>
+                </div>
+              </>
+            )}
           {locationStatus === 'FOUND' && nearestStations.length === 0 && (
             <div className="flex flex-col items-center justify-center">
               <div className="text-center text-gray-500">
