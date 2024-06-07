@@ -41,9 +41,11 @@ function getDirection(tripId: string): string {
   const split = tripPath.split('..');
   let direction;
   if (split.length === 1) {
+    console.log('tripPath', tripPath);
     direction = tripPath.split('.')[1][0];
+  } else {
+    direction = split[1][0];
   }
-  direction = split[1][0];
 
   if (direction != 'N' && direction != 'S') return '';
   return direction;
@@ -51,15 +53,19 @@ function getDirection(tripId: string): string {
 
 export function buildTrainData(trains: Train[], stations: Station[]) {
   const newTrainData = stations?.map((station) => {
-    const northStationTrains = trains?.filter(
+    let northStationTrains = trains?.filter(
       (train) =>
         train.stop_id === station.stopId && getDirection(train.trip_id) === 'N',
     );
 
-    const southStationTrains = trains?.filter(
+    let southStationTrains = trains?.filter(
       (train) =>
         train.stop_id === station.stopId && getDirection(train.trip_id) === 'S',
     );
+
+    if (station.n_headsign === '') northStationTrains = [];
+    if (station.s_headsign === '') southStationTrains = [];
+
     return {
       ...station,
       n_trains: northStationTrains,

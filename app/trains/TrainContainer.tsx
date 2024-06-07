@@ -39,6 +39,12 @@ const TrainsContainer: React.FC = () => {
           </div>
         </div>
         <div className="w-full p-4 pb-0">
+          {searchRadius === 'Demo' && (
+            <div className="text-center text-gray-500 pb-4">
+              Using demo location, Grand Central Terminal with a 0.25 mile
+              radius.
+            </div>
+          )}
           {locationStatus === 'ACQUIRING' && (
             <div className="text-center text-gray-500">
               Acquiring location, please hold on...

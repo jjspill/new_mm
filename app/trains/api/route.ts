@@ -49,7 +49,6 @@ export async function POST(request: Request) {
       source: string;
       data: Train[];
     };
-    // console.log(`Data fetched from ${result.source} source.`);
     const newTrainData = buildTrainData(result.data, stops);
     const stringify = JSON.stringify(newTrainData[0], null, 2);
     return new Response(stringify);
