@@ -126,6 +126,7 @@ export const useStation = (station: Station, refreshCounter: number) => {
         setStop(data);
       } catch (error) {
         console.error('Failed to fetch stop:', error);
+        setStop(station);
       }
     };
 

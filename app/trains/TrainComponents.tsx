@@ -76,7 +76,7 @@ export const TrainsLoadingPlaceholder = () => (
 // conjoined station header, for desktop view when stations are grouped horizontally
 export const ConjoinedStationDetails = ({ station }: { station: Station }) => {
   return (
-    <div className="mb-2">
+    <div className="mb-2 w-full font-sans">
       <div className="flex flex-col text-center text-xl font-semibold bg-black text-white p-2 rounded-md">
         <div className="flex flex-col justify-center items-center space-x-2">
           <div className="h-[2px] w-full bg-white"></div>
@@ -103,9 +103,9 @@ const StationDetailsComponent = ({
   stopName: string;
   headsign: string;
 }) => (
-  <div className="flex flex-col text-center text-xl font-semibold bg-black text-white p-2 rounded-md">
+  <div className="flex flex-col text-center text-xl font-semibold font-sans bg-black text-white p-2 rounded-md">
     <div className="h-[2px] w-full bg-white"></div>
-    <span>{stopName}</span>
+    <span>{stopName} Station</span>
     <div className="flex items-center justify-center space-x-2">
       <span>{headsign}</span>
     </div>
@@ -125,7 +125,6 @@ export const AsyncStationComponent: React.FC<StationProps> = ({
   const station = useStation(stationIn, refreshCounter);
 
   if (station === undefined) {
-    // console.log('Station Undefined');
     return (
       <div>
         <div className="block md:hidden">
@@ -157,17 +156,9 @@ export const AsyncStationComponent: React.FC<StationProps> = ({
       </div>
     );
   }
-  // } else if (station.n_trains.length === 0 && station.s_trains.length === 0) {
-  //   return;
-  // }
-
-  if (!station) {
-    // return <div>{station} Error station not found</div>;
-    return;
-  }
 
   return (
-    <div className="font-sans">
+    <div>
       <div className="block md:hidden">
         <div>
           <StationDetailsComponent
@@ -179,7 +170,6 @@ export const AsyncStationComponent: React.FC<StationProps> = ({
           ) : (
             <TrainComponent trains={station.n_trains} />
           )}
-          {/* <TrainComponent trains={station.n_trains} /> */}
         </div>
         <div>
           <StationDetailsComponent
@@ -191,8 +181,6 @@ export const AsyncStationComponent: React.FC<StationProps> = ({
           ) : (
             <TrainComponent trains={station.s_trains} />
           )}
-
-          {/* <TrainComponent trains={station.s_trains} /> */}
         </div>
       </div>
       <div className="hidden md:block">
@@ -204,7 +192,6 @@ export const AsyncStationComponent: React.FC<StationProps> = ({
             ) : (
               <TrainComponent trains={station.n_trains} />
             )}
-            {/* <TrainComponent trains={station.n_trains} /> */}
           </div>
           <div>
             {station.s_trains === null ? (
@@ -212,7 +199,6 @@ export const AsyncStationComponent: React.FC<StationProps> = ({
             ) : (
               <TrainComponent trains={station.s_trains} />
             )}
-            {/* <TrainComponent trains={station.s_trains} /> */}
           </div>
         </div>
       </div>
@@ -237,7 +223,11 @@ export const TrainComponent: React.FC<TrainComponentProps> = ({ trains }) => {
         className={`flex justify-between items-center ${!isLastTrain && 'border-b border-black'} ${isLastTrain && 'pb-4'} py-2`}
       >
         <div className="flex items-center pl-1">
-          {TrainComponent && <TrainComponent />}
+          {TrainComponent && (
+            <div className="font-semibold">
+              <TrainComponent />
+            </div>
+          )}
           {!TrainComponent && (
             <UnknownTrainComponent routeId={train.route_id} />
           )}
