@@ -20,11 +20,9 @@ export const metadata = {
 
 const Home = async () => {
   return (
-    <PageContainer className="bg-[#FFEDD5]">
-      <div>
-        <TrainsContainer />
-      </div>
-    </PageContainer>
+    <div>
+      <TrainsContainer />
+    </div>
   );
 };
 
