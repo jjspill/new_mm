@@ -117,7 +117,7 @@ export const useStation = (station: Station, refreshCounter: number) => {
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ stops: [station] }),
           next: {
-            // revalidate: 30,
+            revalidate: 15,
           },
         });
         if (!response.ok) throw new Error('Network response was not ok');

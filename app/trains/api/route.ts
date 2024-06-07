@@ -6,25 +6,59 @@ import { neon } from '@neondatabase/serverless';
 const sql = neon(process.env.DATABASE_URL!);
 
 export async function POST(request: Request) {
-  // let startTime = Date.now();
   const body = await request.json();
   const { stops } = body;
   const stopIds = stops?.map((station: any) => station.stopId);
-  try {
-    const queryText = 'SELECT * FROM arrivals WHERE stop_id = ANY($1)';
-    const res = await sql(queryText, [stopIds]);
-    const newTrainData = buildTrainData(res as Train[], stops);
-    const stringify = JSON.stringify(newTrainData[0], null, 2);
 
-    let endTime = Date.now();
-    // console.log('Time taken:', stops[0].stopName, endTime - startTime);
+  const TIMEOUT_MS = 500; // Maximum delay for primary before checking secondary
+
+  const fetchPrimary = sql('SELECT * FROM arrivals WHERE stop_id = ANY($1)', [
+    stopIds,
+  ]).then((data) => ({ source: 'primary', data }));
+  const fetchSecondary = sql(
+    'SELECT * FROM arrivals_secondary WHERE stop_id = ANY($1)',
+    [stopIds],
+  ).then((data) => ({ source: 'secondary', data }));
+
+  let primaryResolved = false;
+  let fallbackTimer: NodeJS.Timeout;
+
+  const primaryPromise = new Promise(async (resolve, reject) => {
+    try {
+      const data = await fetchPrimary;
+      primaryResolved = true;
+      clearTimeout(fallbackTimer);
+      resolve(data);
+    } catch (error) {
+      reject(error);
+    }
+  });
+
+  const fallbackPromise = new Promise((resolve) => {
+    fallbackTimer = setTimeout(() => {
+      if (!primaryResolved) {
+        // console.log('Fallback to secondary as primary is slow.');
+        fetchSecondary.then(resolve);
+      }
+    }, TIMEOUT_MS);
+  });
+
+  try {
+    // essentially this tries to use the primary source, but if its being written to, we can fetch the backup that was updated prior to the primary
+    const result = (await Promise.race([primaryPromise, fallbackPromise])) as {
+      source: string;
+      data: Train[];
+    };
+    // console.log(`Data fetched from ${result.source} source.`);
+    const newTrainData = buildTrainData(result.data, stops);
+    const stringify = JSON.stringify(newTrainData[0], null, 2);
     return new Response(stringify);
-  } catch (err: any) {
-    console.error('Error executing query', err.stack);
+  } catch (error) {
+    console.error('Error fetching data from database sources:', error);
     return new Response(
       JSON.stringify({
         error: 'Failed to fetch train data',
-        details: err.message,
+        details: error,
       }),
       { status: 500 },
     );
