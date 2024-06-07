@@ -41,7 +41,6 @@ function getDirection(tripId: string): string {
   const split = tripPath.split('..');
   let direction;
   if (split.length === 1) {
-    console.log('tripPath', tripPath);
     direction = tripPath.split('.')[1][0];
   } else {
     direction = split[1][0];

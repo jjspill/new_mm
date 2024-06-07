@@ -37,7 +37,6 @@ export async function POST(request: Request) {
   const fallbackPromise = new Promise((resolve) => {
     fallbackTimer = setTimeout(() => {
       if (!primaryResolved) {
-        // console.log('Fallback to secondary as primary is slow.');
         fetchSecondary.then(resolve);
       }
     }, TIMEOUT_MS);
