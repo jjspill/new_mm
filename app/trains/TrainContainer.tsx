@@ -17,17 +17,6 @@ import {
 
 const TrainsContainer: React.FC = () => {
   const [searchRadius, setSearchRadius] = useState<string | number>(0.5);
-  const [showNothingFound, setShowNothingFound] = useState<boolean>(false);
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setShowNothingFound(true);
-    }, 15000);
-
-    return () => {
-      clearInterval(timer);
-    };
-  });
 
   // hooks
   const { timer, refreshCounter } = useContinuousCountdown();
@@ -62,7 +51,7 @@ const TrainsContainer: React.FC = () => {
             </div>
           )}
           {locationStatus === 'NOT_FOUND' && (
-            <div className="flex items-center justify-center">
+            <div className="flex flex-col items-center justify-center">
               <div className="text-center text-gray-500">
                 Location not found. Please enable location services.
               </div>
@@ -85,7 +74,7 @@ const TrainsContainer: React.FC = () => {
                   refreshCounter={refreshCounter}
                 />
               ))}
-              <div className="flex flex-col items-center justify-center">
+              <div className="flex flex items-center justify-center">
                 <button
                   type="button"
                   title="Search within 1 mile radius"

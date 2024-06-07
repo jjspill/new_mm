@@ -497,7 +497,7 @@ export const SevenComponent: React.FC = () => (
 export const UnknownTrainComponent: React.FC<{ routeId: string }> = ({
   routeId,
 }) => (
-  <div className="bg-slate-400 w-8 h-8 text-white rounded-full shadow-2xl flex justify-center items-center">
+  <div className="bg-slate-400 w-8 h-8 text-white rounded-full shadow-2xl flex justify-center items-center font-semibold">
     {routeId}
   </div>
 );
