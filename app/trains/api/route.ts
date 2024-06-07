@@ -6,6 +6,7 @@ import { neon } from '@neondatabase/serverless';
 const sql = neon(process.env.DATABASE_URL!);
 
 export async function POST(request: Request) {
+  let startTime = 0;
   const body = await request.json();
   const { stops } = body;
   const stopIds = stops?.map((station: any) => station.stopId);

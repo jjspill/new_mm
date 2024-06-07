@@ -17,6 +17,17 @@ import {
 
 const TrainsContainer: React.FC = () => {
   const [searchRadius, setSearchRadius] = useState<string | number>(0.5);
+  const [showNothingFound, setShowNothingFound] = useState<boolean>(false);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setShowNothingFound(true);
+    }, 15000);
+
+    return () => {
+      clearInterval(timer);
+    };
+  });
 
   // hooks
   const { timer, refreshCounter } = useContinuousCountdown();

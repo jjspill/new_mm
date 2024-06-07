@@ -123,7 +123,6 @@ export const AsyncStationComponent: React.FC<StationProps> = ({
   refreshCounter,
 }) => {
   const station = useStation(stationIn, refreshCounter);
-
   if (station === undefined) {
     return (
       <div>
