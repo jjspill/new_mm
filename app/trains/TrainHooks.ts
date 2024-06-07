@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 
-import { Location, Station, Train } from './TrainComponents';
-import { buildTrainData, fixArrivalTime } from './trainHelper';
+import { Location, Station } from './TrainComponents';
+import { findClosestStations, fixArrivalTime } from './trainHelper';
 
 export interface Stop {
   stopId: string;
@@ -11,23 +11,23 @@ export interface Stop {
   s_headsign: string;
 }
 
-const LOCATION_EXPIRY_TIME = 5 * 60 * 1000; // 5 minutes in milliseconds
+const LOCATION_EXPIRY_TIME = 0.25 * 60 * 1000; // 15 seconds
 export const GRAND_CENTRAL = { lat: 40.7527, lng: -73.9772 };
 
 function getSavedLocation() {
-  const saved = localStorage?.getItem('userLocation');
+  const saved = localStorage.getItem('userLocation');
   if (saved) {
     const parsed = JSON.parse(saved);
-    const isRecent =
-      new Date().getTime() - parsed.timestamp < LOCATION_EXPIRY_TIME;
+    const currentTime = new Date().getTime();
+    const isRecent = currentTime - parsed.timestamp < LOCATION_EXPIRY_TIME;
     if (isRecent) {
-      return parsed.location;
+      return parsed.location; // Ensure you are returning the location part correctly
     }
   }
   return null;
 }
 
-function saveLocation(location: Location) {
+function saveLocation(location: any) {
   const data = {
     location,
     timestamp: new Date().getTime(),
@@ -35,56 +35,42 @@ function saveLocation(location: Location) {
   localStorage.setItem('userLocation', JSON.stringify(data));
 }
 
-async function fetchIPGeolocation() {
-  try {
-    const response = await fetch('https://ipapi.co/json/');
-    const data = await response.json();
-    return { lat: data.latitude, lng: data.longitude };
-  } catch (error) {
-    console.error('Failed to get IP geolocation:', error);
-    return null;
-  }
-}
-
-export const useGeolocation = () => {
+export const useGeolocationWithCache = () => {
   const [location, setLocation] = useState<Location | null>(null);
-  const [ipLocation, setIpLocation] = useState<boolean>(false);
+  const [status, setStatus] = useState('ACQUIRING');
 
   useEffect(() => {
-    setIpLocation(false);
     const cachedLocation = getSavedLocation();
     if (cachedLocation) {
       setLocation(cachedLocation);
-    } else if ('geolocation' in navigator) {
+      setStatus('FOUND');
+      return;
+    }
+
+    if ('geolocation' in navigator) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
           const newLocation = {
             lat: position.coords.latitude,
             lng: position.coords.longitude,
           };
-          setLocation(newLocation);
+
           saveLocation(newLocation);
+          setLocation(newLocation);
+          setStatus('FOUND');
         },
-        async (error) => {
-          await fetchIPGeolocation()
-            .then((location) => {
-              if (location) {
-                setLocation(location);
-                setIpLocation(true);
-              }
-            })
-            .catch((error) => {
-              console.error('Error getting location: ', error);
-            });
-          console.error('Error getting location: ', error);
+        (error) => {
+          console.error('Geolocation error:', error);
+          setStatus('NOT_FOUND');
         },
       );
     } else {
       console.error('Geolocation is not available.');
+      setStatus('NOT_FOUND');
     }
   }, []);
 
-  return { location, ipLocation };
+  return { location, locationStatus: status };
 };
 
 export const useNearestStations = (
@@ -102,18 +88,12 @@ export const useNearestStations = (
     const findNearestStations = async () => {
       if (!location || !searchRadius) return;
       try {
-        const response = await fetch(`/trains/stops/api`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            lat: location.lat,
-            lon: location.lng,
-            distance: searchRadius,
-          }),
-        });
-
-        const stopsList = await response.json();
-        setNearestStations(stopsList);
+        const closestStations = findClosestStations(
+          location.lat,
+          location.lng,
+          searchRadius as number,
+        );
+        setNearestStations(closestStations);
       } catch (error) {
         console.error('Error finding nearest stations: ', error);
       }
@@ -125,55 +105,19 @@ export const useNearestStations = (
   return { nearestStations };
 };
 
-export const useTrainData = (
-  nearestStations: Station[],
-  refreshCounter: number,
-) => {
-  const [trainData, setTrainData] = useState<Station[] | null>(null);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      if (nearestStations.length > 0) {
-        try {
-          const response = await fetch('/trains/api', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ stops: nearestStations }),
-          });
-          if (!response.ok) throw new Error('Network response was not ok');
-          const data = await response.json();
-          data?.forEach((station: Station) => {
-            fixArrivalTime(station);
-          });
-
-          setTrainData(data);
-        } catch (error) {
-          console.error('Failed to fetch train data:', error);
-        }
-      } else {
-        setTrainData([]);
-      }
-    };
-
-    fetchData();
-  }, [nearestStations, refreshCounter]);
-
-  return trainData;
-};
-
 export const useStation = (station: Station, refreshCounter: number) => {
   const [stop, setStop] = useState<Station>();
 
   useEffect(() => {
     const fetchStop = async () => {
-      if (!station) return;
+      if (!station || station === undefined) return;
       try {
         const response = await fetch(`/trains/api`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ stops: [station] }),
           next: {
-            revalidate: 30,
+            // revalidate: 30,
           },
         });
         if (!response.ok) throw new Error('Network response was not ok');
@@ -186,7 +130,7 @@ export const useStation = (station: Station, refreshCounter: number) => {
     };
 
     fetchStop();
-  }, [station, refreshCounter]);
+  }, [station.stopName, refreshCounter]);
 
   return stop;
 };

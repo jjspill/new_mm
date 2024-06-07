@@ -20,8 +20,8 @@ export interface Station {
   s_headsign: string;
   stopId: string;
   distance: number;
-  n_trains: Train[];
-  s_trains: Train[];
+  n_trains: Train[] | null;
+  s_trains: Train[] | null;
 }
 
 export interface ApiResponse {
@@ -52,6 +52,24 @@ export const StationLoadingPlaceholder = () => (
         </div>
       </div>
     ))}
+  </div>
+);
+
+export const TrainsLoadingPlaceholder = () => (
+  <div className="mb-4 p-2 border rounded-md shadow bg-gray-200 animate-pulse">
+    <div className="flex flex-col items-center space-y-2">
+      {Array.from({ length: 4 }, (_, index) => (
+        <div
+          key={index}
+          className={`w-full flex flex-row justify-between items-center ${
+            index === 3 ? '' : 'border-b border-gray-300 pb-2'
+          }`}
+        >
+          <div className="bg-gray-300 rounded-full h-8 w-8"></div>
+          <div className="bg-gray-300 rounded h-4 w-1/4"></div>
+        </div>
+      ))}
+    </div>
   </div>
 );
 
@@ -106,26 +124,29 @@ export const AsyncStationComponent: React.FC<StationProps> = ({
 }) => {
   const station = useStation(stationIn, refreshCounter);
 
-  const [showPlaceholder, setShowPlaceholder] = useState(true);
+  if (station === undefined) {
+    // console.log('Station Undefined');
+    return (
+      <div>
+        <div className="block md:hidden">
+          <StationDetailsComponent
+            stopName={stationIn.stopName}
+            headsign={stationIn.n_headsign}
+          />
+          <TrainsLoadingPlaceholder />
+        </div>
+        <div className="hidden md:block">
+          <ConjoinedStationDetails station={stationIn} />
+          <div className="grid grid-cols-2 gap-x-4">
+            <TrainsLoadingPlaceholder />
+            <TrainsLoadingPlaceholder />
+          </div>
+        </div>
+      </div>
+    );
+  }
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setShowPlaceholder(false);
-    }, 10000);
-    return () => clearTimeout(timer);
-  }, []);
-
-  if (
-    showPlaceholder &&
-    (station === undefined ||
-      (station?.n_trains.length === 0 && station?.s_trains.length === 0))
-  ) {
-    return <StationLoadingPlaceholder />;
-  } else if (
-    !showPlaceholder &&
-    (station === undefined ||
-      (station?.n_trains.length === 0 && station?.s_trains.length === 0))
-  ) {
+  if (station?.n_trains?.length === 0 && station?.s_trains?.length === 0) {
     return (
       <div className="flex flex-col text-center text-xl font-semibold bg-black text-white p-2 rounded-md mb-2">
         <div className="h-[2px] w-full bg-white"></div>
@@ -141,7 +162,8 @@ export const AsyncStationComponent: React.FC<StationProps> = ({
   // }
 
   if (!station) {
-    return <div>Error station not found</div>;
+    // return <div>{station} Error station not found</div>;
+    return;
   }
 
   return (
@@ -152,24 +174,45 @@ export const AsyncStationComponent: React.FC<StationProps> = ({
             stopName={station.stopName}
             headsign={station.n_headsign}
           />
-          <TrainComponent trains={station.n_trains} />
+          {station.n_trains === null ? (
+            <TrainsLoadingPlaceholder />
+          ) : (
+            <TrainComponent trains={station.n_trains} />
+          )}
+          {/* <TrainComponent trains={station.n_trains} /> */}
         </div>
         <div>
           <StationDetailsComponent
             stopName={station.stopName}
             headsign={station.s_headsign}
           />
-          <TrainComponent trains={station.s_trains} />
+          {station.s_trains === null ? (
+            <TrainsLoadingPlaceholder />
+          ) : (
+            <TrainComponent trains={station.s_trains} />
+          )}
+
+          {/* <TrainComponent trains={station.s_trains} /> */}
         </div>
       </div>
       <div className="hidden md:block">
         <ConjoinedStationDetails station={station} />
         <div className="grid grid-cols-2 gap-x-4">
           <div>
-            <TrainComponent trains={station.n_trains} />
+            {station.n_trains === null ? (
+              <TrainsLoadingPlaceholder />
+            ) : (
+              <TrainComponent trains={station.n_trains} />
+            )}
+            {/* <TrainComponent trains={station.n_trains} /> */}
           </div>
           <div>
-            <TrainComponent trains={station.s_trains} />
+            {station.s_trains === null ? (
+              <TrainsLoadingPlaceholder />
+            ) : (
+              <TrainComponent trains={station.s_trains} />
+            )}
+            {/* <TrainComponent trains={station.s_trains} /> */}
           </div>
         </div>
       </div>
@@ -219,31 +262,6 @@ export const TrainComponent: React.FC<TrainComponentProps> = ({ trains }) => {
   });
 };
 
-interface StationComponentProps {
-  stations: Station[];
-  refreshCounter: number;
-}
-
-// maps all stations to async station components
-export const StationsComponent: React.FC<StationComponentProps> = ({
-  stations,
-  refreshCounter,
-}) => {
-  return (
-    <div>
-      {stations &&
-        stations.map((station, index) => (
-          <AsyncStationComponent
-            key={index}
-            stationIn={station}
-            refreshCounter={refreshCounter}
-          />
-        ))}
-      {!stations && <div>No nearby stations found</div>}
-    </div>
-  );
-};
-
 interface LocationButtonProps {
   onLocationFetch: {
     resetNearestStations: () => void;
@@ -289,7 +307,7 @@ const LocationButton: React.FC<LocationButtonProps> = ({
 };
 
 interface TrainMenuBarProps {
-  ipLocation: boolean;
+  // ipLocation: boolean;
   radius: string | number;
   updateSearchRadius: (radius: string | number) => void;
   onRefresh: () => void;
@@ -298,7 +316,7 @@ interface TrainMenuBarProps {
 export const TrainMenuBar: React.FC<
   TrainMenuBarProps & LocationButtonProps
 > = ({
-  ipLocation,
+  // ipLocation,
   radius,
   updateSearchRadius,
   onLocationFetch,
@@ -339,12 +357,12 @@ export const TrainMenuBar: React.FC<
           </select>
         </div>
       </div> */}
-      {ipLocation && radius !== 'Demo' && (
+      {/* {ipLocation && radius !== 'Demo' && (
         <div className="text-sm text-gray-500 mt-2 text-center">
           Using IP location. Provide access to location services for more
           accurate results.
         </div>
-      )}
+      )} */}
       {radius === 'Demo' && (
         <div className="text-sm text-gray-500 mt-2 text-center">
           The demo location is set to Grand Central Terminal with a radius of
