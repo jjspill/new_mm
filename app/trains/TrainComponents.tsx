@@ -99,18 +99,26 @@ export const ConjoinedStationDetails = ({ station }: { station: Station }) => {
 const StationDetailsComponent = ({
   stopName,
   headsign,
+  trainLength, // if 0, return nothing
 }: {
   stopName: string;
   headsign: string;
-}) => (
-  <div className="flex flex-col text-center text-xl font-semibold font-sans bg-black text-white p-2 rounded-md">
-    <div className="h-[2px] w-full bg-white"></div>
-    <span>{stopName} Station</span>
-    <div className="flex items-center justify-center space-x-2">
-      <span>{headsign}</span>
+  trainLength: number | undefined;
+}) => {
+  if (trainLength === 0) {
+    return;
+  }
+
+  return (
+    <div className="flex flex-col text-center text-xl font-semibold font-sans bg-black text-white p-2 rounded-md">
+      <div className="h-[2px] w-full bg-white"></div>
+      <span>{stopName} Station</span>
+      <div className="flex items-center justify-center space-x-2">
+        <span>{headsign}</span>
+      </div>
     </div>
-  </div>
-);
+  );
+};
 
 interface StationProps {
   stationIn: Station;
@@ -130,6 +138,7 @@ export const AsyncStationComponent: React.FC<StationProps> = ({
           <StationDetailsComponent
             stopName={stationIn.stopName}
             headsign={stationIn.n_headsign}
+            trainLength={undefined}
           />
           <TrainsLoadingPlaceholder />
         </div>
@@ -163,6 +172,7 @@ export const AsyncStationComponent: React.FC<StationProps> = ({
           <StationDetailsComponent
             stopName={station.stopName}
             headsign={station.n_headsign}
+            trainLength={station?.n_trains?.length}
           />
           {station.n_trains === null ? (
             <TrainsLoadingPlaceholder />
@@ -174,6 +184,7 @@ export const AsyncStationComponent: React.FC<StationProps> = ({
           <StationDetailsComponent
             stopName={station.stopName}
             headsign={station.s_headsign}
+            trainLength={station?.s_trains?.length}
           />
           {station.s_trains === null ? (
             <TrainsLoadingPlaceholder />
