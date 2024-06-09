@@ -5,45 +5,71 @@ import { neon } from '@neondatabase/serverless';
 
 const sql = neon(process.env.DATABASE_URL!);
 
+// Utility to perform retries
+async function retry<T>(
+  operation: () => Promise<T>,
+  retries: number,
+  delay: number,
+): Promise<T> {
+  try {
+    return await operation();
+  } catch (error) {
+    if (retries > 1) {
+      await new Promise((resolve) => setTimeout(resolve, delay));
+      return retry(operation, retries - 1, delay);
+    } else {
+      throw error;
+    }
+  }
+}
+
 export async function POST(request: Request) {
   const body = await request.json();
   const { stops } = body;
   const stopIds = stops?.map((station: any) => station.stopId);
 
   const TIMEOUT_MS = 500; // Maximum delay for primary before checking secondary
+  const RETRY_TIMES = 3;
+  const RETRY_DELAY = 200;
 
-  const fetchPrimary = sql('SELECT * FROM arrivals WHERE stop_id = ANY($1)', [
-    stopIds,
-  ]).then((data) => ({ source: 'primary', data }));
-  const fetchSecondary = sql(
-    'SELECT * FROM arrivals_secondary WHERE stop_id = ANY($1)',
-    [stopIds],
-  ).then((data) => ({ source: 'secondary', data }));
+  const fetchPrimary = () =>
+    sql('SELECT * FROM arrivals WHERE stop_id = ANY($1)', [stopIds]).then(
+      (data) => ({ source: 'primary', data }),
+    );
+
+  const fetchSecondary = () =>
+    sql('SELECT * FROM arrivals_secondary WHERE stop_id = ANY($1)', [
+      stopIds,
+    ]).then((data) => ({ source: 'secondary', data }));
 
   let primaryResolved = false;
   let fallbackTimer: NodeJS.Timeout;
 
-  const primaryPromise = new Promise(async (resolve, reject) => {
-    try {
-      const data = await fetchPrimary;
-      primaryResolved = true;
-      clearTimeout(fallbackTimer);
-      resolve(data);
-    } catch (error) {
-      reject(error);
-    }
-  });
+  const primaryPromise = retry(
+    () =>
+      new Promise(async (resolve, reject) => {
+        try {
+          const data = await fetchPrimary();
+          primaryResolved = true;
+          clearTimeout(fallbackTimer);
+          resolve(data);
+        } catch (error) {
+          reject(error);
+        }
+      }),
+    RETRY_TIMES,
+    RETRY_DELAY,
+  );
 
   const fallbackPromise = new Promise((resolve) => {
     fallbackTimer = setTimeout(() => {
       if (!primaryResolved) {
-        fetchSecondary.then(resolve);
+        retry(fetchSecondary, RETRY_TIMES, RETRY_DELAY).then(resolve);
       }
     }, TIMEOUT_MS);
   });
 
   try {
-    // essentially this tries to use the primary source, but if its being written to, we can fetch the backup that was updated prior to the primary
     const result = (await Promise.race([primaryPromise, fallbackPromise])) as {
       source: string;
       data: Train[];
