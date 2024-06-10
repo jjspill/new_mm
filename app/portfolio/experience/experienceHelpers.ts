@@ -113,7 +113,7 @@ export const checkForFirstOverlap = (
       const rect2 = positions[parseInt(keys[j])];
       if (rect1 && rect2 && doOverlap(rect1, rect2)) {
         if (!localStorage.getItem(localStorageKey)) {
-          localStorage.setItem(localStorageKey, 'true');
+          // localStorage.setItem(localStorageKey, 'true');
           setMessageShown(true);
         }
         return;

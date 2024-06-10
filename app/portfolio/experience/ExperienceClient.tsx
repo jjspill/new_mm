@@ -372,17 +372,29 @@ export const Experiences: React.FC<{ experiences: ExperienceProps[] }> = ({
             );
           })}
         {overlapDetected && animationComplete && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-            <div className="flex flex-col justify-center bg-white p-6 rounded-lg shadow-lg max-w-sm w-full">
+          <div className="fixed top-5 right-5 bg-black bg-opacity-50 p-4 rounded-lg shadow-lg max-w-sm">
+            <div className="bg-white p-6 rounded-lg shadow-lg w-full">
               <p className="text-lg text-center text-gray-800 mb-4">
                 Click any overlapping experience tile to bring it to the front.
               </p>
               <button
                 type="button"
                 onClick={() => setOverlapDetected(false)}
-                className="bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                className="absolute top-0 right-0 mt-2 mr-2 text-gray-800 hover:text-gray-600"
               >
-                Close
+                <svg
+                  className="h-6 w-6"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M6 18L18 6M6 6l12 12"
+                  />
+                </svg>
               </button>
             </div>
           </div>
