@@ -7,7 +7,7 @@ export default async function Page() {
 
   return (
     <ExperiencesContainer>
-      <Experiences experiences={experiences} />;
+      <Experiences experiences={experiences} />
     </ExperiencesContainer>
   );
 }

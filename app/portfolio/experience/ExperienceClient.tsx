@@ -39,7 +39,7 @@ const RecPageItem: React.FC<ExperienceProps> = ({
   }
 
   return (
-    <div className="flex h-fit justify-center">
+    <div className="flex h-fit justify-center my-2">
       <div className="flex flex-col bg-gray-100 shadow-lg rounded-2xl w-full">
         <h1 className="flex items-center justify-center py-1 min-h-10 font-semibold text-center text-xl bg-gray-200 rounded-t-2xl">
           {title}
@@ -197,8 +197,8 @@ const Experience: React.FC<
   );
 };
 
-const componentWidth = 300;
-const componentHeight = 200;
+const componentWidth = 330;
+const componentHeight = 220;
 
 export const generateRandomStyle = (
   totalExperiences: number,
@@ -221,8 +221,8 @@ export const generateRandomStyle = (
     left = 20 + Math.floor(Math.random() * 40);
   }
 
-  if (left > screenWidth - componentWidth - 20) {
-    left = screenWidth - componentWidth - 20;
+  if (left > screenWidth - componentWidth - 30) {
+    left = screenWidth - componentWidth - 30;
   }
 
   // const grayValue = Math.floor(Math.random() * 56) + 200;
@@ -299,7 +299,7 @@ export const Experiences: React.FC<{ experiences: ExperienceProps[] }> = ({
 
       {/* For mobile */}
       <div className=" flex flex-col md:hidden pt-20 items-center">
-        <div className="flex flex-col flex-grow px-2 py-2 mx-4 mb-4 lg:mx-80 rounded-2xl">
+        <div className="overflow-hidden rounded-2xl w-full max-w-4xl px-4 pb-2 lg:mx-80">
           {sortedExperiences?.map((experience, index) => (
             <RecPageItem key={index} {...experience} />
           ))}
@@ -309,7 +309,7 @@ export const Experiences: React.FC<{ experiences: ExperienceProps[] }> = ({
       {isMobileView && (
         <div className="flex justify-center items-center">
           <div className="flex flex-col px-4 pt-20 ">
-            <div className="overflow-hidden rounded-2xl w-full max-w-4xl px-2 py-2 mx-4 mb-4 lg:mx-80">
+            <div className="overflow-hidden rounded-2xl w-full max-w-4xl px-2 mx-4 mb-2 lg:mx-80">
               {sortedExperiences.map((experience, index) => (
                 <RecPageItem key={index} {...experience} />
               ))}
@@ -333,7 +333,7 @@ export const Experiences: React.FC<{ experiences: ExperienceProps[] }> = ({
                     {...experience}
                     onExperienceClick={bringToFront}
                     totalExperiences={experiences.length}
-                    screenWidth={screenWidth! - 10}
+                    screenWidth={screenWidth!}
                     screenHeight={screenHeight!}
                     index={index}
                   />
