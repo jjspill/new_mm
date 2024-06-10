@@ -1,7 +1,13 @@
 'use client';
 
-import React, { useState, useEffect, useRef } from 'react';
-import { ExperienceProps } from './experienceHelpers';
+import React, { useState, useEffect, useRef, PropsWithChildren } from 'react';
+import {
+  ExperienceProps,
+  Position,
+  checkForFirstOverlap,
+  measureAndStorePosition,
+  shuffleArray,
+} from './experienceHelpers';
 import Link from 'next/link';
 import {
   IsClientCtxProvider,
@@ -238,7 +244,6 @@ export const generateRandomStyle = (
 export const Experiences: React.FC<{ experiences: ExperienceProps[] }> = ({
   experiences,
 }) => {
-  // const experiences: ExperienceProps[] = experienceData;
   const [highestZIndex, setHighestZIndex] = useState(10);
   const [isMobileView, setIsMobileView] = useState(false);
   const [screenWidth, setScreenWidth] = useState<number | undefined>(undefined);
@@ -248,6 +253,21 @@ export const Experiences: React.FC<{ experiences: ExperienceProps[] }> = ({
   const [sortedExperiences, setSortedExperiences] = useState<ExperienceProps[]>(
     [],
   );
+  const [shuffledExperiences, setShuffledExperience] = useState<
+    ExperienceProps[]
+  >([]);
+
+  const [animationComplete, setAnimationComplete] = useState(false); // Start with `false`
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setAnimationComplete(true);
+    }, 4000);
+    return () => clearTimeout(timer);
+  }, []);
+
+  // Overlapping experiences on desktop stuff
+  const [overlapDetected, setOverlapDetected] = useState(false);
+  const positionsRef = useRef<{ [key: number]: Position }>({});
 
   useEffect(() => {
     const sorted = experiences?.sort((a, b) => {
@@ -255,6 +275,7 @@ export const Experiences: React.FC<{ experiences: ExperienceProps[] }> = ({
       const priorityB = b.priority ?? Number.MAX_SAFE_INTEGER;
       return priorityA - priorityB;
     });
+    setShuffledExperience(shuffleArray(sorted));
     setSortedExperiences(sorted);
   }, [experiences]);
 
@@ -286,6 +307,7 @@ export const Experiences: React.FC<{ experiences: ExperienceProps[] }> = ({
   };
 
   const isClient = useIsClient();
+
   return (
     <div>
       <div className="fixed top-0 right-0 z-10 h-16 flex justify-end">
@@ -320,13 +342,21 @@ export const Experiences: React.FC<{ experiences: ExperienceProps[] }> = ({
 
       <div className="hidden md:flex justify-center items-center max-h-screen overflow-hidden">
         {isClient &&
-          sortedExperiences.map((experience, index) => {
+          shuffledExperiences.map((experience, index) => {
             return (
               <div
                 key={index}
-                className={`w-full ${
-                  isMobileView ? 'block' : 'hidden'
-                } md:block`}
+                ref={(el) => {
+                  if (el) {
+                    measureAndStorePosition(index, el, positionsRef);
+                    checkForFirstOverlap(
+                      positionsRef,
+                      setOverlapDetected,
+                      'messageShown',
+                    );
+                  }
+                }}
+                className={`w-full ${isMobileView ? 'block' : 'hidden'} md:block`}
               >
                 {!isMobileView && (
                   <Experience
@@ -341,6 +371,22 @@ export const Experiences: React.FC<{ experiences: ExperienceProps[] }> = ({
               </div>
             );
           })}
+        {overlapDetected && animationComplete && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+            <div className="flex flex-col justify-center bg-white p-6 rounded-lg shadow-lg max-w-sm w-full">
+              <p className="text-lg text-center text-gray-800 mb-4">
+                Click any overlapping experience tile to bring it to the front.
+              </p>
+              <button
+                type="button"
+                onClick={() => setOverlapDetected(false)}
+                className="bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
