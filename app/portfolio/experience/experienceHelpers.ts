@@ -1,6 +1,7 @@
 import { getAPIUrl } from 'config/config';
 
 export interface ExperienceProps {
+  id: string;
   title: string;
   description: string;
   long_text: string;
