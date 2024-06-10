@@ -30,7 +30,7 @@ export async function getAllExperiences(): Promise<ExperienceProps[]> {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${process.env.AUTH_TOKEN}`,
       },
-      next: { revalidate: 60 },
+      next: { revalidate: 300 },
     },
   );
 

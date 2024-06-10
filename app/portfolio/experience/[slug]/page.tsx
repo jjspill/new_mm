@@ -90,7 +90,12 @@ export default async function ExperiencePage({ params }: { params: any }) {
 }
 
 export async function generateStaticParams() {
-  const experiences = await getAllExperiences();
+  const experiences = await getAllExperiences().then((experiences) => {
+    return experiences.filter(
+      (experience) =>
+        experience.id !== 'LinkedIn' && experience.id !== 'GitHub',
+    );
+  });
 
   if (!experiences) {
     return [];
