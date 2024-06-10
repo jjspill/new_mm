@@ -8,99 +8,53 @@ import {
   useIsClient,
 } from '../../components/client-render/is_client_ctx';
 import styles from './experience.module.css';
-import debounce from 'lodash/debounce';
-
-const RecPageItemAnimation: React.FC<ExperienceProps> = ({
-  title,
-  description,
-  link,
-}) => {
-  const [animationClass, setAnimationClass] = useState('');
-  const [blurAmount, setBlurAmount] = useState(0);
-  const [hasMounted, setHasMounted] = useState(false);
-  const animationRef = useRef<HTMLDivElement>(null);
-  const beenVisible = useRef(false);
-
-  useEffect(() => {
-    setHasMounted(true);
-  }, []);
-
-  useEffect(() => {
-    const observerCallback = debounce(([entry]) => {
-      if (!hasMounted) return;
-      const isFullyVisible = entry.intersectionRatio === 1;
-
-      if (isFullyVisible) {
-        beenVisible.current = true;
-        setAnimationClass(styles.slideInFromBottom);
-        return;
-      }
-
-      if (entry.isIntersecting) {
-        if (entry.boundingClientRect.top > 0) {
-          setAnimationClass(styles.slideInFromBottom);
-        }
-        setBlurAmount(0);
-      }
-    }, 100);
-
-    const observer = new IntersectionObserver(observerCallback, {
-      threshold: 0.5,
-      rootMargin: '0px',
-    });
-
-    if (animationRef.current) {
-      observer.observe(animationRef.current);
-    }
-
-    const currentRef = animationRef.current;
-
-    return () => {
-      if (currentRef) {
-        observer.unobserve(currentRef);
-      }
-    };
-  }, [hasMounted]);
-
-  return (
-    <div
-      className={`${animationClass} flex h-fit justify-center opacity-0`}
-      ref={animationRef}
-      style={{ filter: `blur(${blurAmount}px)` }}
-    >
-      <div className="flex flex-col py-4 px-4 my-2 bg-gray-100 shadow-lg rounded-2xl w-full">
-        <h1 className="font-bold text-center">{title}</h1>
-        <p className="text-center">{description}</p>
-        <div className="flex justify-center">
-          <Link href={`experience/${title}`}>
-            <div
-              className={`${styles.creepInBg} border border-black mt-2 p-2 rounded-full w-fit text-xs`}
-            >
-              Learn More
-            </div>
-          </Link>
-        </div>
-      </div>
-    </div>
-  );
-};
+import { LinkedInExperience, LinkedInRecPage } from './LinkedInExperience';
+import { GitHubExperience, GitHubRecPage } from './GitHubExperience';
 
 const RecPageItem: React.FC<ExperienceProps> = ({
+  id,
   title,
   description,
+  long_text,
   link,
 }) => {
+  if (id === 'LinkedIn') {
+    return (
+      <LinkedInRecPage
+        profileUrl={link}
+        name={title}
+        headline={description}
+        background={long_text}
+        imagePath="/images/linkedin_profile.jpeg"
+      />
+    );
+  } else if (id === 'GitHub') {
+    return (
+      <GitHubRecPage
+        profileUrl={link}
+        title={title}
+        description={description}
+      />
+    );
+  }
+
   return (
     <div className="flex h-fit justify-center">
-      <div className="flex flex-col py-4 px-4 my-2 bg-gray-100 shadow-lg rounded-2xl w-full">
-        <h1 className="font-bold text-center">{title}</h1>
-        <p className="text-center">{description}</p>
-        <div className="flex justify-center">
-          <Link href={`experience/${title}`}>
-            <p className="border border-black mt-2 p-2 rounded-full w-fit text-xs cursor-pointer">
-              Learn More
-            </p>
-          </Link>
+      <div className="flex flex-col bg-gray-100 shadow-lg rounded-2xl w-full">
+        <h1 className="flex items-center justify-center py-1 min-h-10 font-semibold text-center text-xl bg-gray-200 rounded-t-2xl">
+          {title}
+        </h1>
+        <div className="p-4">
+          <p className="text-center">{description}</p>
+          <div className="flex justify-center">
+            <Link href={`experience/${title}`}>
+              <p
+                className={`${styles.creepInBg} border border-black mt-2 p-2 rounded-full w-fit text-xs cursor-pointer`}
+              >
+                Learn More
+              </p>
+            </Link>
+          </div>
         </div>
       </div>
     </div>
@@ -116,8 +70,10 @@ const Experience: React.FC<
     index: number;
   }
 > = ({
+  id,
   title,
   description,
+  long_text,
   link,
   onExperienceClick,
   totalExperiences,
@@ -196,25 +152,47 @@ const Experience: React.FC<
   return (
     <div
       ref={elementRef}
-      className="flex flex-col items-center text-xl bg-white p-4 rounded-lg absolute w-fit h-fit max-h-[200px] shadow-lg"
+      className="flex flex-col items-center text-xl bg-white rounded-lg absolute w-fit h-fit max-h-[220px] shadow-lg"
       tabIndex={0}
       onClick={handleClick}
       style={{
-        maxWidth: '300px',
+        maxWidth: '330px',
         overflow: 'auto',
         zIndex: zIndex,
         ...styleRef.current,
       }}
     >
-      <p className="font-bold text-center">{title}</p>
-      <div className="text-sm w-fit text-center pt-2">{description}</div>
-      <Link href={`experience/${title}`}>
-        <div
-          className={`${styles.creepInBg} border border-black mt-2 p-2 rounded-full w-fit text-xs`}
-        >
-          Learn More
+      {id === 'LinkedIn' ? (
+        <LinkedInExperience
+          profileUrl={link}
+          name={title}
+          headline={description}
+          background={long_text}
+          imagePath="/images/linkedin_profile.jpeg"
+        />
+      ) : id === 'GitHub' ? (
+        <GitHubExperience
+          profileUrl={link}
+          title={title}
+          description={description}
+        />
+      ) : (
+        <div className="flex flex-col items-center h-fit w-fit">
+          <div className="flex justify-center items-center bg-gray-200 min-h-10 w-full">
+            <p className="font-semibold text-center">{title}</p>
+          </div>
+          <div className="p-4 py-2 flex flex-col items-center">
+            <div className="text-sm w-fit text-center pt-1">{description}</div>
+            <Link href={`experience/${title}`}>
+              <div
+                className={`${styles.creepInBg} border border-black mt-2 p-2 rounded-full w-fit text-xs`}
+              >
+                Learn More
+              </div>
+            </Link>
+          </div>
         </div>
-      </Link>
+      )}
     </div>
   );
 };
@@ -222,7 +200,7 @@ const Experience: React.FC<
 const componentWidth = 300;
 const componentHeight = 200;
 
-const generateRandomStyle = (
+export const generateRandomStyle = (
   totalExperiences: number,
   screenWidth: number,
   screenHeight: number,
@@ -247,13 +225,13 @@ const generateRandomStyle = (
     left = screenWidth - componentWidth - 20;
   }
 
-  const grayValue = Math.floor(Math.random() * 56) + 200;
-  const grayColor = `rgb(${grayValue}, ${grayValue}, ${grayValue})`;
+  // const grayValue = Math.floor(Math.random() * 56) + 200;
+  // const grayColor = `rgb(${grayValue}, ${grayValue}, ${grayValue})`;
 
   return {
     top: `${top}px`,
     left: `${left}px`,
-    backgroundColor: grayColor,
+    backgroundColor: 'white',
   };
 };
 
@@ -272,7 +250,11 @@ export const Experiences: React.FC<{ experiences: ExperienceProps[] }> = ({
   );
 
   useEffect(() => {
-    const sorted = experiences?.sort((a, b) => a.priority - b.priority);
+    const sorted = experiences?.sort((a, b) => {
+      const priorityA = a.priority ?? Number.MAX_SAFE_INTEGER;
+      const priorityB = b.priority ?? Number.MAX_SAFE_INTEGER;
+      return priorityA - priorityB;
+    });
     setSortedExperiences(sorted);
   }, [experiences]);
 
@@ -315,8 +297,9 @@ export const Experiences: React.FC<{ experiences: ExperienceProps[] }> = ({
         </button>
       </div>
 
+      {/* For mobile */}
       <div className=" flex flex-col md:hidden pt-20 items-center">
-        <div className="flex flex-col flex-grow px-4 py-2 mx-4 mb-4 lg:mx-80 bg-white shadow-lg rounded-2xl">
+        <div className="flex flex-col flex-grow px-2 py-2 mx-4 mb-4 lg:mx-80 rounded-2xl">
           {sortedExperiences?.map((experience, index) => (
             <RecPageItem key={index} {...experience} />
           ))}
@@ -326,9 +309,9 @@ export const Experiences: React.FC<{ experiences: ExperienceProps[] }> = ({
       {isMobileView && (
         <div className="flex justify-center items-center">
           <div className="flex flex-col px-4 pt-20 ">
-            <div className="bg-white overflow-hidden shadow-lg rounded-2xl w-full max-w-4xl px-4 py-2 mx-4 mb-4 lg:mx-80">
+            <div className="overflow-hidden rounded-2xl w-full max-w-4xl px-2 py-2 mx-4 mb-4 lg:mx-80">
               {sortedExperiences.map((experience, index) => (
-                <RecPageItemAnimation key={index} {...experience} />
+                <RecPageItem key={index} {...experience} />
               ))}
             </div>
           </div>
@@ -350,7 +333,7 @@ export const Experiences: React.FC<{ experiences: ExperienceProps[] }> = ({
                     {...experience}
                     onExperienceClick={bringToFront}
                     totalExperiences={experiences.length}
-                    screenWidth={screenWidth!}
+                    screenWidth={screenWidth! - 10}
                     screenHeight={screenHeight!}
                     index={index}
                   />
