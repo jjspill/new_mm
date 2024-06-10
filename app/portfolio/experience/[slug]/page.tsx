@@ -23,8 +23,8 @@ export default async function ExperiencePage({ params }: { params: any }) {
             </p>
           </div>
 
-          <div className="p-8">
-            <p className="text-gray-700 text-lg whitespace-pre-line">
+          <div className="py-8 mx-4">
+            <p className=" text-center text-gray-700 text-lg">
               {experience.long_text}
             </p>
           </div>
@@ -39,7 +39,10 @@ export default async function ExperiencePage({ params }: { params: any }) {
           )}
 
           {experience.key_features && (
-            <KeyFeatures keyFeatures={experience.key_features} />
+            <KeyFeatures
+              keyFeatures={experience.key_features}
+              title={experience.title}
+            />
           )}
 
           {experience.technologies && (
@@ -55,7 +58,7 @@ export default async function ExperiencePage({ params }: { params: any }) {
             </div>
           )}
 
-          {experience.documents && (
+          {experience.documents.length >= 1 && (
             <PDFViewer experienceTitle={experience.title} />
           )}
 

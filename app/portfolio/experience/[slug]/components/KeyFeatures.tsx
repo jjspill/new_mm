@@ -6,20 +6,23 @@ interface FeaturesProps {
     feature: string;
     description: string;
   }[];
-  company?: string;
+  title?: string;
 }
 
 // The component
-const KeyFeatures: React.FC<FeaturesProps> = ({ keyFeatures, company }) => {
+const KeyFeatures: React.FC<FeaturesProps> = ({ keyFeatures, title }) => {
+  const company =
+    title === 'Intel' || title === 'Solidigm' || title === 'Solidigm';
+
   return (
-    <div className="px-4 pt-8">
+    <div className="px-4">
       <div className="flex justify-center">
         {company ? (
-          <h2 className="text-3xl text-gray-800 font-semibold pb-5">
+          <h2 className="pb-10 text-3xl text-gray-800 font-semibold">
             Contributions
           </h2>
         ) : (
-          <h2 className="text-3xl text-gray-800 font-semibold pb-5">
+          <h2 className="pb-10 text-3xl text-gray-800 font-semibold">
             Key Features
           </h2>
         )}
