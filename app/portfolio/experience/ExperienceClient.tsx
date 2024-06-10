@@ -152,11 +152,11 @@ const Experience: React.FC<
   return (
     <div
       ref={elementRef}
-      className="flex flex-col items-center text-xl bg-white rounded-lg absolute w-fit h-fit max-h-[200px] shadow-lg"
+      className="flex flex-col items-center text-xl bg-white rounded-lg absolute w-fit h-fit max-h-[220px] shadow-lg"
       tabIndex={0}
       onClick={handleClick}
       style={{
-        maxWidth: '300px',
+        maxWidth: '330px',
         overflow: 'auto',
         zIndex: zIndex,
         ...styleRef.current,
