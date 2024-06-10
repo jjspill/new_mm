@@ -38,7 +38,7 @@ export const GitHubRecPage: React.FC<GitHubExperienceProps> = ({
 }) => {
   return (
     <div className="shadow-lg rounded-2xl text-center my-2 bg-gray-100">
-      <div className="flex items-center justify-between py-1 px-6 bg-gray-200 h-fit min-h-10 w-full rounded-t-2xl md:justify-center md:space-x-4">
+      <div className="flex items-center justify-center py-1 px-6 bg-gray-200 h-fit min-h-10 w-full rounded-t-2xl md:justify-center md:space-x-4">
         <GitHubSVG />
       </div>
       <div className="px-4 py-2 pb-4 flex flex-col items-center">

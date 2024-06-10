@@ -299,7 +299,7 @@ export const Experiences: React.FC<{ experiences: ExperienceProps[] }> = ({
 
       {/* For mobile */}
       <div className=" flex flex-col md:hidden pt-20 items-center">
-        <div className="flex flex-col flex-grow px-4 py-2 mx-4 mb-4 lg:mx-80 bg-white shadow-lg rounded-2xl">
+        <div className="flex flex-col flex-grow px-2 py-2 mx-4 mb-4 lg:mx-80 rounded-2xl">
           {sortedExperiences?.map((experience, index) => (
             <RecPageItem key={index} {...experience} />
           ))}
@@ -309,7 +309,7 @@ export const Experiences: React.FC<{ experiences: ExperienceProps[] }> = ({
       {isMobileView && (
         <div className="flex justify-center items-center">
           <div className="flex flex-col px-4 pt-20 ">
-            <div className="bg-white overflow-hidden shadow-lg rounded-2xl w-full max-w-4xl px-4 py-2 mx-4 mb-4 lg:mx-80">
+            <div className="overflow-hidden rounded-2xl w-full max-w-4xl px-2 py-2 mx-4 mb-4 lg:mx-80">
               {sortedExperiences.map((experience, index) => (
                 <RecPageItem key={index} {...experience} />
               ))}
@@ -333,7 +333,7 @@ export const Experiences: React.FC<{ experiences: ExperienceProps[] }> = ({
                     {...experience}
                     onExperienceClick={bringToFront}
                     totalExperiences={experiences.length}
-                    screenWidth={screenWidth!}
+                    screenWidth={screenWidth! - 10}
                     screenHeight={screenHeight!}
                     index={index}
                   />
