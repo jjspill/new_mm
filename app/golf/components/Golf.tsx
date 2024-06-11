@@ -55,7 +55,7 @@ export const GolfTeam: React.FC<DisplayTeamProps> = ({
   return (
     <div className="px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded-lg my-3">
       <Link
-        href={`/golf/leaderboard?league=${leagueId}`}
+        href={`/golf/leaderboard/${leagueId}`}
         // className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
       >
         <div className="flex justify-start items-center">

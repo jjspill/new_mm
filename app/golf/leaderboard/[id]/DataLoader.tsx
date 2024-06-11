@@ -1,25 +1,18 @@
 'use client';
 
-import { PageContainer } from '@/app/components/templates/PageContainer';
-import { useSearchParams } from 'next/navigation';
+import { keys, set } from 'lodash';
+import { assignScoresToTeams, getScores } from '../leaderboardHelpers';
 import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { assignScoresToTeams, getScores } from './leaderboardHelpers';
-import { LeaderboardRow, UpdatedTime } from '../components/Leaderboard';
-import { keys } from 'lodash';
+import { LeaderboardRow, UpdatedTime } from '../../components/Leaderboard';
 
-const LeaderboardPage = () => {
-  const router = useRouter();
-  const searchParam = useSearchParams();
+export const LeaderboardData = ({ leagueIdIn }: { leagueIdIn: string }) => {
   const [leagueId, setLeagueId] = useState<string>('');
   const [teamData, setTeamData] = useState<any[]>([]);
   const [liveScores, setLiveScores] = useState<any>([]);
 
-  // setLeagueId(searchParam.get('league') || '');
-
   useEffect(() => {
-    setLeagueId(searchParam.get('league') || '');
-  }, []);
+    setLeagueId(leagueIdIn);
+  }, [leagueIdIn]);
 
   useEffect(() => {
     if (!leagueId) {
@@ -74,29 +67,22 @@ const LeaderboardPage = () => {
   const scores = getScores(liveScores?.leaderboard);
   let scoreboardData: any = [];
   if (keys(scores).length > 0 && teamData.length > 0) {
-    console.log('assigning scores to teams');
-    console.log('teamData', teamData);
-    console.log('scores', scores);
     scoreboardData = assignScoresToTeams(teamData, scores);
   }
 
   const leagueData = scoreboardData ? scoreboardData : teamData;
 
   return (
-    <PageContainer className="bg-none shadow-none rounded-none">
-      <div className="flex flex-col justify-center items-cente">
-        <div className="bg-gray-200 font-semibold text-2xl p-4 rounded-lg text-center mb-10">
-          <h1>{leagueId} Leaderboard</h1>
-          <UpdatedTime date={updatedAt} />
-        </div>
-        <div className="w-full px-2 space-y-2">
-          {leagueData.map((row: any, index: number) => (
-            <LeaderboardRow key={index} {...row} />
-          ))}
-        </div>
+    <div className="flex flex-col justify-center items-cente">
+      <div className="bg-gray-200 font-semibold text-2xl p-4 rounded-lg text-center mb-10">
+        <h1>{leagueId} Leaderboard</h1>
+        <UpdatedTime date={updatedAt} />
       </div>
-    </PageContainer>
+      <div className="w-full px-2 space-y-2">
+        {leagueData.map((row: any, index: number) => (
+          <LeaderboardRow key={index} {...row} />
+        ))}
+      </div>
+    </div>
   );
 };
-
-export default LeaderboardPage;

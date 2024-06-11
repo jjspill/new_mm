@@ -1,0 +1,43 @@
+import { PageContainer } from '@/app/components/templates/PageContainer';
+import { LeaderboardData } from './DataLoader';
+
+const LeaderboardPage = ({ params }: { params: any }) => {
+  return (
+    <PageContainer className="bg-none shadow-none rounded-none">
+      <LeaderboardData leagueIdIn={params.id} />
+    </PageContainer>
+  );
+};
+
+export default LeaderboardPage;
+
+export async function generateStaticParams() {
+  const res = await fetch(
+    'https://preview.api.james-spillmann.com/golf/leagues',
+    {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${process.env.AUTH_TOKEN}`,
+      },
+    },
+  );
+
+  if (!res.ok) {
+    throw new Error('Failed to fetch leaderboard data');
+  }
+
+  const data = await res.json();
+
+  if (!data?.data) {
+    return [];
+  }
+
+  return data?.data?.map(
+    (league: string) => (
+      console.log(league),
+      {
+        slug: league,
+      }
+    ),
+  );
+}
