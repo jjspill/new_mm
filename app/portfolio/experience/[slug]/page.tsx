@@ -6,7 +6,7 @@ import {
 import Image from 'next/image';
 import EmbeddedYouTube from './components/EmbeddedYoutube';
 import KeyFeatures from './components/KeyFeatures';
-import PDFViewer from './components/PDFViewer';
+import PDFViewer from './components/DynamicPDFViewer';
 
 export default async function ExperiencePage({ params }: { params: any }) {
   const experience = await getExperience(params.slug);
@@ -59,7 +59,7 @@ export default async function ExperiencePage({ params }: { params: any }) {
           )}
 
           {experience.documents.length >= 1 && (
-            <PDFViewer experienceTitle={experience.title} />
+            <PDFViewer title={experience.title} />
           )}
 
           {experience.link && (
