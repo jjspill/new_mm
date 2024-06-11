@@ -6,7 +6,9 @@ export async function GET(request: Request) {
   const username = request.headers.get('Username');
 
   if (!username) {
-    return { error: 'An account is required to access this page.' };
+    return new NextResponse(
+      JSON.stringify({ error: 'An account is required to access this page.' }),
+    );
   }
 
   const encodedUsername = encodeURIComponent(username);
