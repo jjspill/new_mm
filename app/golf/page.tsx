@@ -159,7 +159,7 @@ const InstructionsDiv = () => {
           will) just let me know
         </p>
         <p className="font-bold">
-          Note: Opponents' picks are hidden until first tee and after that
+          Note: Opponents picks are hidden until first tee and after that
           leagues are unable to be joined
         </p>
       </div>
