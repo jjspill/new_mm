@@ -58,8 +58,9 @@ export async function fetchLeagueData(leagueId: string) {
         error: 'An account is required to access this page.',
       };
     }
+    const encodedLeagueId = encodeURIComponent(leagueId);
 
-    const res = await fetch(`${apiUrl}/golf/teams/${leagueId}`, {
+    const res = await fetch(`${apiUrl}/golf/teams/${encodedLeagueId}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
