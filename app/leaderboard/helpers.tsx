@@ -54,7 +54,6 @@ export function assignScoresToTeams(config: any, scores: Scores) {
       const key = `${player.first_name.toLowerCase()[0]}_${player.last_name.toLowerCase()}`;
       const score = scores[key];
       if (!score) {
-        console.log('No score found for', key);
         return 0;
       }
       if (score.status === 'cut') {
@@ -65,7 +64,6 @@ export function assignScoresToTeams(config: any, scores: Scores) {
       if (score) {
         return score.score;
       } else {
-        console.log('No score found for', key);
         return 0;
       }
     });

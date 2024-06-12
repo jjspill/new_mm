@@ -1,9 +1,9 @@
 'use client';
 
+import useSWR, { BareFetcher, SWRConfiguration } from 'swr';
 import Link from 'next/link';
 import { useUser } from '../contexts/UserContext';
-import { useEffect, useState } from 'react';
-import { GolfContainer, GolfTeam } from './components/Golf';
+import { GolfContainer, GolfTeam, GolfTeamLoader } from './components/Golf';
 import { PageContainer } from '../components/templates/PageContainer';
 
 interface UserGolfTeam {
@@ -13,29 +13,41 @@ interface UserGolfTeam {
   userId: string;
 }
 
+const fetcher = async (args: [string, string]): Promise<UserGolfTeam[]> => {
+  const [url, username] = args;
+  const response = await fetch(url, {
+    headers: {
+      'Content-Type': 'application/json',
+      Username: username,
+    },
+  });
+  if (!response.ok) {
+    throw new Error('Failed to fetch data');
+  }
+  return await response.json();
+};
+
+const swrConfig: SWRConfiguration<
+  UserGolfTeam[],
+  any,
+  BareFetcher<UserGolfTeam[]>
+> = {
+  onError: (error) => {
+    console.error('Fetching error:', error);
+  },
+  revalidateOnFocus: true,
+  revalidateOnReconnect: true,
+  refreshInterval: 1000 * 60, // Refresh every minute
+};
+
 const GolfHomePage = () => {
-  const { user, setUser } = useUser();
-  const [userGolfData, setUserGolfData] = useState<UserGolfTeam[] | null>(null);
+  const { user } = useUser();
 
-  useEffect(() => {
-    if (!user) {
-      return;
-    }
-
-    fetch('/golf/api', {
-      headers: {
-        'Content-Type': 'application/json',
-        Username: user.username,
-      },
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        setUserGolfData(data);
-      })
-      .catch((error) => {
-        console.error('Error in /golf GET request: ', error);
-      });
-  }, [user]);
+  const { data: userGolfData, error } = useSWR<UserGolfTeam[]>(
+    user ? [`/golf/api`, user.username] : null,
+    fetcher,
+    swrConfig,
+  );
 
   if (!user) {
     return (
@@ -54,16 +66,18 @@ const GolfHomePage = () => {
     );
   }
 
+  if (error) return <div className="pt-20">Failed to load data</div>;
+
   return (
     <PageContainer className="bg-none shadow-none rounded-none max-w-lg">
       <div className="flex flex-col items-center justify-center space-y-4">
-        <div className="flex justify-center items-center space-x-4">
+        <div className="flex justify-center items-center space-x-4 w-full">
           {userGolfData && (
             <>
               <GolfContainer title="Teams">
                 {userGolfData.map((team) => {
                   return (
-                    <div key={team.leagueId}>
+                    <div key={team.leagueId} className="w-full">
                       <GolfTeam
                         teamName={team.name}
                         leagueName={team.leagueId}
@@ -91,6 +105,14 @@ const GolfHomePage = () => {
               })}
             </GolfContainer> */}
             </>
+          )}
+
+          {!userGolfData && (
+            <GolfContainer title="Teams">
+              {Array.from({ length: 3 }, (_, index) => {
+                return <GolfTeamLoader key={index} />;
+              })}
+            </GolfContainer>
           )}
         </div>
         <div className="w-full h-fit rounded-lg py-2 px-4 text-center shadow-xl">

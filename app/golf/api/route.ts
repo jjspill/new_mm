@@ -20,6 +20,7 @@ export async function GET(request: Request) {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${process.env.AUTH_TOKEN}`,
       },
+      next: { revalidate: 0 },
     });
 
     const team = await res.json();

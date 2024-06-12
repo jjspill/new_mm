@@ -31,12 +31,28 @@ interface GolfLeagueProps {
   teams: GolfTeamProps[];
 }
 
+export const GolfTeamLoader: React.FC = () => {
+  return (
+    <div className="px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded-lg my-3 w-full ">
+      <div className="animate-pulse flex justify-between items-center w-full h-[24px]">
+        <div className="flex-1 text-center px-2">
+          <div className="bg-gray-400 w-full h-4" />
+        </div>
+        <div className="bg-gray-800 w-[2px] h-4 mx-4" />{' '}
+        <div className="flex-1 text-center px-2">
+          <div className="bg-gray-400 w-full h-4" />
+        </div>
+      </div>
+    </div>
+  );
+};
+
 export const GolfContainer: React.FC<GolfContainerProps> = ({
   children,
   title,
 }) => {
   return (
-    <div className="bg-white p-4 w-fit md:min-w-l rounded-lg">
+    <div className="bg-white p-4 w-full min-w-lg md:min-w-l rounded-lg">
       <div className="flex flex-col items-center justify-center">
         <div className="text-2xl font-semibold">{title}</div>
         <div className="w-full h-[2px] bg-gray-800" />
@@ -53,15 +69,16 @@ export const GolfTeam: React.FC<DisplayTeamProps> = ({
   leagueId,
 }) => {
   return (
-    <div className="px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded-lg my-3">
-      <Link
-        href={`/golf/leaderboard/${leagueId}`}
-        // className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-      >
-        <div className="flex justify-start items-center">
-          <p>{teamName}</p>
+    <div className="px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded-lg my-3 w-full">
+      <Link href={`/golf/leaderboard/${leagueId}`}>
+        <div className="flex justify-between items-center w-full">
+          <div className="flex-1 text-center pr-2">
+            <p>{teamName}</p>
+          </div>
           <div className="bg-gray-800 w-[2px] h-4 mx-4" />
-          <p>{leagueName}</p>
+          <div className="flex-1 text-center pl-2">
+            <p>{leagueName}</p>
+          </div>
         </div>
       </Link>
     </div>

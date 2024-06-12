@@ -61,7 +61,6 @@ function LoginContainer() {
           setUserSession(data.session);
         } else {
           const userTemp = createUser(email, data);
-          console.log('setting user', userTemp);
           setUser(userTemp);
         }
       } else {
