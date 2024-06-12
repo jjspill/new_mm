@@ -124,8 +124,8 @@ const JoinLeaguePage: React.FC = () => {
   };
 
   return (
-    <PageContainer className="bg-none shadow-none rounded-none h-[80vh]">
-      <div className="container mx-auto p-4">
+    <PageContainer className="bg-none shadow-none rounded-none h-[80vh] max-w-2xl">
+      <div className="max-w-2xl mx-auto p-4">
         <h1 className="text-lg font-bold mb-4">Join a League</h1>
         <form onSubmit={handleSubmit} className="space-y-4">
           {Object.keys(playersByTier).map((tier) => (

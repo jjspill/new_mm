@@ -1,13 +1,21 @@
 import { PageContainer } from '@/app/components/templates/PageContainer';
-import { LeaderboardData } from './DataLoader';
+import { LeaderboardContainer } from './leaderboardContainer';
+import { fetchLeagueData, fetchLiveScores } from './leaderboardFetcher';
 
-const LeaderboardPage = ({ params }: { params: any }) => {
+async function LeaderboardPage({ params }: { params: any }) {
+  const teamData = await fetchLeagueData(params.id);
+  const liveScores = await fetchLiveScores();
+
   return (
     <PageContainer className="bg-none shadow-none rounded-none">
-      <LeaderboardData leagueIdIn={params.id} />
+      <LeaderboardContainer
+        leagueId={params.id}
+        teamData={teamData}
+        liveScores={liveScores}
+      />
     </PageContainer>
   );
-};
+}
 
 export default LeaderboardPage;
 
@@ -19,7 +27,13 @@ export async function generateStaticParams() {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${process.env.AUTH_TOKEN}`,
       },
+      next: { revalidate: 15 },
     },
+  );
+
+  console.log(
+    'generateStaticParams',
+    new Date().toLocaleString('en-US', { timeZone: 'America/New_York' }),
   );
 
   if (!res.ok) {
@@ -32,12 +46,7 @@ export async function generateStaticParams() {
     return [];
   }
 
-  return data?.data?.map(
-    (league: string) => (
-      console.log(league),
-      {
-        slug: league,
-      }
-    ),
-  );
+  return data?.data?.map((league: string) => ({
+    slug: league,
+  }));
 }

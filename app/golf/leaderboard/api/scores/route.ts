@@ -1,13 +1,16 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 
-export async function GET() {
+export async function GET(request: NextRequest) {
+  console.log('HERE');
   const res = await fetch(
-    'https://site.api.espn.com/apis/site/v2/sports/golf/pga/scoreboard',
+    // 'https://site.api.espn.com/apis/site/v2/sports/golf/pga/scoreboard',
+    'http://localhost:3001/scores',
     {
       headers: {
         'Content-Type': 'application/json',
+        Authorization: `Bearer ${process.env.AUTH_TOKEN}`,
       },
-      next: { revalidate: 30 },
+      next: { revalidate: 0 },
     },
   );
 

@@ -36,7 +36,7 @@ export const GolfContainer: React.FC<GolfContainerProps> = ({
   title,
 }) => {
   return (
-    <div className="bg-white p-4 w-fit rounded-lg">
+    <div className="bg-white p-4 w-fit md:min-w-l rounded-lg">
       <div className="flex flex-col items-center justify-center">
         <div className="text-2xl font-semibold">{title}</div>
         <div className="w-full h-[2px] bg-gray-800" />

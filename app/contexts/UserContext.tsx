@@ -49,6 +49,14 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
     setIsHydrated(true); // Set hydration done after user is loaded
   }, []);
 
+  useEffect(() => {
+    if (user) {
+      localStorage.setItem('userData', JSON.stringify(user));
+    } else {
+      localStorage.removeItem('userData');
+    }
+  }, [user]);
+
   if (!isHydrated) {
     return null; // or a loading spinner, or however you want to handle this case
   }

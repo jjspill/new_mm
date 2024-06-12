@@ -40,7 +40,7 @@ const GolfHomePage = () => {
   if (!user) {
     return (
       <div className="flex items-center justify-center">
-        <div className="flex flex-col bg-white items-center justify-center mt-20 p-5 h-hit w-fit rounded-xl shadow-xl">
+        <div className="flex flex-col max-w-2xl bg-white items-center justify-center mt-20 p-5 h-hit w-fit rounded-xl shadow-xl">
           <div className="p-5 text-center rounded-xl  h-fit w-fit">
             An account is required to access this page.
           </div>
@@ -55,7 +55,7 @@ const GolfHomePage = () => {
   }
 
   return (
-    <PageContainer className="bg-none shadow-none rounded-none">
+    <PageContainer className="bg-none shadow-none rounded-none max-w-lg">
       <div className="flex flex-col items-center justify-center space-y-4">
         <div className="flex justify-center items-center space-x-4">
           {userGolfData && (

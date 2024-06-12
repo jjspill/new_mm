@@ -1,11 +1,12 @@
 import { getAPIUrl } from 'config/config';
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { splitName } from '../../leaderboardHelpers';
 
-export async function GET(request: Request) {
+export async function GET(request: NextRequest) {
   try {
     const apiUrl = getAPIUrl();
-    const leagueId = request.headers.get('LeagueId');
+    // get league id from query
+    const leagueId = request.nextUrl.searchParams.get('leagueId');
 
     if (!leagueId) {
       return new NextResponse(
@@ -15,9 +16,7 @@ export async function GET(request: Request) {
       );
     }
 
-    const encodedLeagueId = encodeURIComponent(leagueId);
-
-    const res = await fetch(`${apiUrl}/golf/teams/${encodedLeagueId}`, {
+    const res = await fetch(`${apiUrl}/golf/teams/${leagueId}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
