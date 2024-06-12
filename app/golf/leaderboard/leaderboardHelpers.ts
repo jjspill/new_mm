@@ -1,7 +1,9 @@
 export interface ScoreboardRowData {
-  team_name: string;
+  name: string;
   total_score: number;
   players?: PlayerData[];
+  userId: string;
+  leagueId: string;
 }
 
 export interface PlayerData {
@@ -13,6 +15,19 @@ export interface PlayerData {
 
 export interface Scores {
   [key: string]: PlayerData;
+}
+
+export interface Config {
+  leagueId: string;
+  players: string[];
+  name: string;
+  userId: string;
+}
+
+export function shouldDisplayData() {
+  const now = new Date();
+  const targetDate = new Date(now.getFullYear(), 5, 13, 6, 30, 0);
+  return now >= targetDate;
 }
 
 function getTotalOfLowestScores(scores: number[]): number {
@@ -29,6 +44,7 @@ function sortTeamsByScore(
 }
 
 export function getScores(data: any): Scores {
+  if (!data) return {};
   const scores = data.results.leaderboard.reduce((acc: any, item: any) => {
     const key = `${item.first_name.toLowerCase()[0]}_${item.last_name.toLowerCase()}`;
     acc[key] = {
@@ -43,33 +59,45 @@ export function getScores(data: any): Scores {
   return scores;
 }
 
-export function assignScoresToTeams(config: any, scores: Scores) {
+export function assignScoresToTeams(config: Config[], scores: Scores) {
   const highestScore = getHighestActiveScore(scores);
   if (!highestScore) {
-    console.error('No active scores found');
-    return [];
+    return config;
   }
-  const teams = config.teams.map((team: any) => {
+
+  const updatedTeams = config.map((team: Config) => {
     const teamScores = team.players.map((player: any) => {
-      const key = `${player.first_name.toLowerCase()[0]}_${player.last_name.toLowerCase()}`;
+      const key = `${player.firstName.toLowerCase()[0]}_${player.lastName.toLowerCase()}`;
       const score = scores[key];
       if (!score) {
-        console.log('No score found for', key);
-        return 0;
+        return player;
       }
       if (score.status === 'cut') {
         score.score = highestScore.score;
       }
-      player.score = score.score;
-      player.status = score.status;
       if (score) {
-        return score.score;
+        return {
+          ...player,
+          score: score.score,
+          status: score.status,
+        };
       } else {
-        console.log('No score found for', key);
-        return 0;
+        return player;
       }
     });
-    const total = getTotalOfLowestScores(teamScores);
+
+    if (teamScores.some((player) => player.score === undefined)) {
+      return {
+        ...team,
+        total_score: 0,
+      };
+    }
+
+    const total = getTotalOfLowestScores(
+      teamScores.map((player) => player?.score!),
+    );
+
+    team.players = teamScores;
 
     return {
       ...team,
@@ -77,7 +105,7 @@ export function assignScoresToTeams(config: any, scores: Scores) {
     };
   });
 
-  return sortTeamsByScore(teams);
+  return sortTeamsByScore(updatedTeams as []);
 }
 
 export function getHighestActiveScore(
@@ -94,4 +122,14 @@ export function getHighestActiveScore(
   }
 
   return highestScorer;
+}
+
+export function splitName(name: string): {
+  firstName: string;
+  lastName: string;
+} {
+  const parts = name.trim().split(/\s+/); // Split by one or more spaces and handle extra spaces gracefully
+  const firstName = parts[0];
+  const lastName = parts.length > 1 ? parts[parts.length - 1] : ''; // Check if there is a last name
+  return { firstName, lastName };
 }

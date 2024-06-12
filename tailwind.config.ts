@@ -4,6 +4,9 @@ const config: Config = {
   content: ['./app/**/*.{js,ts,jsx,tsx,mdx}'],
   theme: {
     extend: {
+      classNames: {
+        'items-justify-center': 'flex items-center justify-center',
+      },
       fontFamily: {
         sans: ['Helvetica', 'Arial', 'sans-serif'],
       },

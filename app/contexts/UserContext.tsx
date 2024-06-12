@@ -40,23 +40,26 @@ export function useUser() {
 export const UserProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
-  const [user, setUser] = useState<User | null>(() => {
-    if (typeof window !== 'undefined') {
-      const storedUserData = localStorage.getItem('userData');
-      return storedUserData ? JSON.parse(storedUserData) : null;
-    }
-    return null;
-  });
+  const [user, setUser] = useState<User | null>(null);
+  const [isHydrated, setIsHydrated] = useState(false); // Tracks if hydration is done
 
   useEffect(() => {
-    if (typeof window !== 'undefined') {
-      if (user === null) {
-        localStorage.removeItem('userData');
-      } else {
-        localStorage.setItem('userData', JSON.stringify(user));
-      }
+    const storedUserData = localStorage.getItem('userData');
+    setUser(storedUserData ? JSON.parse(storedUserData) : null);
+    setIsHydrated(true); // Set hydration done after user is loaded
+  }, []);
+
+  useEffect(() => {
+    if (user) {
+      localStorage.setItem('userData', JSON.stringify(user));
+    } else {
+      localStorage.removeItem('userData');
     }
   }, [user]);
+
+  if (!isHydrated) {
+    return null; // or a loading spinner, or however you want to handle this case
+  }
 
   return (
     <UserContext.Provider value={{ user, setUser }}>
@@ -64,6 +67,34 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
     </UserContext.Provider>
   );
 };
+
+// export const UserProvider: React.FC<{ children: ReactNode }> = ({
+//   children,
+// }) => {
+//   const [user, setUser] = useState<User | null>(() => {
+//     if (typeof window !== 'undefined') {
+//       const storedUserData = localStorage.getItem('userData');
+//       return storedUserData ? JSON.parse(storedUserData) : null;
+//     }
+//     return null;
+//   });
+
+//   useEffect(() => {
+//     if (typeof window !== 'undefined') {
+//       if (user === null) {
+//         localStorage.removeItem('userData');
+//       } else {
+//         localStorage.setItem('userData', JSON.stringify(user));
+//       }
+//     }
+//   }, [user]);
+
+//   return (
+//     <UserContext.Provider value={{ user, setUser }}>
+//       {children}
+//     </UserContext.Provider>
+//   );
+// };
 
 export const createUser = (username: string, fetchData: any): User => {
   const tokens = {
