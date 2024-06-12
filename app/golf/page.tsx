@@ -51,15 +51,21 @@ const GolfHomePage = () => {
   if (!user) {
     return (
       <div className="flex items-center justify-center">
-        <div className="flex flex-col max-w-2xl bg-white items-center justify-center mt-20 p-5 h-hit w-fit rounded-xl shadow-xl mx-5">
-          <div className="p-5 text-center rounded-xl  h-fit w-fit">
-            An account is required to access this page.
-          </div>
-          <Link href="/login" className="w-fit h-fit">
-            <div className="px-5 py-3 h-fit w-fit bg-gray-200 hover:bg-gray-300 rounded-xl shadow-lg ">
-              Sign In or Create Account
+        <div className="flex flex-col items-center justify-center max-w-lg">
+          <div className="flex flex-col max-w-2xl bg-white items-center justify-center mt-20 p-5 h-hit w-fit rounded-xl shadow-lg mx-5">
+            <div className="p-5 text-center rounded-xl  h-fit w-fit">
+              An account is required to access this page. Please sign in or
+              create one below.
             </div>
-          </Link>
+            <Link href="/login" className="w-fit h-fit">
+              <div className="px-5 py-3 h-fit w-fit bg-gray-200 hover:bg-gray-300 rounded-xl shadow-lg ">
+                Sign In or Create Account
+              </div>
+            </Link>
+          </div>
+          <div>
+            <InstructionsDiv />
+          </div>
         </div>
       </div>
     );
@@ -120,16 +126,43 @@ const GolfHomePage = () => {
             </GolfContainer>
           )}
         </div>
-        <div className="w-full h-fit rounded-lg py-2 px-4 text-center shadow-xl">
+        <div className="w-full h-fit rounded-lg py-2 px-4 text-center">
           <Link href="/golf/join-league">
-            <div className="bg-green-500 hover:bg-green-600 w-full rounded-lg my-2 px-4 py-2">
+            <div className="bg-green-500 hover:bg-green-600 w-full rounded-lg my-2 px-4 py-2 shadow-lg">
               <p className="text-white font-bold text-xl">Join League</p>
             </div>
           </Link>
         </div>
+        <InstructionsDiv />
       </div>
     </PageContainer>
   );
 };
 
 export default GolfHomePage;
+
+const InstructionsDiv = () => {
+  return (
+    <div className="bg-white p-5 mt-5 text-left rounded-xl text-pretty shadow-lg">
+      <h1 className="font-bold mb-4">How to Play</h1>
+      <div className="text-sm">
+        <p>1. Create an account and login</p>
+        <p>2. Get the league id from the league owner</p>
+        <p>3. Join the league with the id and pick your team</p>
+        <p>
+          4. After submitting your picks, the leaderboard will update but your
+          picks might not show up immediately, refresh
+        </p>
+        <p>5. To change picks, join the league again with the same account</p>
+        <p>
+          6. This is new / untested so if any difficulties arise (which they
+          will) just let me know
+        </p>
+        <p className="font-bold">
+          Note: Opponents' picks are hidden until first tee and after that
+          leagues are unable to be joined
+        </p>
+      </div>
+    </div>
+  );
+};
