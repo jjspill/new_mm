@@ -24,6 +24,12 @@ export interface Config {
   userId: string;
 }
 
+export function shouldDisplayData() {
+  const now = new Date();
+  const targetDate = new Date(now.getFullYear(), 5, 13, 6, 30, 0);
+  return now >= targetDate;
+}
+
 function getTotalOfLowestScores(scores: number[]): number {
   const sortedScores = scores.sort((a, b) => a - b);
   const lowest5Scores = sortedScores.slice(0, 5);
@@ -58,6 +64,7 @@ export function assignScoresToTeams(config: Config[], scores: Scores) {
   if (!highestScore) {
     return config;
   }
+
   const updatedTeams = config.map((team: Config) => {
     const teamScores = team.players.map((player: any) => {
       const key = `${player.firstName.toLowerCase()[0]}_${player.lastName.toLowerCase()}`;

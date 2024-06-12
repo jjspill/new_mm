@@ -3,9 +3,9 @@ import { splitName } from '../leaderboardHelpers';
 
 export async function fetchLiveScores() {
   const res = await fetch(
-    // 'https://site.api.espn.com/apis/site/v2/sports/golf/pga/scoreboard',
+    'https://site.api.espn.com/apis/site/v2/sports/golf/pga/scoreboard',
     // 'http://localhost:3001/scores',
-    `${getAPIUrl()}/scores`,
+    // `${getAPIUrl()}/scores`,
     {
       headers: {
         'Content-Type': 'application/json',
@@ -13,11 +13,6 @@ export async function fetchLiveScores() {
       },
       next: { revalidate: 15 },
     },
-  );
-
-  console.log(
-    'fetching live scores',
-    new Date().toLocaleString('en-US', { timeZone: 'America/New_York' }),
   );
 
   const data = await res.json();
@@ -72,8 +67,6 @@ export async function fetchLeagueData(leagueId: string) {
       },
       next: { revalidate: 15 },
     });
-
-    console.log('fetching league data');
 
     const league = await res.json();
     if (!league?.data) {

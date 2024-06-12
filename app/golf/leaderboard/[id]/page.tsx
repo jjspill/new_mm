@@ -31,11 +31,6 @@ export async function generateStaticParams() {
     },
   );
 
-  console.log(
-    'generateStaticParams',
-    new Date().toLocaleString('en-US', { timeZone: 'America/New_York' }),
-  );
-
   if (!res.ok) {
     throw new Error('Failed to fetch leaderboard data');
   }

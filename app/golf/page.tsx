@@ -37,7 +37,6 @@ const swrConfig: SWRConfiguration<
   },
   revalidateOnFocus: true,
   revalidateOnReconnect: true,
-  refreshInterval: 1000 * 60, // Refresh every minute
 };
 
 const GolfHomePage = () => {
@@ -52,12 +51,12 @@ const GolfHomePage = () => {
   if (!user) {
     return (
       <div className="flex items-center justify-center">
-        <div className="flex flex-col max-w-2xl bg-white items-center justify-center mt-20 p-5 h-hit w-fit rounded-xl shadow-xl">
+        <div className="flex flex-col max-w-2xl bg-white items-center justify-center mt-20 p-5 h-hit w-fit rounded-xl shadow-xl mx-5">
           <div className="p-5 text-center rounded-xl  h-fit w-fit">
             An account is required to access this page.
           </div>
           <Link href="/login" className="w-fit h-fit">
-            <div className="p-5 h-fit w-fit bg-gray-200 hover:bg-gray-300 rounded-xl shadow-lg ">
+            <div className="px-5 py-3 h-fit w-fit bg-gray-200 hover:bg-gray-300 rounded-xl shadow-lg ">
               Sign In or Create Account
             </div>
           </Link>
@@ -75,18 +74,24 @@ const GolfHomePage = () => {
           {userGolfData && (
             <>
               <GolfContainer title="Teams">
-                {userGolfData.map((team) => {
-                  return (
-                    <div key={team.leagueId} className="w-full">
-                      <GolfTeam
-                        teamName={team.name}
-                        leagueName={team.leagueId}
-                        teamId={team.userId}
-                        leagueId={team.leagueId}
-                      />
-                    </div>
-                  );
-                })}
+                {userGolfData.length > 0 ? (
+                  userGolfData.map((team) => {
+                    return (
+                      <div key={team.leagueId} className="w-full">
+                        <GolfTeam
+                          teamName={team.name}
+                          leagueName={team.leagueId}
+                          teamId={team.userId}
+                          leagueId={team.leagueId}
+                        />
+                      </div>
+                    );
+                  })
+                ) : (
+                  <div className="pt-4 text-center w-full">
+                    No teams found, join a league!
+                  </div>
+                )}
               </GolfContainer>
               {/* <GolfContainer title="Leagues">
               {userGolfData.map((team) => {

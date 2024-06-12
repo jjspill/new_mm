@@ -1,15 +1,13 @@
 'use client';
 
 import { keys, set } from 'lodash';
-import { assignScoresToTeams, getScores } from '../leaderboardHelpers';
-import { useEffect, useState } from 'react';
+import {
+  assignScoresToTeams,
+  getScores,
+  shouldDisplayData,
+} from '../leaderboardHelpers';
 import { LeaderboardRow, UpdatedTime } from '../../components/Leaderboard';
-
-function shouldDisplayData() {
-  const now = new Date();
-  const targetDate = new Date(now.getFullYear(), 5, 13, 6, 30, 0);
-  return now >= targetDate;
-}
+import { useUser } from '@/app/contexts/UserContext';
 
 interface LeaderboardContainerProps {
   leagueId: string;
@@ -29,8 +27,8 @@ export const LeaderboardContainer = ({
     scoreboardData = assignScoresToTeams(teamData, scores);
   }
 
+  const { user, setUser } = useUser();
   const leagueData = scoreboardData ? scoreboardData : teamData;
-
   const pgaHasStarted = shouldDisplayData();
 
   return (
@@ -41,11 +39,20 @@ export const LeaderboardContainer = ({
           <UpdatedTime date={updatedAt} />
         </div>
         <div className="w-full px-2 space-y-2">
-          {/* {pgaHasStarted && */}
-          {leagueData &&
+          {pgaHasStarted &&
+            leagueData &&
             leagueData.map((row: any, index: number) => (
               <LeaderboardRow key={index} {...row} />
             ))}
+          {!pgaHasStarted &&
+            leagueData &&
+            user &&
+            leagueData.map((row: any, index: number) => {
+              if (row.userId === user.username) {
+                return <LeaderboardRow key={index} {...row} />;
+              }
+              return null;
+            })}
         </div>
       </div>
     </div>

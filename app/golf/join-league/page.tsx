@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import playersByTier from '../players.json';
 import { PageContainer } from '@/app/components/templates/PageContainer';
 import { useUser } from '@/app/contexts/UserContext';
+import { shouldDisplayData } from '../leaderboard/leaderboardHelpers';
 
 export interface Player {
   id: string;
@@ -123,63 +124,74 @@ const JoinLeaguePage: React.FC = () => {
       .catch((error) => console.error('Error creating team:', error));
   };
 
-  return (
-    <PageContainer className="bg-none shadow-none rounded-none h-[80vh] max-w-2xl">
-      <div className="max-w-2xl mx-auto p-4">
-        <h1 className="text-lg font-bold mb-4">Join a League</h1>
-        <form onSubmit={handleSubmit} className="space-y-4">
-          {Object.keys(playersByTier).map((tier) => (
-            <div key={tier}>
-              <label className="block mb-2">{`${tier} Players:`}</label>
-              <Select
-                menuPlacement="auto"
-                options={(playersByTier as PlayersByTier)[tier].map(
-                  (player: string) => ({
-                    label: player,
-                    value: player,
-                    tier,
-                  }),
-                )}
-                isMulti
-                onChange={handleSelectChange}
-                className="text-black"
-              />
-            </div>
-          ))}
-          <div>
-            <label htmlFor="leagueId" className="block mb-2">
-              League ID:
-            </label>
-            <input
-              type="text"
-              id="leagueId"
-              value={leagueId}
-              onChange={(e) => setLeagueId(e.target.value)}
-              className="border p-2 rounded w-full"
-              required
-            />
-          </div>
-          <div>
-            <label htmlFor="teamName" className="block mb-2">
-              Team Name:
-            </label>
-            <input
-              type="text"
-              id="teamName"
-              value={teamName}
-              onChange={(e) => setTeamName(e.target.value)}
-              className="border p-2 rounded w-full"
-              required
-            />
-          </div>
+  const pgaHasStarted = shouldDisplayData();
 
-          <button
-            type="submit"
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-          >
-            Submit
-          </button>
-        </form>
+  return (
+    <PageContainer className="bg-none shadow-none rounded-none h-fit md:h-[80vh] max-w-2xl">
+      <div className="max-w-2xl mx-auto p-4">
+        {!pgaHasStarted ? (
+          <>
+            <h1 className="text-lg font-bold mb-4">Join a League</h1>
+            <form onSubmit={handleSubmit} className="space-y-4">
+              {Object.keys(playersByTier).map((tier) => (
+                <div key={tier}>
+                  <label className="block mb-2">{`${tier} Players:`}</label>
+                  <Select
+                    menuPlacement="auto"
+                    options={(playersByTier as PlayersByTier)[tier].map(
+                      (player: string) => ({
+                        label: player,
+                        value: player,
+                        tier,
+                      }),
+                    )}
+                    isMulti
+                    onChange={handleSelectChange}
+                    className="text-black"
+                  />
+                </div>
+              ))}
+              <div>
+                <label htmlFor="leagueId" className="block mb-2">
+                  League ID:
+                </label>
+                <input
+                  type="text"
+                  id="leagueId"
+                  value={leagueId}
+                  onChange={(e) => setLeagueId(e.target.value)}
+                  className="border p-2 rounded w-full"
+                  required
+                />
+              </div>
+              <div>
+                <label htmlFor="teamName" className="block mb-2">
+                  Team Name:
+                </label>
+                <input
+                  type="text"
+                  id="teamName"
+                  value={teamName}
+                  onChange={(e) => setTeamName(e.target.value)}
+                  className="border p-2 rounded w-full"
+                  required
+                />
+              </div>
+
+              <button
+                type="submit"
+                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+              >
+                Submit
+              </button>
+            </form>
+          </>
+        ) : (
+          <div className="text-center">
+            <h1 className="text-lg font-bold mb-4">Join a League</h1>
+            <p>The U.S. Open has started, join next time!</p>
+          </div>
+        )}
       </div>
     </PageContainer>
   );
