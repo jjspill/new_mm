@@ -25,6 +25,13 @@ export async function fetchLiveScores() {
   return leaderboard;
 }
 
+function fixLastName(lastName: string) {
+  if (lastName === 'Åberg') {
+    return 'Aberg';
+  }
+  return lastName;
+}
+
 const transformData = (data: any) => {
   const leaderboard = data.events[0].competitions[0].competitors.map(
     (competitor: any) => {
@@ -36,7 +43,7 @@ const transformData = (data: any) => {
 
       return {
         first_name: competitor.athlete.shortName.split('. ')[0],
-        last_name: competitor.athlete.shortName.split('. ').pop(),
+        last_name: fixLastName(competitor.athlete.shortName.split('. ').pop()),
         total_to_par:
           competitor.score === 'E' ? 0 : parseInt(competitor.score, 10),
         status: 'active',
