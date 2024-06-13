@@ -28,18 +28,18 @@ export async function fetchLiveScores() {
 const transformData = (data: any) => {
   const leaderboard = data.events[0].competitions[0].competitors.map(
     (competitor: any) => {
-      const status =
-        competitor.linescores.filter((score: any) => score.value > 0).length <=
-        2
-          ? 'cut'
-          : 'active';
+      // const status =
+      // competitor.linescores.filter((score: any) => score.value > 0).length <=
+      // 2
+      //   ? 'cut'
+      //   : 'active';
 
       return {
         first_name: competitor.athlete.shortName.split('. ')[0],
         last_name: competitor.athlete.shortName.split('. ').pop(),
         total_to_par:
           competitor.score === 'E' ? 0 : parseInt(competitor.score, 10),
-        status: status,
+        status: 'active',
       };
     },
   );
