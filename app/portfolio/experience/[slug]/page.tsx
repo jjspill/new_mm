@@ -58,9 +58,9 @@ export default async function ExperiencePage({ params }: { params: any }) {
             </div>
           )}
 
-          {experience.documents.length >= 1 && (
+          {/* {experience.documents.length >= 1 && (
             <PDFViewer title={experience.title} />
-          )}
+          )} */}
 
           {experience.link && (
             <div className="bg-gray-200 px-8 h-16 max-h-full max-w-full hover:bg-gray-300">
