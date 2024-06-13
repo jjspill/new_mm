@@ -43,7 +43,7 @@ export const LeaderboardRow: React.FC<LeaderboardRowProps> = ({
         aria-label={showPlayers ? 'Hide Players' : 'Show Players'}
       >
         <p className="flex-grow text-left">{name}</p>
-        <p className="text-center w-10 md:w-80">{total_score}</p>
+        <p className="text-center w-10 pr-10">{total_score}</p>
         <svg
           className={`transform transition-transform duration-300 ${showPlayers ? 'rotate-180' : 'rotate-0'}`}
           fill="none"
