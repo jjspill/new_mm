@@ -17,6 +17,14 @@ interface LeaderboardRowProps {
   }[];
 }
 
+export const LeaderboardRowLoader: React.FC = () => {
+  return (
+    <div className="flex flex-col justify-between h-[48px] p-2 rounded-xl bg-gray-200 w-full">
+      <div className="flex-grow text-left h-[10px] rounded-md animate-pulse bg-gray-400" />
+    </div>
+  );
+};
+
 export const LeaderboardRow: React.FC<LeaderboardRowProps> = ({
   name,
   total_score,
