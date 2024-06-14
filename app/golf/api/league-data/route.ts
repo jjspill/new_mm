@@ -21,6 +21,7 @@ export async function GET(request: NextRequest) {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${process.env.AUTH_TOKEN}`,
       },
+      next: { revalidate: 60 * 5 }, // 5 minutes
     });
 
     const league = await res.json();

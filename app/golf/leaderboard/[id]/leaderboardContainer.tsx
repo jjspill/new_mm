@@ -6,7 +6,11 @@ import {
   getScores,
   shouldDisplayData,
 } from '../leaderboardHelpers';
-import { LeaderboardRow, UpdatedTime } from '../../components/Leaderboard';
+import {
+  LeaderboardRow,
+  LeaderboardRowLoader,
+  UpdatedTime,
+} from '../../components/Leaderboard';
 import { useUser } from '@/app/contexts/UserContext';
 import { useEffect, useState } from 'react';
 
@@ -23,13 +27,17 @@ export const LeaderboardContainer = ({
 
   useEffect(() => {
     const fetchLiveScores = async () => {
-      const res = await fetch('/golf/api/live-data');
+      const res = await fetch('/golf/api/live-data', {
+        next: { revalidate: 10 },
+      });
       const data = await res.json();
       setLiveScores(data);
     };
 
     const fetchTeamData = async () => {
-      const res = await fetch(`/golf/api/league-data?leagueId=${leagueId}`);
+      const res = await fetch(`/golf/api/league-data?leagueId=${leagueId}`, {
+        next: { revalidate: 60 * 5 }, // 5 minutes
+      });
       const data = await res.json();
       setTeamData(data);
     };
@@ -42,7 +50,21 @@ export const LeaderboardContainer = ({
     Object.keys(liveScores).length === 0 ||
     (teamData && teamData.length === 0)
   ) {
-    return <div className="pt-20">Loading...</div>;
+    return (
+      <div className="items-justify-center w-full">
+        <div className="flex flex-col space-y-2 w-full m-auto px-2 justify-center items-center max-w-lg">
+          <div className="bg-gray-200 font-semibold text-2xl p-4 rounded-lg text-center mb-10 h-[96px]">
+            <h1>{leagueId} Leaderboard</h1>
+            <div className="bg-gray-400 animate-pulse w-full h-4 mt-3"></div>
+          </div>
+          <div className="w-full px-2 space-y-2">
+            {Array.from({ length: 10 }).map((_, index) => (
+              <LeaderboardRowLoader key={index} />
+            ))}
+          </div>
+        </div>
+      </div>
+    );
   }
 
   const updatedAt = liveScores?.live_details?.updated;
