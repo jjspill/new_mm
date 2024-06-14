@@ -8,18 +8,43 @@ import {
 } from '../leaderboardHelpers';
 import { LeaderboardRow, UpdatedTime } from '../../components/Leaderboard';
 import { useUser } from '@/app/contexts/UserContext';
+import { useEffect, useState } from 'react';
 
 interface LeaderboardContainerProps {
   leagueId: string;
-  teamData: any;
-  liveScores: any;
 }
 
 export const LeaderboardContainer = ({
   leagueId,
-  teamData,
-  liveScores,
 }: LeaderboardContainerProps) => {
+  const [liveScores, setLiveScores] = useState({} as any);
+  const [teamData, setTeamData] = useState([] as any);
+  const { user, setUser } = useUser();
+
+  useEffect(() => {
+    const fetchLiveScores = async () => {
+      const res = await fetch('/golf/api/live-data');
+      const data = await res.json();
+      setLiveScores(data);
+    };
+
+    const fetchTeamData = async () => {
+      const res = await fetch(`/golf/api/league-data?leagueId=${leagueId}`);
+      const data = await res.json();
+      setTeamData(data);
+    };
+
+    fetchLiveScores();
+    fetchTeamData();
+  }, [leagueId]);
+
+  if (
+    Object.keys(liveScores).length === 0 ||
+    (teamData && teamData.length === 0)
+  ) {
+    return <div className="pt-20">Loading...</div>;
+  }
+
   const updatedAt = liveScores?.live_details?.updated;
   const scores = getScores(liveScores);
   let scoreboardData: any = [];
@@ -27,7 +52,6 @@ export const LeaderboardContainer = ({
     scoreboardData = assignScoresToTeams(teamData, scores);
   }
 
-  const { user, setUser } = useUser();
   const leagueData = scoreboardData ? scoreboardData : teamData;
   const pgaHasStarted = shouldDisplayData();
 

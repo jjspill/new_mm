@@ -1,18 +1,10 @@
 import { PageContainer } from '@/app/components/templates/PageContainer';
 import { LeaderboardContainer } from './leaderboardContainer';
-import { fetchLeagueData, fetchLiveScores } from './leaderboardFetcher';
 
 async function LeaderboardPage({ params }: { params: any }) {
-  const teamData = await fetchLeagueData(params.id);
-  const liveScores = await fetchLiveScores();
-
   return (
     <PageContainer className="bg-none shadow-none rounded-none">
-      <LeaderboardContainer
-        leagueId={params.id}
-        teamData={teamData}
-        liveScores={liveScores}
-      />
+      <LeaderboardContainer leagueId={params.id} />
     </PageContainer>
   );
 }
