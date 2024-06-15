@@ -112,7 +112,6 @@ export function assignScoresToTeams(config: Config[], scores: Scores) {
   });
 
   const sortedTeams = sortTeamsByScore(updatedTeams as []);
-  console.log('sortedTeams', sortedTeams);
 
   return { sortedTeams, highestScore };
 }
@@ -130,7 +129,6 @@ export function getHighestActiveScore(
     }
   }
 
-  console.log('getactivehighestScorer', highestScorer);
   return highestScorer;
 }
 
