@@ -112,7 +112,6 @@ export function assignScoresToTeams(config: Config[], scores: Scores) {
   });
 
   const sortedTeams = sortTeamsByScore(updatedTeams as []);
-
   return { sortedTeams, highestScore };
 }
 
