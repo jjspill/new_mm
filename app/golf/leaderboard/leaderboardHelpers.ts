@@ -62,7 +62,7 @@ export function getScores(data: any): Scores {
 }
 
 export function assignScoresToTeams(config: Config[], scores: Scores) {
-  if (keys(scores).length > 0 && config.length > 0) {
+  if (keys(scores).length === 0 || config.length === 0) {
     return { config, highestScore: { name: '', score: 0 } };
   }
 
