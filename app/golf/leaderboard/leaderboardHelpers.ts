@@ -1,3 +1,5 @@
+import { keys } from 'lodash';
+
 export interface ScoreboardRowData {
   name: string;
   total_score: number;
@@ -60,9 +62,13 @@ export function getScores(data: any): Scores {
 }
 
 export function assignScoresToTeams(config: Config[], scores: Scores) {
+  if (keys(scores).length > 0 && config.length > 0) {
+    return { config, highestScore: { name: '', score: 0 } };
+  }
+
   const highestScore = getHighestActiveScore(scores);
   if (!highestScore) {
-    return config;
+    return { config, highestScore: { name: '', score: 0 } };
   }
 
   const updatedTeams = config.map((team: Config) => {
@@ -105,7 +111,9 @@ export function assignScoresToTeams(config: Config[], scores: Scores) {
     };
   });
 
-  return sortTeamsByScore(updatedTeams as []);
+  const sortedTeams = sortTeamsByScore(updatedTeams as []);
+
+  return { sortedTeams, highestScore };
 }
 
 export function getHighestActiveScore(

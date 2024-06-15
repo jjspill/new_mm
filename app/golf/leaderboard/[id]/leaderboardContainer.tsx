@@ -53,7 +53,7 @@ export const LeaderboardContainer = ({
     return (
       <div className="items-justify-center w-full">
         <div className="flex flex-col space-y-2 w-full m-auto px-2 justify-center items-center max-w-lg">
-          <div className="bg-gray-200 font-semibold text-2xl p-4 rounded-lg text-center mb-10 h-[96px]">
+          <div className="bg-gray-200 font-semibold text-2xl p-4 rounded-lg text-center mb-10 h-[120px]">
             <h1>{leagueId} Leaderboard</h1>
             <div className="bg-gray-400 animate-pulse w-full h-4 mt-3"></div>
           </div>
@@ -69,12 +69,9 @@ export const LeaderboardContainer = ({
 
   const updatedAt = liveScores?.live_details?.updated;
   const scores = getScores(liveScores);
-  let scoreboardData: any = [];
-  if (keys(scores).length > 0 && teamData.length > 0) {
-    scoreboardData = assignScoresToTeams(teamData, scores);
-  }
 
-  const leagueData = scoreboardData ? scoreboardData : teamData;
+  const { sortedTeams, highestScore } = assignScoresToTeams(teamData, scores);
+  const leagueData = sortedTeams ? sortedTeams : teamData;
   const pgaHasStarted = shouldDisplayData();
 
   return (
@@ -83,6 +80,9 @@ export const LeaderboardContainer = ({
         <div className="bg-gray-200 font-semibold text-2xl p-4 rounded-lg text-center mb-10">
           <h1>{leagueId} Leaderboard</h1>
           <UpdatedTime date={updatedAt} />
+          <p className="text-base">
+            Missed Cut Score: {highestScore.name} {highestScore.score}
+          </p>
         </div>
         <div className="w-full px-2 space-y-2">
           {pgaHasStarted &&
