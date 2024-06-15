@@ -36,7 +36,7 @@ const transformData = (data: any) => {
   const leaderboard = data.events[0].competitions[0].competitors.map(
     (competitor: any) => {
       const status =
-        competitor.linescores.filter((score: any) => score.value > 0).length <=
+        competitor.linescores.filter((score: any) => score.value >= 0).length <=
         2
           ? 'cut'
           : 'active';
