@@ -62,7 +62,7 @@ export function getScores(data: any): Scores {
 }
 
 export function assignScoresToTeams(config: Config[], scores: Scores) {
-  if (keys(scores).length > 0 && config.length > 0) {
+  if (keys(scores).length === 0 || config.length === 0) {
     return { config, highestScore: { name: '', score: 0 } };
   }
 
@@ -112,6 +112,7 @@ export function assignScoresToTeams(config: Config[], scores: Scores) {
   });
 
   const sortedTeams = sortTeamsByScore(updatedTeams as []);
+  console.log('sortedTeams', sortedTeams);
 
   return { sortedTeams, highestScore };
 }
@@ -129,6 +130,7 @@ export function getHighestActiveScore(
     }
   }
 
+  console.log('getactivehighestScorer', highestScorer);
   return highestScorer;
 }
 
