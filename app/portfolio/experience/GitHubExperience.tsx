@@ -22,7 +22,7 @@ export const GitHubExperience: React.FC<GitHubExperienceProps> = ({
         <p className="text-sm pt-1">{description}</p>
         <Link href={profileUrl} target="_blank">
           <div
-            className={`${styles.creepInBg} border border-[#333] mt-2 p-2 rounded-full w-fit text-xs text-[#333]`}
+            className={`${styles.creepInBg} border border-[#333] mt-2 p-2 rounded-full w-fit text-xs text-[#333] cursor-default`}
           >
             View Profile
           </div>

@@ -36,7 +36,7 @@ export const LinkedInExperience: React.FC<LinkedInExperienceProps> = ({
         <p className="text-sm text-gray-500 text-nowrap">{background}</p>
         <Link href={profileUrl} target="_blank">
           <div
-            className={`${styles.creepInBgLinkedIn} border border-[#0A66C2] mt-2 p-2 rounded-full w-fit text-xs text-[#0A66C2]`}
+            className={`${styles.creepInBgLinkedIn} border border-[#0A66C2] mt-2 p-2 rounded-full w-fit text-xs text-[#0A66C2] cursor-default`}
           >
             View Profile
           </div>

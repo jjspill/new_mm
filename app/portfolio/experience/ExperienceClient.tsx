@@ -196,7 +196,7 @@ const Experience: React.FC<
   return (
     <div
       ref={elementRef}
-      className="flex flex-col items-center text-xl bg-white rounded-lg absolute w-fit h-fit max-h-[220px] shadow-lg"
+      className="flex flex-col items-center text-xl bg-white rounded-lg absolute w-fit h-fit max-h-[220px] shadow-lg cursor-pointer"
       tabIndex={0}
       onClick={handleClick}
       onMouseDown={handleMouseDown}
@@ -230,7 +230,7 @@ const Experience: React.FC<
             <div className="text-sm w-fit text-center pt-1">{description}</div>
             <Link href={`experience/${title}`}>
               <div
-                className={`${styles.creepInBg} border border-black mt-2 p-2 rounded-full w-fit text-xs`}
+                className={`${styles.creepInBg} border border-black mt-2 p-2 rounded-full w-fit text-xs cursor-default`}
               >
                 Learn More
               </div>
