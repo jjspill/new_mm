@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import { createUser, useUser } from '@/app/contexts/UserContext';
 import { InputField } from '@/app/components/account/InputField';
 import { SubmitButton } from '@/app/components/account/SubmitButton';
+import ReCAPTCHA from 'react-google-recaptcha';
 
 function CreateAccountContainer() {
   const [name, setName] = useState('');
@@ -15,6 +16,8 @@ function CreateAccountContainer() {
   const [origin, setOrigin] = useState('');
   const [failureMessage, setFailureMessage] = useState('');
   const router = useRouter();
+
+  const recaptchaRef = React.useRef<ReCAPTCHA>(null);
 
   const { user, setUser } = useUser();
 
@@ -34,17 +37,38 @@ function CreateAccountContainer() {
       alert("Passwords don't match");
       return;
     }
+    recaptchaRef.current?.execute();
+  };
+
+  const onReCAPTCHASuccess = async (token: string | null) => {
+    if (!token) {
+      console.error('Failed to get reCAPTCHA token');
+      return;
+    }
 
     const body = JSON.stringify({
       email,
       username: email,
       password,
-      attributes: {
-        name,
-      },
+      attributes: { name },
     });
 
     try {
+      const captchaResponse = await fetch('/login/create-account/api/captcha', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ token }),
+      });
+
+      const captchaData = await captchaResponse.json();
+      if (!captchaData.success) {
+        console.error('reCAPTCHA failed:', captchaData);
+        setFailureMessage('reCAPTCHA failed');
+        return;
+      }
+
       setFailureMessage('');
       const response = await fetch(`${origin}/login/create-account/api`, {
         method: 'POST',
@@ -57,7 +81,7 @@ function CreateAccountContainer() {
         setUser(createUser(email, data));
         router.push('/login');
       } else {
-        console.error('Account creation failed:');
+        console.error('Account creation failed:', data);
         setFailureMessage(
           data?.details?.message || data?.message || 'Account creation failed',
         );
@@ -105,6 +129,12 @@ function CreateAccountContainer() {
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
             required_prop={true}
+          />
+          <ReCAPTCHA
+            ref={recaptchaRef}
+            size="invisible"
+            onChange={onReCAPTCHASuccess}
+            sitekey={process.env.NEXT_PUBLIC_CAPTCHA_SITE_KEY!}
           />
           <div className="mt-6">
             <SubmitButton type="submit" label="Create Account" />
