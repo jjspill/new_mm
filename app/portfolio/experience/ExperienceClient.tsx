@@ -91,6 +91,7 @@ const Experience: React.FC<
   const [rotateY, setRotateY] = useState(0);
   const [scale, setScale] = useState(0.1);
   const [zIndex, setZIndex] = useState(10);
+  const [position, setPosition] = useState({ x: 0, y: 0 });
   const elementRef = useRef<HTMLDivElement>(null);
 
   const styleRef = useRef<{
@@ -155,12 +156,48 @@ const Experience: React.FC<
     setZIndex(onExperienceClick());
   };
 
+  const handleMouseDown = (event: React.MouseEvent<HTMLDivElement>) => {
+    console.log('mousedown');
+    event.preventDefault();
+    // Capture the initial position at the start of the drag
+    const origin = {
+      x: event.clientX - position.x,
+      y: event.clientY - position.y,
+    };
+
+    const handleDragging = (moveEvent: MouseEvent) => {
+      // Update position based on movement
+      setPosition({
+        x: moveEvent.clientX - origin.x,
+        y: moveEvent.clientY - origin.y,
+      });
+    };
+
+    const stopDragging = () => {
+      // Remove event listeners when dragging stops
+      window.removeEventListener('mousemove', handleDragging);
+      window.removeEventListener('mouseup', stopDragging);
+    };
+
+    // Add mouse move and mouse up listeners to the window
+    window.addEventListener('mousemove', handleDragging);
+    window.addEventListener('mouseup', stopDragging);
+  };
+
+  useEffect(() => {
+    if (elementRef.current) {
+      elementRef.current.style.top = `${position.y}px`;
+      elementRef.current.style.left = `${position.x}px`;
+    }
+  }, [position.x, position.y]);
+
   return (
     <div
       ref={elementRef}
       className="flex flex-col items-center text-xl bg-white rounded-lg absolute w-fit h-fit max-h-[220px] shadow-lg"
       tabIndex={0}
       onClick={handleClick}
+      onMouseDown={handleMouseDown}
       style={{
         maxWidth: '330px',
         overflow: 'auto',
