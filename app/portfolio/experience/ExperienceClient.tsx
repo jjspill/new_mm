@@ -157,16 +157,13 @@ const Experience: React.FC<
   };
 
   const handleMouseDown = (event: React.MouseEvent<HTMLDivElement>) => {
-    console.log('mousedown');
     event.preventDefault();
-    // Capture the initial position at the start of the drag
     const origin = {
       x: event.clientX - position.x,
       y: event.clientY - position.y,
     };
 
     const handleDragging = (moveEvent: MouseEvent) => {
-      // Update position based on movement
       setPosition({
         x: moveEvent.clientX - origin.x,
         y: moveEvent.clientY - origin.y,
@@ -174,12 +171,10 @@ const Experience: React.FC<
     };
 
     const stopDragging = () => {
-      // Remove event listeners when dragging stops
       window.removeEventListener('mousemove', handleDragging);
       window.removeEventListener('mouseup', stopDragging);
     };
 
-    // Add mouse move and mouse up listeners to the window
     window.addEventListener('mousemove', handleDragging);
     window.addEventListener('mouseup', stopDragging);
   };
