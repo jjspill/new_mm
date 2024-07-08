@@ -4,7 +4,6 @@ import './globals.css';
 import Navigation from './components/Navigation';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 import { Analytics } from '@vercel/analytics/react';
-import { UserProvider } from './contexts/UserContext';
 import { Providers } from './providers';
 
 const inter = Inter({ subsets: ['latin'] });
@@ -19,7 +18,6 @@ export const metadata: Metadata = {
   robots: {
     index: true,
     follow: true,
-    nocache: true,
     googleBot: {
       index: true,
       follow: true,
@@ -43,6 +41,39 @@ export const metadata: Metadata = {
     canonical: 'https://www.jamesspillmann.com',
   },
   metadataBase: new URL('https://www.jamesspillmann.com'),
+  icons: {
+    icon: [
+      {
+        url: '/favicon.ico',
+        type: 'image/x-icon',
+      },
+      {
+        url: '/favicon-16x16.png',
+        sizes: '16x16',
+        type: 'image/png',
+      },
+      // add favicon-32x32.png, favicon-96x96.png, android-chrome-192x192.png
+    ],
+    shortcut: [
+      {
+        url: '/favicon.ico',
+        type: 'image/x-icon',
+      },
+    ],
+    apple: [
+      {
+        url: '/twitter-image.jpeg',
+        sizes: '57x57',
+        type: 'image/png',
+      },
+      {
+        url: '/apple-icon-57x57.png',
+        sizes: '60x60',
+        type: 'image/png',
+      },
+      // add apple-icon-72x72.png, apple-icon-76x76.png, apple-icon-114x114.png, apple-icon-120x120.png, apple-icon-144x144.png, apple-icon-152x152.png, apple-icon-180x180.png
+    ],
+  },
 };
 
 export const viewport: Viewport = {
