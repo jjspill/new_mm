@@ -110,6 +110,13 @@ const Experience: React.FC<
   }
 
   useEffect(() => {
+    if (styleRef.current) {
+      position.x = parseInt(styleRef.current.left);
+      position.y = parseInt(styleRef.current.top);
+    }
+  }, [styleRef.current]);
+
+  useEffect(() => {
     // Randomize scale duration
     const scaleDuration = Math.floor(Math.random() * (4000 - 1000 + 1)) + 1000;
     let startTime: number | null = null;
@@ -180,7 +187,7 @@ const Experience: React.FC<
   };
 
   useEffect(() => {
-    if (elementRef.current) {
+    if (elementRef.current && styleRef.current && scale === 1) {
       elementRef.current.style.top = `${position.y}px`;
       elementRef.current.style.left = `${position.x}px`;
     }
