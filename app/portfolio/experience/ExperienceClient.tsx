@@ -91,6 +91,7 @@ const Experience: React.FC<
   const [rotateY, setRotateY] = useState(0);
   const [scale, setScale] = useState(0.1);
   const [zIndex, setZIndex] = useState(10);
+  const [position, setPosition] = useState({ x: 0, y: 0 });
   const elementRef = useRef<HTMLDivElement>(null);
 
   const styleRef = useRef<{
@@ -107,6 +108,13 @@ const Experience: React.FC<
       index,
     );
   }
+
+  useEffect(() => {
+    if (styleRef.current) {
+      position.x = parseInt(styleRef.current.left);
+      position.y = parseInt(styleRef.current.top);
+    }
+  }, [styleRef.current]);
 
   useEffect(() => {
     // Randomize scale duration
@@ -155,12 +163,43 @@ const Experience: React.FC<
     setZIndex(onExperienceClick());
   };
 
+  const handleMouseDown = (event: React.MouseEvent<HTMLDivElement>) => {
+    event.preventDefault();
+    const origin = {
+      x: event.clientX - position.x,
+      y: event.clientY - position.y,
+    };
+
+    const handleDragging = (moveEvent: MouseEvent) => {
+      setPosition({
+        x: moveEvent.clientX - origin.x,
+        y: moveEvent.clientY - origin.y,
+      });
+    };
+
+    const stopDragging = () => {
+      window.removeEventListener('mousemove', handleDragging);
+      window.removeEventListener('mouseup', stopDragging);
+    };
+
+    window.addEventListener('mousemove', handleDragging);
+    window.addEventListener('mouseup', stopDragging);
+  };
+
+  useEffect(() => {
+    if (elementRef.current && styleRef.current && scale === 1) {
+      elementRef.current.style.top = `${position.y}px`;
+      elementRef.current.style.left = `${position.x}px`;
+    }
+  }, [position.x, position.y]);
+
   return (
     <div
       ref={elementRef}
-      className="flex flex-col items-center text-xl bg-white rounded-lg absolute w-fit h-fit max-h-[220px] shadow-lg"
+      className="flex flex-col items-center text-xl bg-white rounded-lg absolute w-fit h-fit max-h-[220px] shadow-lg cursor-pointer"
       tabIndex={0}
       onClick={handleClick}
+      onMouseDown={handleMouseDown}
       style={{
         maxWidth: '330px',
         overflow: 'auto',
@@ -191,7 +230,7 @@ const Experience: React.FC<
             <div className="text-sm w-fit text-center pt-1">{description}</div>
             <Link href={`experience/${title}`}>
               <div
-                className={`${styles.creepInBg} border border-black mt-2 p-2 rounded-full w-fit text-xs`}
+                className={`${styles.creepInBg} border border-black mt-2 p-2 rounded-full w-fit text-xs cursor-default`}
               >
                 Learn More
               </div>
@@ -375,7 +414,8 @@ export const Experiences: React.FC<{ experiences: ExperienceProps[] }> = ({
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
             <div className="flex flex-col justify-center bg-white p-6 rounded-lg shadow-lg max-w-sm w-full">
               <p className="text-lg text-center text-gray-800 mb-4">
-                Click any overlapping experience tile to bring it to the front.
+                Drag or click any tile to move them around or bring them to the
+                front.
               </p>
               <button
                 type="button"
