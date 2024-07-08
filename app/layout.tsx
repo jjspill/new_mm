@@ -27,18 +27,16 @@ export const metadata: Metadata = {
     title: 'James Spillmann - Software Engineer and Developer',
     type: 'website',
     locale: 'en_US',
-    url: 'https://www.jamesspillmann.com',
+    url: 'https://www.james-spillmann.com',
     siteName: 'James Spillmann',
     description:
       'Discover the professional world of James Spillmann, a New York-based software engineer specializing in Next.js and React.',
-    // images: [
-    //   {
-    //     url: '',
-    //     width: 1200,
-    //     height: 630,
-    //     alt: 'James Spillmann - Software Engineer and Developer',
-    //   },
-    // ],
+    images: {
+      url: 'https://www.james-spillmann.com/images/james_spillmann.jpg',
+      alt: 'James Spillmann',
+      width: 800,
+      height: 600,
+    },
   },
   twitter: {
     card: 'summary_large_image',
@@ -46,9 +44,9 @@ export const metadata: Metadata = {
       'Explore the projects and skills of James Spillmann, software engineer specialized in Next.js and React technologies.',
   },
   alternates: {
-    canonical: 'https://www.jamesspillmann.com',
+    canonical: 'https://www.james-spillmann.com',
   },
-  metadataBase: new URL('https://www.jamesspillmann.com'),
+  metadataBase: new URL('https://www.james-spillmann.com'),
 };
 
 export const viewport: Viewport = {
