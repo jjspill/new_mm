@@ -414,7 +414,8 @@ export const Experiences: React.FC<{ experiences: ExperienceProps[] }> = ({
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
             <div className="flex flex-col justify-center bg-white p-6 rounded-lg shadow-lg max-w-sm w-full">
               <p className="text-lg text-center text-gray-800 mb-4">
-                Click any overlapping experience tile to bring it to the front.
+                Drag or click any tile to move them around or bring them to the
+                front.
               </p>
               <button
                 type="button"
