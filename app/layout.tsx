@@ -62,7 +62,7 @@ export const metadata: Metadata = {
     ],
     apple: [
       {
-        url: '/twitter-image.jpeg',
+        url: '/twitter-image.jpg',
         sizes: '57x57',
         type: 'image/png',
       },
