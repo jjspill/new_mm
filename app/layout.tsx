@@ -31,6 +31,14 @@ export const metadata: Metadata = {
     siteName: 'James Spillmann',
     description:
       'Discover the professional world of James Spillmann, a New York-based software engineer specializing in Next.js and React.',
+    // images: [
+    //   {
+    //     url: '',
+    //     width: 1200,
+    //     height: 630,
+    //     alt: 'James Spillmann - Software Engineer and Developer',
+    //   },
+    // ],
   },
   twitter: {
     card: 'summary_large_image',
@@ -41,39 +49,6 @@ export const metadata: Metadata = {
     canonical: 'https://www.jamesspillmann.com',
   },
   metadataBase: new URL('https://www.jamesspillmann.com'),
-  icons: {
-    icon: [
-      {
-        url: '/favicon.ico',
-        type: 'image/x-icon',
-      },
-      {
-        url: '/favicon-16x16.png',
-        sizes: '16x16',
-        type: 'image/png',
-      },
-      // add favicon-32x32.png, favicon-96x96.png, android-chrome-192x192.png
-    ],
-    shortcut: [
-      {
-        url: '/favicon.ico',
-        type: 'image/x-icon',
-      },
-    ],
-    apple: [
-      {
-        url: '/twitter-image.jpg',
-        sizes: '57x57',
-        type: 'image/png',
-      },
-      {
-        url: '/apple-icon-57x57.png',
-        sizes: '60x60',
-        type: 'image/png',
-      },
-      // add apple-icon-72x72.png, apple-icon-76x76.png, apple-icon-114x114.png, apple-icon-120x120.png, apple-icon-144x144.png, apple-icon-152x152.png, apple-icon-180x180.png
-    ],
-  },
 };
 
 export const viewport: Viewport = {
