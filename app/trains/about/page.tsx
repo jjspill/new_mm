@@ -127,7 +127,7 @@ const TrainsAboutPage: React.FC = () => {
               <li>
                 Thanks to Train Times NYC, I avoided a major delay during a
                 city-wide event and made it to my meeting on time.
-                <em> Zad Kahn, Business Professional</em>
+                <em> Zad Khan, Business Professional</em>
               </li>
             </ul>
           </section>
