@@ -11,7 +11,7 @@ const TrainsAboutPage: React.FC = () => {
         <div className="relative flex flex-col justify-center items-center w-full min-h-20 h-fit bg-black text-center font-semibold text-white py-2 font-sans">
           <div className="min-h-[2px] w-[90%] md:w-[80%] bg-white"></div>
           <div className="flex">
-            <div className="text-4xl px-4">About Train Times NYC</div>
+            <div className="text-pretty text-3xl px-4">Train Times NYC</div>
           </div>
           <div className="block md:hidden">
             <TrainCarousel />
@@ -23,7 +23,7 @@ const TrainsAboutPage: React.FC = () => {
         <div className="max-w-4xl mx-auto px-4 py-8 text-gray-700">
           <section aria-labelledby="mission-title">
             <h2 id="mission-title" className="text-2xl font-bold text-gray-900">
-              Our Mission at Train Times NYC
+              Our Mission
             </h2>
             <p className="mt-2">
               Train Times NYC is dedicated to revolutionizing how New Yorkers
@@ -43,12 +43,12 @@ const TrainsAboutPage: React.FC = () => {
             </h2>
             <ul className="list-disc pl-5 mt-2">
               <li>
-                <strong>GTFS Realtime:</strong> Leveraging real-time data feeds,
-                we provide updates on subway locations, trip delays, and service
-                alerts directly to your device.
+                <strong>GTFS Realtime:</strong> Leveraging real-time data feeds
+                from the MTA, we provide updates on subway locations, trip
+                delays, and service alerts directly to your device.
               </li>
               <li>
-                <strong>GTFS Schedule:</strong> We integrate static schedule
+                <strong>GTFS Schedule:</strong> We integrate static MTA schedule
                 data to offer detailed insights into station stops, route
                 timetables, and service frequencies.
               </li>
@@ -94,14 +94,14 @@ const TrainsAboutPage: React.FC = () => {
             <p>
               At Train Times NYC, we are committed to the highest standards of
               data integrity. Our team works tirelessly to ensure our data is
-              up-to-date and reflective of real-time conditions, empowering you
-              with the information needed to make informed travel decisions.
+              up-to-date and reflective of real-time MTA conditions, empowering
+              you with the information needed to make informed travel decisions.
             </p>
           </section>
 
           <section aria-labelledby="future-title" className="mt-6">
             <h2 id="future-title" className="text-2xl font-bold text-gray-900">
-              Looking Ahead: Future Directions
+              Looking Ahead
             </h2>
             <p>
               We are continuously working to enhance our services, with plans to
