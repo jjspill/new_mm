@@ -43,7 +43,6 @@ export const useGeolocationWithCache = (
 
   const getLocation = useCallback((bypassCache = false) => {
     if (!bypassCache) {
-      console.log('Checking for cached location...');
       const cachedLocation = getSavedLocation();
       if (cachedLocation) {
         setLocation(cachedLocation);
@@ -52,18 +51,16 @@ export const useGeolocationWithCache = (
       }
     }
 
-    console.log("Couldn't find cached location, fetching new location...");
     setLocation(null);
     setSearchRadius(0.5);
     if ('geolocation' in navigator) {
-      setStatus('ACQUIRING'); // Update status to reflect new fetch attempt
+      setStatus('ACQUIRING');
       navigator.geolocation.getCurrentPosition(
         (position) => {
           const newLocation = {
             lat: position.coords.latitude,
             lng: position.coords.longitude,
           };
-          console.log('New location:', newLocation);
           saveLocation(newLocation);
           setLocation(newLocation);
           setStatus('FOUND');
@@ -102,7 +99,6 @@ export const useNearestStations = (
   }
 
   useEffect(() => {
-    console.log('Location In Stations:', location);
     const findNearestStations = async () => {
       if (!location || !searchRadius) return;
       try {
