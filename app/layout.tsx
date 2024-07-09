@@ -30,13 +30,7 @@ export const metadata: Metadata = {
     url: 'https://www.james-spillmann.com',
     siteName: 'James Spillmann',
     description:
-      'Discover the professional world of James Spillmann, a New York-based software engineer specializing in Next.js and React.',
-    images: {
-      url: 'https://www.james-spillmann.com/images/james_spillmann.jpg',
-      alt: 'James Spillmann',
-      width: 800,
-      height: 600,
-    },
+      'Discover the professional world of James Spillmann, a New York-based software engineer.',
   },
   twitter: {
     card: 'summary_large_image',
