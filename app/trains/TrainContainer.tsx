@@ -8,6 +8,7 @@ import {
   TrainSymbolsDisplay,
   TrainCarousel,
   AsyncStationComponent,
+  InformationButton,
 } from './TrainComponents';
 import {
   useContinuousCountdown,
@@ -20,13 +21,14 @@ const TrainsContainer: React.FC = () => {
 
   // hooks
   const { timer, refreshCounter } = useContinuousCountdown();
-  const { location, locationStatus } = useGeolocationWithCache();
+  const { location, locationStatus, refreshLocation } =
+    useGeolocationWithCache(setSearchRadius);
   const { nearestStations } = useNearestStations(location, searchRadius);
 
   return (
     <div className="flex justify-center items-start pt-20 px-4 pb-4">
       <div className="min-h-[100vh] bg-[#FFEDD5] shadow-xl rounded-3xl overflow-hidden w-full max-w-4xl">
-        <div className="flex flex-col justify-center items-center w-full min-h-20 h-fit bg-black text-center font-semibold text-white py-2 font-sans">
+        <div className="relative flex flex-col justify-center items-center w-full min-h-20 h-fit bg-black text-center font-semibold text-white py-2 font-sans">
           <div className="min-h-[2px] w-[90%] md:w-[80%] bg-white"></div>
           <div className="flex">
             <div className="text-4xl px-4">Subway</div>
@@ -38,7 +40,8 @@ const TrainsContainer: React.FC = () => {
             <TrainSymbolsDisplay />
           </div>
         </div>
-        <div className="w-full p-4 pb-0">
+        <TrainMenuBar refreshLocation={refreshLocation} />
+        <div className="w-full p-4 py-0">
           {searchRadius === 'Demo' && (
             <div className="text-center text-gray-500 pb-4">
               Using demo location, Grand Central Terminal with a 0.25 mile

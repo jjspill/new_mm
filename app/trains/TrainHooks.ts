@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 
 import { Location, Station } from './TrainComponents';
 import { findClosestStations, fixArrivalTime } from './trainHelper';
@@ -35,26 +35,35 @@ function saveLocation(location: any) {
   localStorage.setItem('userLocation', JSON.stringify(data));
 }
 
-export const useGeolocationWithCache = () => {
+export const useGeolocationWithCache = (
+  setSearchRadius: React.Dispatch<React.SetStateAction<number | string>>,
+) => {
   const [location, setLocation] = useState<Location | null>(null);
   const [status, setStatus] = useState('ACQUIRING');
 
-  useEffect(() => {
-    const cachedLocation = getSavedLocation();
-    if (cachedLocation) {
-      setLocation(cachedLocation);
-      setStatus('FOUND');
-      return;
+  const getLocation = useCallback((bypassCache = false) => {
+    if (!bypassCache) {
+      console.log('Checking for cached location...');
+      const cachedLocation = getSavedLocation();
+      if (cachedLocation) {
+        setLocation(cachedLocation);
+        setStatus('FOUND');
+        return;
+      }
     }
 
+    console.log("Couldn't find cached location, fetching new location...");
+    setLocation(null);
+    setSearchRadius(0.5);
     if ('geolocation' in navigator) {
+      setStatus('ACQUIRING'); // Update status to reflect new fetch attempt
       navigator.geolocation.getCurrentPosition(
         (position) => {
           const newLocation = {
             lat: position.coords.latitude,
             lng: position.coords.longitude,
           };
-
+          console.log('New location:', newLocation);
           saveLocation(newLocation);
           setLocation(newLocation);
           setStatus('FOUND');
@@ -70,7 +79,15 @@ export const useGeolocationWithCache = () => {
     }
   }, []);
 
-  return { location, locationStatus: status };
+  useEffect(() => {
+    getLocation();
+  }, [getLocation]);
+
+  return {
+    location,
+    locationStatus: status,
+    refreshLocation: () => getLocation(true),
+  };
 };
 
 export const useNearestStations = (
@@ -85,6 +102,7 @@ export const useNearestStations = (
   }
 
   useEffect(() => {
+    console.log('Location In Stations:', location);
     const findNearestStations = async () => {
       if (!location || !searchRadius) return;
       try {

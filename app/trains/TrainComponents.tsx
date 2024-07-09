@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useStation } from './TrainHooks';
+import Link from 'next/link';
 
 export interface Location {
   lat: number;
@@ -262,113 +263,24 @@ export const TrainComponent: React.FC<TrainComponentProps> = ({ trains }) => {
   });
 };
 
-interface LocationButtonProps {
-  onLocationFetch: {
-    resetNearestStations: () => void;
-    locations: (newLocation: Location) => void;
-  };
-  onError: (error: GeolocationPositionError) => void;
-}
-
-const LocationButton: React.FC<LocationButtonProps> = ({
-  onLocationFetch,
-  onError,
-}) => {
-  const handleFetchLocation = () => {
-    onLocationFetch.resetNearestStations();
-    if ('geolocation' in navigator) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          const location = {
-            lat: position.coords.latitude,
-            lng: position.coords.longitude,
-          };
-          onLocationFetch.locations(location);
-        },
-        (error) => {
-          onError(error);
-        },
-        { timeout: 10000 }, // Optional: Timeout after 10000 ms
-      );
-    } else {
-      alert('Geolocation is not supported by your browser.');
-    }
-  };
-
-  return (
-    <button
-      type="button"
-      onClick={handleFetchLocation}
-      className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out"
-    >
-      Update Location
-    </button>
-  );
-};
-
 interface TrainMenuBarProps {
-  // ipLocation: boolean;
-  radius: string | number;
-  updateSearchRadius: (radius: string | number) => void;
-  onRefresh: () => void;
+  refreshLocation: () => void;
 }
 
-export const TrainMenuBar: React.FC<
-  TrainMenuBarProps & LocationButtonProps
-> = ({
-  // ipLocation,
-  radius,
-  updateSearchRadius,
-  onLocationFetch,
-  onError,
-  onRefresh,
+export const TrainMenuBar: React.FC<TrainMenuBarProps> = ({
+  refreshLocation,
 }) => {
-  const handleRadiusChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    updateSearchRadius(event.target.value);
-  };
-
   return (
     <div className="flex flex-col items-center w-full">
-      {' '}
-      {/* pt-2 */}
-      {/* <div className="w-fit flex justify-center items-center bg-gray-200 rounded-md p-2 space-x-4">
-        <LocationButton onLocationFetch={onLocationFetch} onError={onError} />
+      <div className="w-fit flex justify-center items-center">
         <button
-          type="button"
-          onClick={onRefresh}
-          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out"
+          className="bg-black text-white p-2 my-2 rounded-md"
+          onClick={refreshLocation}
         >
-          Refresh Data
+          Refresh Location
         </button>
-        <div className="flex items-center space-x-2">
-          <span className="text-lg font-semibold text-gray-800">
-            Search Radius:
-          </span>
-          <select
-            value={radius}
-            onChange={handleRadiusChange}
-            className="bg-gray-200 rounded focus:outline-none focus-visible:outline-none focus-visible:ring-none focus-visible:ring-none"
-            title="Select a radius to search for trains within."
-          >
-            <option value="0.25">0.25 miles</option>
-            <option value="0.5">0.5 miles</option>
-            <option value="1">1 mile</option>
-            <option value="Demo">Demo</option>
-          </select>
-        </div>
-      </div> */}
-      {/* {ipLocation && radius !== 'Demo' && (
-        <div className="text-sm text-gray-500 mt-2 text-center">
-          Using IP location. Provide access to location services for more
-          accurate results.
-        </div>
-      )} */}
-      {radius === 'Demo' && (
-        <div className="text-sm text-gray-500 mt-2 text-center">
-          The demo location is set to Grand Central Terminal with a radius of
-          0.25 miles.
-        </div>
-      )}
+        <InformationButton />
+      </div>
     </div>
   );
 };
@@ -649,5 +561,32 @@ export const TrainCarousel: React.FC = () => {
         </div>
       </div>
     </>
+  );
+};
+
+export const InformationButton: React.FC = () => {
+  return (
+    <Link
+      href="/trains/about"
+      className="bg-black text-white font-bold rounded h-[40px] w-[40px] flex items-center justify-center ml-2"
+    >
+      <svg
+        data-slot="icon"
+        fill="none"
+        stroke-width="1.5"
+        stroke="white"
+        viewBox="0 0 24 24"
+        xmlns="http://www.w3.org/2000/svg"
+        aria-hidden="true"
+        width="28"
+        height="28"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z"
+        ></path>
+      </svg>
+    </Link>
   );
 };
