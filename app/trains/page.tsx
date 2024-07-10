@@ -1,7 +1,6 @@
 // pages/index.js
 import React from 'react';
 import TrainsContainer from './TrainContainer';
-import { headers } from 'next/headers';
 
 export const metadata = {
   title: 'MTA Train Times NYC - Live Subway Updates',
@@ -20,21 +19,6 @@ export const metadata = {
 };
 
 const Home = async () => {
-  const forwardedFor = headers().get('x-forwarded-for');
-  console.log('forwardedFor', forwardedFor);
-  if (forwardedFor) {
-    console.log(forwardedFor.split(',')[0]);
-  }
-
-  console.log('x-real-ip'), headers().get('x-real-ip');
-  console.log('x-forwarded-for'), headers().get('x-forwarded-for');
-  console.log('x-forwarded-host'), headers().get('x-forwarded-host');
-  console.log('x-forwarded-proto'), headers().get('x-forwarded-proto');
-
-  const headersList = headers();
-  const referer = headersList.get('referer');
-  console.log('referer', referer);
-
   return (
     <div>
       <TrainsContainer />
