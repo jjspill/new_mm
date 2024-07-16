@@ -46,8 +46,8 @@ const transformData = (data: any) => {
         last_name: fixLastName(competitor.athlete.shortName.split('. ').pop()),
         total_to_par:
           competitor.score === 'E' ? 0 : parseInt(competitor.score, 10),
-        // status: 'active',
-        status,
+        status: 'active',
+        // status,
       };
     },
   );
