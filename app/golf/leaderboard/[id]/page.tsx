@@ -1,4 +1,4 @@
-'force dynamic';
+// 'force dynamic';
 
 import { PageContainer } from '@/app/components/templates/PageContainer';
 import { LeaderboardContainer } from './leaderboardContainer';
