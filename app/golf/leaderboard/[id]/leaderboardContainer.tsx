@@ -16,13 +16,15 @@ import { useEffect, useState } from 'react';
 
 interface LeaderboardContainerProps {
   leagueId: string;
+  teamDataIn: any;
 }
 
 export const LeaderboardContainer = ({
   leagueId,
+  teamDataIn,
 }: LeaderboardContainerProps) => {
   const [liveScores, setLiveScores] = useState({} as any);
-  const [teamData, setTeamData] = useState([] as any);
+  const [teamData, setTeamData] = useState(teamDataIn);
   const { user, setUser } = useUser();
 
   useEffect(() => {
@@ -35,16 +37,16 @@ export const LeaderboardContainer = ({
       setLiveScores(data);
     };
 
-    const fetchTeamData = async () => {
-      const res = await fetch(`/golf/api/league-data?leagueId=${leagueId}`, {
-        next: { revalidate: 60 * 5 },
-      });
-      const data = await res.json();
-      setTeamData(data);
-    };
+    // const fetchTeamData = async () => {
+    //   const res = await fetch(`/golf/api/league-data?leagueId=${leagueId}`, {
+    //     next: { revalidate: 60 * 5 },
+    //   });
+    //   const data = await res.json();
+    //   setTeamData(data);
+    // };
 
     fetchLiveScores();
-    fetchTeamData();
+    // fetchTeamData();
   }, [leagueId]);
 
   if (
