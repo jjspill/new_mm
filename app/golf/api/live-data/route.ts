@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import course from '../../course.json';
 import { revalidatePath } from 'next/cache';
 export async function GET(request: NextRequest) {
-  // revalidatePath('/golf/leaderboard/theopen2k24', 'page');
+  revalidatePath('/golf/leaderboard/theopen2k24', 'page');
   const res = await fetch(
     'https://site.api.espn.com/apis/site/v2/sports/golf/pga/scoreboard',
     // 'http://localhost:3001/scores',
