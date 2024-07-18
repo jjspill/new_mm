@@ -28,7 +28,7 @@ export interface Config {
 
 export function shouldDisplayData() {
   const now = new Date();
-  const targetDate = new Date(Date.UTC(2024, 6, 18, 3 + 4, 0, 0));
+  const targetDate = new Date(Date.UTC(2024, 6, 18, 0, 0, 0));
   return now >= targetDate;
 }
 

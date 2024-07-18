@@ -189,7 +189,7 @@ const JoinLeaguePage: React.FC = () => {
         ) : (
           <div className="text-center">
             <h1 className="text-lg font-bold mb-4">Join a League</h1>
-            <p>The U.S. Open has started, join next time!</p>
+            <p>The Open has started, join next year!</p>
           </div>
         )}
       </div>
