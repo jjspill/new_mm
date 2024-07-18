@@ -33,7 +33,7 @@ function fixLastName(lastName: string) {
 }
 
 function fixFirstName(firstName: string) {
-  if (firstName === 'Joohyung') {
+  if (firstName === 'Joohyun') {
     return 'Tom';
   }
   return firstName;

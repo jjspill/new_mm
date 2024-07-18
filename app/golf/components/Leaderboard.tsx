@@ -108,7 +108,7 @@ export const LeaderboardRow: React.FC<LeaderboardRowProps> = ({
                 <>
                   <p>Today: {fixScore(player.todaysScore)}</p>
                   <p>Through: {player.numHoles}</p>
-                  {/* <Scorecard scores={player.scoreList!} /> */}
+                  <Scorecard scores={player.scoreList!} />
                 </>
               )}
               {/* <p>Round: {player.round}</p> */}
@@ -154,51 +154,56 @@ interface ScorecardProps {
 }
 
 const Scorecard: React.FC<ScorecardProps> = ({ scores }) => {
+  const [showScorecard, setShowScorecard] = useState(false);
+
+  const toggleScorecard = () => {
+    setShowScorecard(!showScorecard);
+  };
+
   return (
     <div className="max-w-4xl mx-auto p-5 bg-white shadow-lg rounded-lg">
       <h1 className="text-xl font-bold text-center mb-4">
         {course.tournament} at {course.course}
       </h1>
-      <div className="overflow-x-auto">
-        <table className="table-auto w-full">
-          <thead>
-            <tr className="bg-gray-100">
-              <th className="px-4 py-2">Hole</th>
-              <th className="px-4 py-2">Par</th>
-              <th className="px-4 py-2">Current Par Through</th>
-              <th className="px-4 py-2">Score</th>
-            </tr>
-          </thead>
-          <tbody>
-            {course.holes.map(
-              (
-                hole: {
-                  hole_number: number;
-                  par: number;
-                  current_par_through: number;
-                },
-                index: number,
-              ) => (
-                <tr
-                  key={index}
-                  className={index % 2 === 0 ? 'bg-white' : 'bg-gray-50'}
-                >
-                  <td className="border px-4 py-2 text-center">
-                    {hole.hole_number}
-                  </td>
-                  <td className="border px-4 py-2 text-center">{hole.par}</td>
-                  <td className="border px-4 py-2 text-center">
-                    {hole.current_par_through}
-                  </td>
-                  <td className="border px-4 py-2 text-center">
-                    {scores[index]}
-                  </td>
-                </tr>
-              ),
-            )}
-          </tbody>
-        </table>
-      </div>
+      <button
+        onClick={toggleScorecard}
+        className="mb-4 text-white bg-blue-500 hover:bg-blue-700 font-bold py-2 px-4 rounded"
+      >
+        Scorecard
+      </button>
+      {showScorecard && (
+        <div className="overflow-x-auto">
+          <table className="table-auto w-full">
+            <thead>
+              <tr className="bg-gray-100">
+                <th className="px-4 py-2">Hole</th>
+                <th className="px-4 py-2">Par</th>
+                <th className="px-4 py-2">Score</th>
+              </tr>
+            </thead>
+            <tbody>
+              {course.holes.map(
+                (hole: { hole_number: number; par: number }, index: number) => (
+                  <tr
+                    key={index}
+                    className={`${scores[index] < hole.par ? 'bg-green-200' : scores[index] > hole.par ? 'bg-red-200' : 'bg-white'}`}
+                  >
+                    <td className="border px-4 py-2 text-center">
+                      {hole.hole_number}
+                    </td>
+                    <td className="border px-4 py-2 text-center">{hole.par}</td>
+                    <td className="border px-4 py-2 text-center">
+                      {scores[index]}
+                    </td>
+                  </tr>
+                ),
+              )}
+            </tbody>
+          </table>
+        </div>
+      )}
     </div>
   );
 };
+
+export default Scorecard;
