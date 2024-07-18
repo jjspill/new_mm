@@ -74,13 +74,17 @@ export const LeaderboardContainer = ({
   const leagueData = sortedTeams ? sortedTeams : teamData;
   const pgaHasStarted = shouldDisplayData();
 
+  const round = liveScores?.results?.leaderboard[0]?.round;
+
   return (
     <div className="items-justify-center w-full">
       <div className="flex flex-col justify-center items-center m-auto w-full max-w-lg">
         <div className="bg-gray-200 font-semibold text-2xl p-4 rounded-lg text-center mb-10">
           <h1>{leagueId} Leaderboard</h1>
           <UpdatedTime date={updatedAt} />
-          <p className="text-base">Missed Cut Score: {highestScore.score}</p>
+          {round > 2 && (
+            <p className="text-base">Missed Cut Score: {highestScore.score}</p>
+          )}
         </div>
         <div className="w-full px-2 space-y-2">
           {pgaHasStarted &&
