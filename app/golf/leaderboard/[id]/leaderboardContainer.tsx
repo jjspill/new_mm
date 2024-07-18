@@ -28,7 +28,7 @@ export const LeaderboardContainer = ({
   useEffect(() => {
     const fetchLiveScores = async () => {
       const res = await fetch('/golf/api/live-data', {
-        next: { revalidate: 10 },
+        next: { revalidate: 0 },
         cache: 'no-store',
       });
       const data = await res.json();
@@ -37,7 +37,7 @@ export const LeaderboardContainer = ({
 
     const fetchTeamData = async () => {
       const res = await fetch(`/golf/api/league-data?leagueId=${leagueId}`, {
-        next: { revalidate: 0 },
+        next: { revalidate: 60 * 5 },
       });
       const data = await res.json();
       setTeamData(data);
