@@ -13,7 +13,11 @@ interface LeaderboardRowProps {
     firstName: string;
     lastName: string;
     score?: number;
-    status?: string;
+    cutStatus?: string;
+    playingStatus?: string;
+    round?: number;
+    numHoles?: number;
+    todaysScore?: string | number | null;
   }[];
 }
 
@@ -83,8 +87,22 @@ export const LeaderboardRow: React.FC<LeaderboardRowProps> = ({
               <p>
                 {player.firstName} {player.lastName}
               </p>
-              <p>Score: {player.score}</p>
-              <p>Status: {player.status}</p>
+              {player.cutStatus === 'cut' && <p>Status: Cut</p>}
+              {player.cutStatus !== 'cut' && (
+                <p>Status: {player.playingStatus}</p>
+              )}
+              {(player?.round! > 1 || player.numHoles) && (
+                <>
+                  <p>Total: {fixScore(player.score)}</p>
+                </>
+              )}
+              {player?.numHoles && player?.numHoles > 1 && (
+                <>
+                  <p>Today: {fixScore(player.todaysScore)}</p>
+                  <p>Through: {player.numHoles}</p>
+                </>
+              )}
+              {/* <p>Round: {player.round}</p> */}
             </div>
           ))}
         </div>
@@ -105,4 +123,19 @@ export function UpdatedTime({ date }: { date: string }) {
   );
 
   return <span className="text-sm">{convertedTime}</span>;
+}
+
+function fixScore(
+  score: number | undefined | null,
+): number | string | undefined {
+  if (!score) {
+    return undefined;
+  }
+  if (score === 0) {
+    return 'E';
+  }
+  if (score > 0) {
+    return `+${score}`;
+  }
+  return score;
 }

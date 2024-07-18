@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-
+import course from '../../course.json';
 export async function GET(request: NextRequest) {
   const res = await fetch(
     'https://site.api.espn.com/apis/site/v2/sports/golf/pga/scoreboard',
@@ -33,6 +33,9 @@ function fixLastName(lastName: string) {
 }
 
 const transformData = (data: any) => {
+  const competition = data.events[0].competitions[0];
+  const round = competition.status.period;
+
   const leaderboard = data.events[0].competitions[0].competitors.map(
     (competitor: any) => {
       const status =
@@ -41,13 +44,32 @@ const transformData = (data: any) => {
           ? 'cut'
           : 'active';
 
+      const currentStrokes = competitor.linescores[round - 1].value;
+      const numHoles = competitor.linescores[round - 1].linescores?.length;
+      const todaysScore =
+        numHoles > 0
+          ? currentStrokes - course.holes[numHoles - 1].current_par_through
+          : null;
+
+      const todaysScoreFixed = todaysScore
+        ? todaysScore > 0
+          ? `+${todaysScore}`
+          : todaysScore
+        : null;
+      // const roundScoreToPar = calculateCurrentRoundScore(
+      //   currentScore,
+      //   numHoles,
+      // );
+
       return {
         first_name: competitor.athlete.shortName.split('. ')[0],
         last_name: fixLastName(competitor.athlete.shortName.split('. ').pop()),
         total_to_par:
           competitor.score === 'E' ? 0 : parseInt(competitor.score, 10),
-        status: 'active',
-        // status,
+        status: round <= 2 ? 'active' : status,
+        round: round,
+        numHoles,
+        todaysScore: todaysScoreFixed,
       };
     },
   );

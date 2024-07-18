@@ -13,6 +13,9 @@ export interface PlayerData {
   last_name: string;
   score: number;
   status: string;
+  numHoles: number;
+  round: number;
+  todaysScore: string | number | null;
 }
 
 export interface Scores {
@@ -50,10 +53,8 @@ export function getScores(data: any): Scores {
   const scores = data.results.leaderboard.reduce((acc: any, item: any) => {
     const key = `${item.first_name.toLowerCase()[0]}_${item.last_name.toLowerCase()}`;
     acc[key] = {
-      first_name: item.first_name,
-      last_name: item.last_name,
       score: item.total_to_par,
-      status: item.status,
+      ...item,
     };
     return acc;
   }, {});
@@ -71,21 +72,35 @@ export function assignScoresToTeams(config: Config[], scores: Scores) {
     return { config, highestScore: { name: '', score: 0 } };
   }
 
+  let i = 0;
   const updatedTeams = config.map((team: Config) => {
     const teamScores = team.players.map((player: any) => {
-      const key = `${player.firstName.toLowerCase()[0]}_${player.lastName.toLowerCase()}`;
+      // const key = `${player.firstName.toLowerCase()[0]}_${player.lastName.toLowerCase()}`;
+      const key = i === 0 ? 'a_noren' : 'm_pavon';
+      i++;
       const score = scores[key];
+      // console.log('score', score);
       if (!score) {
         return player;
       }
       if (score.status === 'cut') {
         score.score = highestScore.score;
       }
+      console.log('player', player);
+      console.log('score', score);
       if (score) {
         return {
           ...player,
           score: score.score,
-          status: score.status,
+          cutStatus: score.status,
+          playingStatus: !score.numHoles
+            ? 'Awaiting Tee Time'
+            : score.numHoles >= 18
+              ? 'Done for Day'
+              : 'Playing',
+          numHoles: score.numHoles,
+          round: score.round,
+          todaysScore: score.todaysScore,
         };
       } else {
         return player;
