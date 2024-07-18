@@ -32,6 +32,12 @@ function fixLastName(lastName: string) {
   return lastName;
 }
 
+function fixFirstName(firstName: string) {
+  if (firstName === 'Joohyung') {
+    return 'Tom';
+  }
+  return firstName;
+}
 const transformData = (data: any) => {
   const competition = data.events[0].competitions[0];
   const round = competition.status.period;
