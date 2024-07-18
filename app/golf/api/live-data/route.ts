@@ -28,6 +28,8 @@ export async function GET(request: NextRequest) {
 function fixLastName(lastName: string) {
   if (lastName === 'Åberg') {
     return 'Aberg';
+  } else if (lastName === 'Højgaard') {
+    return 'Hojgaard';
   }
   return lastName;
 }
