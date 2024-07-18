@@ -16,6 +16,7 @@ export async function GET(request: NextRequest) {
   const encodedLeagueId = encodeURIComponent(leagueId);
 
   try {
+    console.log('Fetching teams for league:', leagueId);
     const res = await fetch(`${apiUrl}/golf/teams/${encodedLeagueId}`, {
       method: 'GET',
       headers: {
@@ -26,6 +27,7 @@ export async function GET(request: NextRequest) {
     });
 
     const league = await res.json();
+    console.log('League data fetched');
     if (!league?.data) {
       console.error('No data available');
       return new Response(JSON.stringify({ error: 'No data available' }));

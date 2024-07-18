@@ -36,7 +36,7 @@ export const LeaderboardContainer = ({
 
     const fetchTeamData = async () => {
       const res = await fetch(`/golf/api/league-data?leagueId=${leagueId}`, {
-        next: { revalidate: 0 },
+        next: { revalidate: 10 * 60 },
       });
       const data = await res.json();
       setTeamData(data);
