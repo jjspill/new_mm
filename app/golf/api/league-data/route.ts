@@ -22,7 +22,7 @@ export async function GET(request: NextRequest) {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${process.env.AUTH_TOKEN}`,
       },
-      next: { revalidate: 0 }, // 5 minutes
+      next: { revalidate: 60 * 10 }, // 10 minutes
     });
 
     const league = await res.json();
