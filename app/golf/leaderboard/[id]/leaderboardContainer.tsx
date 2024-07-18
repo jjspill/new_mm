@@ -29,6 +29,7 @@ export const LeaderboardContainer = ({
     const fetchLiveScores = async () => {
       const res = await fetch('/golf/api/live-data', {
         next: { revalidate: 0 },
+        cache: 'no-store',
       });
       const data = await res.json();
       setLiveScores(data);

@@ -12,7 +12,6 @@ export async function GET(request: NextRequest) {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${process.env.AUTH_TOKEN}`,
       },
-      next: { revalidate: 0 },
     },
   );
 
