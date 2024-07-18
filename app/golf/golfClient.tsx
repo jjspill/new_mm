@@ -64,6 +64,15 @@ export const GolfHomePage = () => {
             </Link>
           </div>
           <div>
+            <div className="w-full h-fit rounded-lg pt-2 px-4 text-center">
+              <Link href="/golf/leaderboard/theopen2k24">
+                <div className="bg-green-500 hover:bg-green-600 w-full rounded-lg my-2 px-4 py-2 shadow-lg">
+                  <p className="text-white font-bold text-xl">
+                    View Leaderboard
+                  </p>
+                </div>
+              </Link>
+            </div>
             <InstructionsDiv />
           </div>
         </div>
@@ -127,9 +136,9 @@ export const GolfHomePage = () => {
           )}
         </div>
         <div className="w-full h-fit rounded-lg py-2 px-4 text-center">
-          <Link href="/golf/join-league">
+          <Link href="/golf/leaderboard/theopen2k2">
             <div className="bg-green-500 hover:bg-green-600 w-full rounded-lg my-2 px-4 py-2 shadow-lg">
-              <p className="text-white font-bold text-xl">Join League</p>
+              <p className="text-white font-bold text-xl">View Leaderboard</p>
             </div>
           </Link>
         </div>

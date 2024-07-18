@@ -1,6 +1,7 @@
 import { getAPIUrl } from 'config/config';
 import { NextRequest } from 'next/server';
 import { splitName } from '../../leaderboard/leaderboardHelpers';
+import { revalidatePath } from 'next/cache';
 
 export async function GET(request: NextRequest) {
   const apiUrl = getAPIUrl();
