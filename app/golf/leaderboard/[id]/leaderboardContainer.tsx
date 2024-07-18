@@ -1,4 +1,5 @@
 'use client';
+'use dynamic';
 
 import { keys, set } from 'lodash';
 import {
