@@ -69,11 +69,9 @@ export const LeaderboardContainer = ({
 
   const updatedAt = liveScores?.live_details?.updated;
   const scores = getScores(liveScores);
-  console.log('scores', scores);
 
   const { sortedTeams, highestScore } = assignScoresToTeams(teamData, scores);
   const leagueData = sortedTeams ? sortedTeams : teamData;
-  console.log('leagueData', leagueData);
   const pgaHasStarted = shouldDisplayData();
 
   return (

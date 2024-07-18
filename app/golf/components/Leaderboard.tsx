@@ -49,12 +49,6 @@ export const LeaderboardRow: React.FC<LeaderboardRowProps> = ({
     playerOrder = players.sort((a, b) => a.score! - b.score!);
   }
 
-  console.log('playerOrder', playerOrder);
-  console.log('players', players);
-  console.log('total_score', total_score);
-  console.log(typeof players[0].score);
-  console.log(fixScore(players[0].score));
-
   return (
     <div className="flex flex-col justify-between p-2 rounded-xl bg-gray-200 w-full">
       <button
@@ -161,18 +155,16 @@ const Scorecard: React.FC<ScorecardProps> = ({ scores }) => {
   };
 
   return (
-    <div className="max-w-4xl mx-auto p-5 bg-white shadow-lg rounded-lg">
-      <h1 className="text-xl font-bold text-center mb-4">
-        {course.tournament} at {course.course}
-      </h1>
+    <>
       <button
         onClick={toggleScorecard}
-        className="mb-4 text-white bg-blue-500 hover:bg-blue-700 font-bold py-2 px-4 rounded"
+        className="text-white bg-gray-800 font-bold p1-2 px-4 rounded"
       >
         Scorecard
       </button>
+
       {showScorecard && (
-        <div className="overflow-x-auto">
+        <div className="overflow-x-auto pt-2">
           <table className="table-auto w-full">
             <thead>
               <tr className="bg-gray-100">
@@ -202,7 +194,7 @@ const Scorecard: React.FC<ScorecardProps> = ({ scores }) => {
           </table>
         </div>
       )}
-    </div>
+    </>
   );
 };
 

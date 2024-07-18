@@ -30,6 +30,13 @@ export interface Config {
   userId: string;
 }
 
+function fixFirstName(firstName: string) {
+  if (firstName === 'Joohyun') {
+    return 'Tom';
+  }
+  return firstName;
+}
+
 export function shouldDisplayData() {
   const now = new Date();
   const targetDate = new Date(Date.UTC(2024, 6, 18, 0, 0, 0));
@@ -75,6 +82,7 @@ export function assignScoresToTeams(config: Config[], scores: Scores) {
 
   const updatedTeams = config.map((team: Config) => {
     const teamScores = team.players.map((player: any) => {
+      player.firstName = fixFirstName(player.firstName);
       const key = `${player.firstName.toLowerCase()[0]}_${player.lastName.toLowerCase()}`;
       // const key = 't_mckibbin';
       const score = scores[key];

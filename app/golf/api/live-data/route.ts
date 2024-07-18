@@ -32,12 +32,6 @@ function fixLastName(lastName: string) {
   return lastName;
 }
 
-function fixFirstName(firstName: string) {
-  if (firstName === 'Joohyun') {
-    return 'Tom';
-  }
-  return firstName;
-}
 const transformData = (data: any) => {
   const competition = data.events[0].competitions[0];
   const round = competition.status.period;
@@ -54,7 +48,7 @@ const transformData = (data: any) => {
       const scoreList = competitor.linescores[round - 1]?.linescores?.map(
         (score: any) => score.value,
       );
-      console.log('scoreList', scoreList);
+
       const numHoles = competitor.linescores[round - 1].linescores?.length;
       const todaysScore =
         numHoles > 0
