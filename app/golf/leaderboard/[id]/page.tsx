@@ -17,7 +17,7 @@ export async function generateStaticParams() {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${process.env.AUTH_TOKEN}`,
     },
-    next: { revalidate: 10 },
+    next: { revalidate: 15 },
   });
 
   if (!res.ok) {
