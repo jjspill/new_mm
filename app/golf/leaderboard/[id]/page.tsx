@@ -1,5 +1,3 @@
-'force dynamic';
-
 import { PageContainer } from '@/app/components/templates/PageContainer';
 import { LeaderboardContainer } from './leaderboardContainer';
 import { getTeamData } from './teamDataFetcher';
