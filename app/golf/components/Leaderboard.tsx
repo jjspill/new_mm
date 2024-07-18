@@ -18,6 +18,7 @@ interface LeaderboardRowProps {
     round?: number;
     numHoles?: number;
     todaysScore?: string | number | null;
+    scoreList?: number[];
   }[];
 }
 
@@ -46,6 +47,12 @@ export const LeaderboardRow: React.FC<LeaderboardRowProps> = ({
   if (players.every((player) => player.score !== undefined)) {
     playerOrder = players.sort((a, b) => a.score! - b.score!);
   }
+
+  console.log('playerOrder', playerOrder);
+  console.log('players', players);
+  console.log('total_score', total_score);
+  console.log(typeof players[0].score);
+  console.log(fixScore(players[0].score));
 
   return (
     <div className="flex flex-col justify-between p-2 rounded-xl bg-gray-200 w-full">
@@ -128,7 +135,7 @@ export function UpdatedTime({ date }: { date: string }) {
 function fixScore(
   score: string | number | undefined | null,
 ): number | string | undefined {
-  if (!score) {
+  if (!score && score !== 0) {
     return undefined;
   }
   if (score === 0) {

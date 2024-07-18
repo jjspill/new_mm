@@ -45,7 +45,10 @@ const transformData = (data: any) => {
           : 'active';
 
       const currentStrokes = competitor.linescores[round - 1].value;
-      const scoreList = competitor.linescores.map((score: any) => score.value);
+      const scoreList = competitor.linescores[round - 1]?.linescores?.map(
+        (score: any) => score.value,
+      );
+      console.log('scoreList', scoreList);
       const numHoles = competitor.linescores[round - 1].linescores?.length;
       const todaysScore =
         numHoles > 0
