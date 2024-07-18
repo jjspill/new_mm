@@ -104,7 +104,7 @@ export const LeaderboardRow: React.FC<LeaderboardRowProps> = ({
                   <p>Total: {fixScore(player.score)}</p>
                 </>
               )}
-              {player?.numHoles && player?.numHoles > 1 && (
+              {player?.numHoles && player?.numHoles >= 1 && (
                 <>
                   <p>Today: {fixScore(player.todaysScore)}</p>
                   <p>Through: {player.numHoles}</p>
