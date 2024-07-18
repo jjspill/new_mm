@@ -75,9 +75,7 @@ export function assignScoresToTeams(config: Config[], scores: Scores) {
   let i = 0;
   const updatedTeams = config.map((team: Config) => {
     const teamScores = team.players.map((player: any) => {
-      // const key = `${player.firstName.toLowerCase()[0]}_${player.lastName.toLowerCase()}`;
-      const key = i === 0 ? 'a_noren' : 'm_pavon';
-      i++;
+      const key = `${player.firstName.toLowerCase()[0]}_${player.lastName.toLowerCase()}`;
       const score = scores[key];
       // console.log('score', score);
       if (!score) {
