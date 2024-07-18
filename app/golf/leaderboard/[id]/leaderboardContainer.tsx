@@ -1,3 +1,4 @@
+'force dynamic';
 'use client';
 
 import { keys, set } from 'lodash';
