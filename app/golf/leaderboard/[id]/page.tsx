@@ -12,16 +12,13 @@ async function LeaderboardPage({ params }: { params: any }) {
 export default LeaderboardPage;
 
 export async function generateStaticParams() {
-  const res = await fetch(
-    'https://preview.api.james-spillmann.com/golf/leagues',
-    {
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${process.env.AUTH_TOKEN}`,
-      },
-      next: { revalidate: 15 },
+  const res = await fetch('https://api.james-spillmann.com/golf/leagues', {
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${process.env.AUTH_TOKEN}`,
     },
-  );
+    next: { revalidate: 10 },
+  });
 
   if (!res.ok) {
     throw new Error('Failed to fetch leaderboard data');
