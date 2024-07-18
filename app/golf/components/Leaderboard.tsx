@@ -126,7 +126,7 @@ export function UpdatedTime({ date }: { date: string }) {
 }
 
 function fixScore(
-  score: number | undefined | null,
+  score: string | number | undefined | null,
 ): number | string | undefined {
   if (!score) {
     return undefined;
@@ -134,7 +134,7 @@ function fixScore(
   if (score === 0) {
     return 'E';
   }
-  if (score > 0) {
+  if ((score as number) > 0) {
     return `+${score}`;
   }
   return score;
