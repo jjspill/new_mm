@@ -16,6 +16,7 @@ export interface PlayerData {
   numHoles: number;
   round: number;
   todaysScore: string | number | null;
+  scoreList: number[];
 }
 
 export interface Scores {
@@ -72,20 +73,17 @@ export function assignScoresToTeams(config: Config[], scores: Scores) {
     return { config, highestScore: { name: '', score: 0 } };
   }
 
-  let i = 0;
   const updatedTeams = config.map((team: Config) => {
     const teamScores = team.players.map((player: any) => {
-      const key = `${player.firstName.toLowerCase()[0]}_${player.lastName.toLowerCase()}`;
+      // const key = `${player.firstName.toLowerCase()[0]}_${player.lastName.toLowerCase()}`;
+      const key = 'j_thomas';
       const score = scores[key];
-      // console.log('score', score);
       if (!score) {
         return player;
       }
       if (score.status === 'cut') {
         score.score = highestScore.score;
       }
-      console.log('player', player);
-      console.log('score', score);
       if (score) {
         return {
           ...player,
@@ -99,6 +97,7 @@ export function assignScoresToTeams(config: Config[], scores: Scores) {
           numHoles: score.numHoles,
           round: score.round,
           todaysScore: score.todaysScore,
+          scoreList: score.scoreList,
         };
       } else {
         return player;
