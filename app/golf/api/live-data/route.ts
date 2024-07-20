@@ -42,17 +42,17 @@ const transformData = (data: any) => {
   const leaderboard = data.events[0].competitions[0].competitors.map(
     (competitor: any) => {
       const status =
-        competitor.linescores.filter((score: any) => score.value >= 0).length <=
-        2
+        competitor?.linescores.filter((score: any) => score?.value >= 0)
+          .length <= 2
           ? 'cut'
           : 'active';
 
-      const currentStrokes = competitor.linescores[round - 1].value;
-      const scoreList = competitor.linescores[round - 1]?.linescores?.map(
-        (score: any) => score.value,
+      const currentStrokes = competitor?.linescores[round - 1]?.value;
+      const scoreList = competitor?.linescores[round - 1]?.linescores?.map(
+        (score: any) => score?.value,
       );
 
-      const numHoles = competitor.linescores[round - 1].linescores?.length;
+      const numHoles = competitor?.linescores[round - 1]?.linescores?.length;
       const todaysScore =
         numHoles > 0
           ? currentStrokes - course.holes[numHoles - 1].current_par_through
